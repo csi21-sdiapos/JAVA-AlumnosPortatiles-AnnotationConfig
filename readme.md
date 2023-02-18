@@ -406,6 +406,9 @@ public class Alumno implements Serializable {
 	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = false, optional = true)
 	@JoinColumn(table = "alumno", name = "portatil_id", referencedColumnName = "portatil_id", foreignKey = @ForeignKey(name = "fk_portatil_id"), insertable = true, updatable = true, unique = false, nullable = true)
 	private Portatil portatil;
+
+	...
+}
 ```
 
 ## 4.2. com.AlumnosPortatiles.project.app.entities --> Portatil.java
@@ -440,6 +443,9 @@ public class Portatil implements Serializable {
 	/******************************************* RELACIONES *********************************************/
 	@OneToOne(mappedBy = "portatil", targetEntity = Alumno.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = false, optional = true)
 	private Alumno alumno;
+
+	...
+}
 ```
 
 # 5. Repositories
@@ -1036,13 +1042,155 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 ### 6.1.1. com.AlumnosPortatiles.project.web.dto.models --> AlumnoDTO.java
 
 ```java
+@Component(value = "AlumnoDTO")
+public class AlumnoDTO implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
+	/******************************************* ATRIBUTOS *********************************************/
+	private UUID alumno_uuid;
+	private Calendar alumno_date;
+	private long alumno_id;
+	private String alumno_nombre;
+	private String alumno_apellidos;
+	private String alumno_telefono;
+	
+	/******************************************* RELACIONES *********************************************/
+	private Portatil portatil;
+
+	...
+}
 ```
 
 ### 6.1.2. com.AlumnosPortatiles.project.web.dto.models --> PortatilDTO.java
 
 ```java
+@Component(value = "PortatilDTO")
+public class PortatilDTO implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
+	/******************************************* ATRIBUTOS *********************************************/
+	private UUID portatil_uuid;
+	private Calendar portatil_date;
+	private long portatil_id;
+	private String portatil_marca;
+	private String portatil_modelo;
+	
+	/******************************************* RELACIONES *********************************************/
+	private Alumno alumno;
+
+	...
+}
+```
+
+## 6.2. Interfaces
+
+### 6.2.1. com.AlumnosPortatiles.project.web.dto.interfaces --> IToDTO.java
+
+```java
+public interface IToDTO {
+
+	/**
+	 * To alumno DTO.
+	 *
+	 * @param alumno_nombre the alumno nombre
+	 * @param alumno_apellidos the alumno apellidos
+	 * @param alumno_telefono the alumno telefono
+	 * @param portatil the portatil
+	 * @return the alumno DTO
+	 */
+	public AlumnoDTO toAlumnoDTO(String alumno_nombre, String alumno_apellidos, String alumno_telefono, Portatil portatil);
+	
+	/**
+	 * To portatil DTO.
+	 *
+	 * @param portatil_marca the portatil marca
+	 * @param portatil_modelo the portatil modelo
+	 * @return the portatil DTO
+	 */
+	public PortatilDTO toPortatilDTO(String portatil_marca, String portatil_modelo);	
+}
+```
+
+### 6.2.2. com.AlumnosPortatiles.project.web.dto.interfaces --> IToDAO.java
+
+```java
+public interface IToDAO {
+
+	/**
+	 * Alumno DT oto alumno DAO.
+	 *
+	 * @param alumnoDTO the alumno DTO
+	 * @return the alumno
+	 */
+	public Alumno alumnoDTOtoAlumnoDAO(AlumnoDTO alumnoDTO);
+	
+	/**
+	 * Portatil DT oto portatil DAO.
+	 *
+	 * @param portatilDTO the portatil DTO
+	 * @return the portatil
+	 */
+	public Portatil portatilDTOtoPortatilDAO(PortatilDTO portatilDTO);	
+}
+```
+
+## 6.3. Implementations
+
+### 6.3.1. com.AlumnosPortatiles.project.web.dto.implementations --> ToDTOimpl.java
+
+```java
+public class ToDTOimpl implements IToDTO {
+	
+	@Override
+	public AlumnoDTO toAlumnoDTO(String alumno_nombre, String alumno_apellidos, String alumno_telefono, Portatil portatil) {
+
+		AlumnoDTO alumnoDTO = new AlumnoDTO(alumno_nombre, alumno_apellidos, alumno_telefono, portatil);
+		return alumnoDTO;
+	}
+
+	@Override
+	public PortatilDTO toPortatilDTO(String portatil_marca, String portatil_modelo) {
+
+		PortatilDTO portatilDTO = new PortatilDTO(portatil_marca, portatil_modelo);
+		return portatilDTO;
+	}	
+}
+```
+
+### 6.3.2. com.AlumnosPortatiles.project.web.dto.implemenations --> ToDAOimpl.java
+
+```java
+public class ToDAOimpl implements IToDAO {
+
+	@Override
+	public Alumno alumnoDTOtoAlumnoDAO(AlumnoDTO alumnoDTO) {
+		Alumno alumno = new Alumno();
+		
+		if (alumnoDTO != null) {
+			alumno.setAlumno_nombre(alumnoDTO.getAlumno_nombre());
+			alumno.setAlumno_apellidos(alumnoDTO.getAlumno_apellidos());
+			alumno.setAlumno_telefono(alumnoDTO.getAlumno_telefono());
+			alumno.setPortatil(alumnoDTO.getPortatil());
+		}
+		
+		return alumno;
+	}
+	
+	@Override
+	public Portatil portatilDTOtoPortatilDAO(PortatilDTO portatilDTO) {
+		Portatil portatil = new Portatil();
+		
+		if (portatilDTO != null) {
+			portatil.setPortatil_marca(portatilDTO.getPortatil_marca());
+			portatil.setPortatil_modelo(portatilDTO.getPortatil_modelo());
+			portatil.setAlumno(portatilDTO.getAlumno());
+		}
+		
+		return portatil;
+	}	
+}
 ```
 
 # Webgrafía
