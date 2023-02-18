@@ -1,0 +1,4 @@
+com\AlumnosPortatiles\project\app\AppContextConfig.class
+com\AlumnosPortatiles\project\tools\Tools.class
+com\AlumnosPortatiles\project\web\WebContextConfig.class
+com\AlumnosPortatiles\project\ServletInitializerConfig.class
