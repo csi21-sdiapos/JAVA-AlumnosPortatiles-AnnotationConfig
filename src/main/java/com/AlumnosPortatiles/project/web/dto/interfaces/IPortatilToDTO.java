@@ -1,0 +1,32 @@
+package com.AlumnosPortatiles.project.web.dto.interfaces;
+
+import java.util.List;
+
+import com.AlumnosPortatiles.project.app.entities.Portatil;
+import com.AlumnosPortatiles.project.web.dto.models.PortatilDTO;
+
+
+public interface IPortatilToDTO {
+
+	
+	/**
+	 * To portatil DTO.
+	 *
+	 * @param portatilDAO the portatil DAO
+	 * @return the portatil DTO
+	 * @throws Exception the exception
+	 */
+	public PortatilDTO toPortatilDTO(Portatil portatilDAO) throws Exception;
+	
+	
+	
+	/**
+	 * To list portatil DTO.
+	 *
+	 * @param listPortatilDAO the list portatil DAO
+	 * @return the list
+	 * @throws Exception the exception
+	 */
+	public List<PortatilDTO> toListPortatilDTO(List<Portatil> listPortatilDAO) throws Exception;
+	
+}

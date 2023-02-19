@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+// import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
+import javax.persistence.SynchronizationType;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -21,15 +23,18 @@ import com.AlumnosPortatiles.project.repositories.interfaces.IAlumnoRepository;
 public class AlumnoRepositoryImpl implements IAlumnoRepository {
 
 	
-	@PersistenceContext
-    private EntityManagerFactory entityManagerFactory;
+//	@PersistenceUnit(name = "AlumnosPortatiles", unitName = "AlumnosPortatiles")
+//  private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("AlumnosPortatiles");
+	
+	@PersistenceContext(name = "entityManagerFactory", synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
+    private EntityManager entityManager;
 
 	
 	
 	@Override
 	public List<Alumno> listAlumnos() throws Exception {
 		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		// EntityManager entityManager = entityManagerFactory.createEntityManager();
 						
 		// the lowercase a refers to the object
 		// :objectID is a parameterized query thats value is set below
@@ -63,7 +68,7 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 	@Override
 	public Alumno findByIdAlumno(long alumno_id) throws Exception {
 		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		// EntityManager entityManager = entityManagerFactory.createEntityManager();
 						
 		// the lowercase a refers to the object
 		// :objectID is a parameterized query thats value is set below
@@ -99,7 +104,7 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 	@Override
 	public void insertAlumno(Alumno alumno) throws Exception {
 		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		// EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 				 
@@ -133,7 +138,7 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 	@Override
 	public void editAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception {
 		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		// EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 						
@@ -225,7 +230,7 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 	@Override
 	public void deleteByIdAlumno(long alumno_id) throws Exception {
 		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		// EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 				
@@ -307,7 +312,7 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 	
 	@Override
 	public void deleteAlumno(Alumno alumno) throws Exception {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		// EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 		 

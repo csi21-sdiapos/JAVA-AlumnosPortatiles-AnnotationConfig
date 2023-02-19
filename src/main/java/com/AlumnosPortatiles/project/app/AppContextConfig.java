@@ -19,8 +19,6 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.AlumnosPortatiles.project.app.entities.Alumno;
-
 
 @Configuration
 @ComponentScan
@@ -37,7 +35,10 @@ public class AppContextConfig {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactory.setDataSource(dataSource());
-		entityManagerFactory.setPackagesToScan(Alumno.class.getPackage().getName());
+		entityManagerFactory.setPackagesToScan(
+			// Alumno.class.getPackage().getName()
+			"com.AlumnosPortatiles.project.app.entities"
+		);
 		
 		JpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
 		entityManagerFactory.setJpaVendorAdapter(hibernateJpaVendorAdapter);

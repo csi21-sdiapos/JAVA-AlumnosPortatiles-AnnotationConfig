@@ -311,7 +311,10 @@ public class AppContextConfig {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactory.setDataSource(dataSource());
-		entityManagerFactory.setPackagesToScan(Alumno.class.getPackage().getName());
+		entityManagerFactory.setPackagesToScan(
+			// Alumno.class.getPackage().getName()
+			"com.AlumnosPortatiles.project.app.entities"
+		);
 		
 		JpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
 		entityManagerFactory.setJpaVendorAdapter(hibernateJpaVendorAdapter);
@@ -578,8 +581,11 @@ public interface IPortatilRepository {
 @Repository(value = "AlumnoRepositoryImpl")
 public class AlumnoRepositoryImpl implements IAlumnoRepository {
 
-	@PersistenceContext
-    private EntityManagerFactory entityManagerFactory;
+	//	@PersistenceUnit(name = "AlumnosPortatiles", unitName = "AlumnosPortatiles")
+	//  private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("AlumnosPortatiles");
+	
+	@PersistenceContext(name = "entityManagerFactory", synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
+    private EntityManager entityManager;
 
 
 	@Override
@@ -1086,112 +1092,536 @@ public class PortatilDTO implements Serializable {
 
 ## 6.2. Interfaces
 
-### 6.2.1. com.AlumnosPortatiles.project.web.dto.interfaces --> IToDTO.java
+### 6.2.1. com.AlumnosPortatiles.project.web.dto.interfaces --> IAlumnoToDTO.java
 
 ```java
-public interface IToDTO {
+public interface IAlumnoToDTO {
 
 	/**
 	 * To alumno DTO.
 	 *
-	 * @param alumno_nombre the alumno nombre
-	 * @param alumno_apellidos the alumno apellidos
-	 * @param alumno_telefono the alumno telefono
-	 * @param portatil the portatil
+	 * @param AlumnoDAO the alumno DAO
 	 * @return the alumno DTO
+	 * @throws Exception the exception
 	 */
-	public AlumnoDTO toAlumnoDTO(String alumno_nombre, String alumno_apellidos, String alumno_telefono, Portatil portatil);
+	public AlumnoDTO toAlumnoDTO(Alumno AlumnoDAO) throws Exception;
 	
 	/**
-	 * To portatil DTO.
+	 * To list alumno DTO.
 	 *
-	 * @param portatil_marca the portatil marca
-	 * @param portatil_modelo the portatil modelo
-	 * @return the portatil DTO
+	 * @param listAlumnoDAO the list alumno DAO
+	 * @return the list
+	 * @throws Exception the exception
 	 */
-	public PortatilDTO toPortatilDTO(String portatil_marca, String portatil_modelo);	
+	public List<AlumnoDTO> toListAlumnoDTO(List<Alumno> listAlumnoDAO) throws Exception;	
 }
 ```
 
-### 6.2.2. com.AlumnosPortatiles.project.web.dto.interfaces --> IToDAO.java
+### 6.2.2. com.AlumnosPortatiles.project.web.dto.interfaces --> IAlumnoToDAO.java
 
 ```java
-public interface IToDAO {
+public interface IAlumnoToDAO {
 
 	/**
-	 * Alumno DT oto alumno DAO.
+	 * To alumno DAO.
 	 *
 	 * @param alumnoDTO the alumno DTO
 	 * @return the alumno
+	 * @throws Exception the exception
 	 */
-	public Alumno alumnoDTOtoAlumnoDAO(AlumnoDTO alumnoDTO);
+	public Alumno toAlumnoDAO(AlumnoDTO alumnoDTO) throws Exception;
 	
 	/**
-	 * Portatil DT oto portatil DAO.
+	 * To list alumno DAO.
+	 *
+	 * @param listAlumnoDTO the list alumno DTO
+	 * @return the list
+	 * @throws Exception the exception
+	 */
+	public List<Alumno> toListAlumnoDAO(List<AlumnoDTO> listAlumnoDTO) throws Exception;	
+}
+```
+
+### 6.2.3. com.AlumnosPortatiles.project.web.dto.interfaces --> IPortatilToDTO.java
+
+```java
+public interface IPortatilToDTO {
+
+	/**
+	 * To portatil DTO.
+	 *
+	 * @param portatilDAO the portatil DAO
+	 * @return the portatil DTO
+	 * @throws Exception the exception
+	 */
+	public PortatilDTO toPortatilDTO(Portatil portatilDAO) throws Exception;	
+	
+	/**
+	 * To list portatil DTO.
+	 *
+	 * @param listPortatilDAO the list portatil DAO
+	 * @return the list
+	 * @throws Exception the exception
+	 */
+	public List<PortatilDTO> toListPortatilDTO(List<Portatil> listPortatilDAO) throws Exception;	
+}
+```
+
+### 6.2.4. com.AlumnosPortatiles.project.web.dto.interfaces --> IPortatilToDAO.java
+
+```java
+public interface IPortatilToDAO {
+	
+	/**
+	 * To portatil DAO.
 	 *
 	 * @param portatilDTO the portatil DTO
 	 * @return the portatil
+	 * @throws Exception the exception
 	 */
-	public Portatil portatilDTOtoPortatilDAO(PortatilDTO portatilDTO);	
+	public Portatil toPortatilDAO(PortatilDTO portatilDTO) throws Exception;
+	
+	/**
+	 * To list portatil DAO.
+	 *
+	 * @param listPortatilDTO the list portatil DTO
+	 * @return the list
+	 * @throws Exception the exception
+	 */
+	public List<Portatil> toListPortatilDAO(List<PortatilDTO> listPortatilDTO) throws Exception;	
 }
 ```
 
 ## 6.3. Implementations
 
-### 6.3.1. com.AlumnosPortatiles.project.web.dto.implementations --> ToDTOimpl.java
+### 6.3.1. com.AlumnosPortatiles.project.web.dto.implementations --> AlumnoToDTOimpl.java
 
 ```java
-public class ToDTOimpl implements IToDTO {
+@Service(value = "AlumnoToDTOimpl")
+public class AlumnoToDTOimpl implements IAlumnoToDTO {
 	
 	@Override
-	public AlumnoDTO toAlumnoDTO(String alumno_nombre, String alumno_apellidos, String alumno_telefono, Portatil portatil) {
-
-		AlumnoDTO alumnoDTO = new AlumnoDTO(alumno_nombre, alumno_apellidos, alumno_telefono, portatil);
-		return alumnoDTO;
+	public AlumnoDTO toAlumnoDTO(Alumno AlumnoDAO) throws Exception {
+		AlumnoDTO alumnoDTO = new AlumnoDTO();
+		
+		try {
+			alumnoDTO.setAlumno_uuid(AlumnoDAO.getAlumno_uuid());
+			alumnoDTO.setAlumno_date(AlumnoDAO.getAlumno_date());
+			alumnoDTO.setAlumno_id(AlumnoDAO.getAlumno_id());
+			alumnoDTO.setAlumno_nombre(AlumnoDAO.getAlumno_nombre());
+			alumnoDTO.setAlumno_apellidos(AlumnoDAO.getAlumno_apellidos());
+			alumnoDTO.setAlumno_telefono(AlumnoDAO.getAlumno_telefono());
+			alumnoDTO.setPortatil(AlumnoDAO.getPortatil());
+			return alumnoDTO;
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al convertir el alumnoDAO a alumnoDTO (return null): " + e);
+			return null;
+		}
 	}
 
 	@Override
-	public PortatilDTO toPortatilDTO(String portatil_marca, String portatil_modelo) {
-
-		PortatilDTO portatilDTO = new PortatilDTO(portatil_marca, portatil_modelo);
-		return portatilDTO;
-	}	
+	public List<AlumnoDTO> toListAlumnoDTO(List<Alumno> listAlumnoDAO) throws Exception {
+		List<AlumnoDTO> listAlumnoDTO = new ArrayList<>();
+		
+		try {
+			for (Alumno alumnoDAO : listAlumnoDAO) {
+				listAlumnoDTO.add(toAlumnoDTO(alumnoDAO));
+			}
+			return listAlumnoDTO;
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al convertir la listAlumnoDAO a listAlumnoDTO (return null): " + e);
+			return null;
+		}
+	}
 }
 ```
 
-### 6.3.2. com.AlumnosPortatiles.project.web.dto.implemenations --> ToDAOimpl.java
+### 6.3.2. com.AlumnosPortatiles.project.web.dto.implemenations --> AlumnoToDAOimpl.java
 
 ```java
-public class ToDAOimpl implements IToDAO {
-
-	@Override
-	public Alumno alumnoDTOtoAlumnoDAO(AlumnoDTO alumnoDTO) {
-		Alumno alumno = new Alumno();
-		
-		if (alumnoDTO != null) {
-			alumno.setAlumno_nombre(alumnoDTO.getAlumno_nombre());
-			alumno.setAlumno_apellidos(alumnoDTO.getAlumno_apellidos());
-			alumno.setAlumno_telefono(alumnoDTO.getAlumno_telefono());
-			alumno.setPortatil(alumnoDTO.getPortatil());
-		}
-		
-		return alumno;
-	}
+@Service(value = "AlumnoToDAOimpl")
+public class AlumnoToDAOimpl implements IAlumnoToDAO {
 	
 	@Override
-	public Portatil portatilDTOtoPortatilDAO(PortatilDTO portatilDTO) {
-		Portatil portatil = new Portatil();
+	public Alumno toAlumnoDAO(AlumnoDTO alumnoDTO) throws Exception {
+		Alumno alumnoDAO = new Alumno();
 		
-		if (portatilDTO != null) {
-			portatil.setPortatil_marca(portatilDTO.getPortatil_marca());
-			portatil.setPortatil_modelo(portatilDTO.getPortatil_modelo());
-			portatil.setAlumno(portatilDTO.getAlumno());
+		try {
+			alumnoDAO.setAlumno_uuid(alumnoDTO.getAlumno_uuid());
+			alumnoDAO.setAlumno_date(alumnoDTO.getAlumno_date());
+			alumnoDAO.setAlumno_id(alumnoDTO.getAlumno_id());
+			alumnoDAO.setAlumno_nombre(alumnoDTO.getAlumno_nombre());
+			alumnoDAO.setAlumno_apellidos(alumnoDTO.getAlumno_apellidos());
+			alumnoDAO.setAlumno_telefono(alumnoDTO.getAlumno_telefono());
+			alumnoDAO.setPortatil(alumnoDTO.getPortatil());
+			return alumnoDAO;
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al convertir el alumnoDTO a alumnoDAO (return null): " + e);
+			return null;
 		}
+	}
+
+	@Override
+	public List<Alumno> toListAlumnoDAO(List<AlumnoDTO> listAlumnoDTO) throws Exception {
+		List<Alumno> listAlumnoDAO = new ArrayList<>();
 		
-		return portatil;
-	}	
+		try {
+			for (AlumnoDTO alumnoDTO : listAlumnoDTO) {
+				listAlumnoDAO.add(toAlumnoDAO(alumnoDTO));
+			}
+			return listAlumnoDAO;
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al convertir la listAlumnoDTO a listAlumnoDAO (return null): " + e);
+			return null;
+		}
+	}
 }
 ```
+
+### 6.3.3. com.AlumnosPortatiles.project.web.dto.implemenations --> PortatilToDTOimpl.java
+
+```java
+@Service(value = "PortatilToDTOimpl")
+public class PortatilToDTOimpl implements IPortatilToDTO {
+
+	@Override
+	public PortatilDTO toPortatilDTO(Portatil portatilDAO) throws Exception {
+		PortatilDTO portatilDTO = new PortatilDTO();
+		
+		try {
+			portatilDTO.setPortatil_uuid(portatilDAO.getPortatil_uuid());
+			portatilDTO.setPortatil_date(portatilDAO.getPortatil_date());
+			portatilDTO.setPortatil_id(portatilDAO.getPortatil_id());
+			portatilDTO.setPortatil_marca(portatilDAO.getPortatil_marca());
+			portatilDTO.setPortatil_modelo(portatilDAO.getPortatil_modelo());
+			portatilDTO.setAlumno(portatilDAO.getAlumno());
+			return portatilDTO;
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al convertir el portatilDAO a portatilDTO (return null): " + e);
+			return null;
+		}
+	}	
+	
+	@Override
+	public List<PortatilDTO> toListPortatilDTO(List<Portatil> listPortatilDAO) throws Exception {
+		List<PortatilDTO> listPortatilDTO = new ArrayList<>();
+		
+		try {
+			for (Portatil portatilDAO : listPortatilDAO) {
+				listPortatilDTO.add(toPortatilDTO(portatilDAO));
+			}
+			return listPortatilDTO;
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al convertir la listAlumnoDAO a listAlumnoDTO (return null): " + e);
+			return null;
+		}
+	}
+}
+```
+
+### 6.3.4. com.AlumnosPortatiles.project.web.dto.implemenations --> PortatilToDAOimpl.java
+
+```java
+@Service(value = "PortatilToDAOimpl")
+public class PortatilToDAOimpl implements IPortatilToDAO {
+	
+	@Override
+	public Portatil toPortatilDAO(PortatilDTO portatilDTO) throws Exception {
+		Portatil portatilDAO = new Portatil();
+		
+		try {
+			portatilDAO.setPortatil_uuid(portatilDTO.getPortatil_uuid());
+			portatilDAO.setPortatil_date(portatilDTO.getPortatil_date());
+			portatilDAO.setPortatil_id(portatilDTO.getPortatil_id());
+			portatilDAO.setPortatil_marca(portatilDTO.getPortatil_marca());
+			portatilDAO.setPortatil_modelo(portatilDTO.getPortatil_modelo());
+			portatilDAO.setAlumno(portatilDTO.getAlumno());
+			return portatilDAO;
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al convertir el portatilDTO a portatilDAO (return null): " + e);
+			return null;
+		}
+	}
+
+	@Override
+	public List<Portatil> toListPortatilDAO(List<PortatilDTO> listPortatilDTO) throws Exception {
+		List<Portatil> listPortatilDAO = new ArrayList<>();
+		
+		try {
+			for (PortatilDTO portatilDTO : listPortatilDTO) {
+				listPortatilDAO.add(toPortatilDAO(portatilDTO));
+			}
+			return listPortatilDAO;
+		
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al convertir la listAlumnoDTO a listAlumnoDAO (return null): " + e);
+			return null;
+		}
+	}
+}
+```
+
+# 7. Services
+
+## 7.1. Interfaces
+
+### 7.1.1. com.AlumnosPortatiles.project.web.services.interfaces --> IAlumnoService.java
+
+```java
+public interface IAlumnoService {
+
+	/**
+	 * Listar alumnos.
+	 *
+	 * @return the list
+	 * @throws Exception the exception
+	 */
+	public List<AlumnoDTO> listarAlumnos() throws Exception;
+	
+	/**
+	 * Buscar alumno por id.
+	 *
+	 * @param alumno_id the alumno id
+	 * @return the alumno DTO
+	 * @throws Exception the exception
+	 */
+	public AlumnoDTO buscarAlumnoPorId(long alumno_id) throws Exception;
+	
+	/**
+	 * Insertar alumno.
+	 *
+	 * @param alumnoDTO the alumno DTO
+	 * @throws Exception the exception
+	 */
+	public void insertarAlumno(AlumnoDTO alumnoDTO) throws Exception;
+	
+	/**
+	 * Editar alumno.
+	 *
+	 * @param alumno_id the alumno id
+	 * @param alumno_nombre the alumno nombre
+	 * @param alumno_apellidos the alumno apellidos
+	 * @param alumno_telefono the alumno telefono
+	 * @throws Exception the exception
+	 */
+	public void editarAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception;
+	
+	/**
+	 * Eliminar alumno porid.
+	 *
+	 * @param alumno_id the alumno id
+	 * @throws Exception the exception
+	 */
+	public void eliminarAlumnoPorid(long alumno_id) throws Exception;	
+}
+```
+
+### 7.1.2. com.AlumnosPortatiles.project.web.services.interfaces --> IPortatilService.java
+
+```java
+public interface IPortatilService {
+
+	/**
+	 * Listar portatiles.
+	 *
+	 * @return the list
+	 * @throws Exception the exception
+	 */
+	public List<PortatilDTO> listarPortatiles() throws Exception;
+	
+	/**
+	 * Buscar portatil por id.
+	 *
+	 * @param portatil_id the portatil id
+	 * @return the portatil DTO
+	 * @throws Exception the exception
+	 */
+	public PortatilDTO buscarPortatilPorId(long portatil_id) throws Exception;
+	
+	/**
+	 * Insertar portatil.
+	 *
+	 * @param portatilDTO the portatil DTO
+	 * @throws Exception the exception
+	 */
+	public void insertarPortatil(PortatilDTO portatilDTO) throws Exception;
+	
+	/**
+	 * Editar portatil.
+	 *
+	 * @param portatil_id the portatil id
+	 * @param portatil_marca the portatil marca
+	 * @param portatil_modelo the portatil modelo
+	 * @throws Exception the exception
+	 */
+	public void editarPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception;
+		
+	/**
+	 * Eliminar portatil por id.
+	 *
+	 * @param portatil_id the portatil id
+	 * @throws Exception the exception
+	 */
+	public void eliminarPortatilPorId(long portatil_id) throws Exception;
+	
+}
+```
+
+## 7.2. Implementations
+
+### 7.2.1. com.AlumnosPortatiles.project.web.services.implementations --> AlumnoServiceImpl.java
+
+```java
+@Service(value = "AlumnoServiceImpl")
+public class AlumnoServiceImpl implements IAlumnoService {
+
+	@Autowired
+	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
+	
+	@Autowired
+	IAlumnoToDAO alumnoToDAO = new AlumnoToDAOimpl();
+	
+	@Autowired
+	IAlumnoRepository alumnoRepository = new AlumnoRepositoryImpl();
+	
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
+	@Override
+	public List<AlumnoDTO> listarAlumnos() throws Exception {
+		try {
+			return alumnoToDTO.toListAlumnoDTO(alumnoRepository.listAlumnos());
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al listar los alumnos (return null): " + e);
+			return null;
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
+	@Override
+	public AlumnoDTO buscarAlumnoPorId(long alumno_id) throws Exception {
+		try {
+			return alumnoToDTO.toAlumnoDTO(alumnoRepository.findByIdAlumno(alumno_id));
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al buscar el alumno (return null): " + e);
+			return null;
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
+	@Override
+	public void insertarAlumno(AlumnoDTO alumnoDTO) throws Exception {
+		try {
+			alumnoRepository.insertAlumno(alumnoToDAO.toAlumnoDAO(alumnoDTO));
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al insertar el nuevo alumno: " + e);
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
+	@Override
+	public void editarAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception {
+		try {
+			alumnoRepository.editAlumno(alumno_id, alumno_nombre, alumno_apellidos, alumno_telefono);
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al editar el alumno seleccionado: " + e);
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
+	@Override
+	public void eliminarAlumnoPorid(long alumno_id) throws Exception {
+		try {
+			alumnoRepository.deleteByIdAlumno(alumno_id);
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al eliminar el alumno seleccionado: " + e);
+		}
+	}
+}
+```
+
+### 7.2.2. com.AlumnosPortatiles.project.web.services.implementations --> PortatilServiceImpl.java
+
+```java
+@Service(value = "PortatilServiceImpl")
+public class PortatilServiceImpl implements IPortatilService {
+	
+	@Autowired
+	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
+	
+	@Autowired
+	IPortatilToDAO portatilToDAO = new PortatilToDAOimpl();
+	
+	@Autowired
+	IPortatilRepository portatilRepository = new PortatilRepositoryImpl();
+
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
+	@Override
+	public List<PortatilDTO> listarPortatiles() throws Exception {
+		try {
+			return portatilToDTO.toListPortatilDTO(portatilRepository.listPortatiles());
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al listar los portatiles (return null): " + e);
+			return null;
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
+	@Override
+	public PortatilDTO buscarPortatilPorId(long portatil_id) throws Exception {
+		try {
+			return portatilToDTO.toPortatilDTO(portatilRepository.findByIdPortatil(portatil_id));
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al buscar el portatil (return null): " + e);
+			return null;
+		}
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
+	@Override
+	public void insertarPortatil(PortatilDTO portatilDTO) throws Exception {
+		try {
+			portatilRepository.insertPortatil(portatilToDAO.toPortatilDAO(portatilDTO));
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al insertar el nuevo portatil: " + e);
+		}
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
+	@Override
+	public void editarPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception {
+		try {
+			portatilRepository.editPortatil(portatil_id, portatil_marca, portatil_modelo);
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al editar el portatil seleccionado: " + e);
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
+	@Override
+	public void eliminarPortatilPorId(long portatil_id) throws Exception {
+		try {
+			portatilRepository.deleteByIdPortatil(portatil_id);
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al eliminar el portatil seleccionado: " + e);
+		}
+	}
+}
+```
+
+
 
 # Webgrafía
 
@@ -1214,3 +1644,11 @@ https://www.devglan.com/spring-mvc/spring-mvc-annotation-example
 ## Pragmatically Spring MVC example without using XML
 
 https://www.greaterthan0.com/pragmatically-spring-mvc-example-without-using-xml-pure-java-based-configuration
+
+## How to Access EntityManager with Spring Data
+
+https://www.baeldung.com/spring-data-entitymanager
+
+## JPA/Hibernate Persistence Context
+
+https://www.baeldung.com/jpa-hibernate-persistence-context
