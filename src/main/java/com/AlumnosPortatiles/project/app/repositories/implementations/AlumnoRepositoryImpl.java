@@ -23,19 +23,13 @@ import com.AlumnosPortatiles.project.repositories.interfaces.IAlumnoRepository;
 public class AlumnoRepositoryImpl implements IAlumnoRepository {
 
 	
-//	@PersistenceUnit(name = "AlumnosPortatiles", unitName = "AlumnosPortatiles")
-//  private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("AlumnosPortatiles");
-	
-	@PersistenceContext(name = "entityManagerFactory", synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
+	@PersistenceContext(synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
     private EntityManager entityManager;
 
 	
 	
 	@Override
-	public List<Alumno> listAlumnos() throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		// EntityManager entityManager = entityManagerFactory.createEntityManager();
-						
+	public List<Alumno> listAlumnos() throws Exception {						
 		// the lowercase a refers to the object
 		// :objectID is a parameterized query thats value is set below
 		String query = "SELECT a FROM Alumno a WHERE a.id IS NOT NULL";
@@ -67,9 +61,6 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 	
 	@Override
 	public Alumno findByIdAlumno(long alumno_id) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		// EntityManager entityManager = entityManagerFactory.createEntityManager();
-						
 		// the lowercase a refers to the object
 		// :objectID is a parameterized query thats value is set below
 		String query = "SELECT a FROM Alumno a WHERE a.id = :alumnoID";
@@ -103,8 +94,6 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 
 	@Override
 	public void insertAlumno(Alumno alumno) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		// EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 				 
@@ -137,8 +126,6 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 	
 	@Override
 	public void editAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		// EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 						
@@ -186,8 +173,6 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 /*
 	@Override
 	public void editAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 				
@@ -229,8 +214,6 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 	
 	@Override
 	public void deleteByIdAlumno(long alumno_id) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		// EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 				
@@ -275,8 +258,6 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 /*
 	@Override
 	public void deleteByIdAlumno(long alumno_id) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 						
@@ -312,7 +293,6 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 	
 	@Override
 	public void deleteAlumno(Alumno alumno) throws Exception {
-		// EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 		 

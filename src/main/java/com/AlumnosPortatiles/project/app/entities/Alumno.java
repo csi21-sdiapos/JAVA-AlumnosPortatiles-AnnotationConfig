@@ -40,7 +40,7 @@ public class Alumno implements Serializable {
 	
 	@Id
 	@Column(table = "alumno", name = "alumno_id", insertable = false, updatable = false, unique = true, nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "alumno_alumno_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long alumno_id;
 	
 	@Column(table = "alumno", name = "alumno_nombre", insertable = true, updatable = true, unique = false, nullable = false)

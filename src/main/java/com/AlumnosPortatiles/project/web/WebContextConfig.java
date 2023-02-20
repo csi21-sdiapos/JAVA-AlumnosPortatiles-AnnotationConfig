@@ -13,6 +13,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebMvc
 public class WebContextConfig {
 
+	
 	@Bean
     public ViewResolver internalResourceViewResolver() {
         InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
@@ -22,4 +23,5 @@ public class WebContextConfig {
         
         return internalResourceViewResolver;
     }
+	
 }

@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
+import javax.persistence.SynchronizationType;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -21,16 +22,13 @@ import com.AlumnosPortatiles.project.repositories.interfaces.IPortatilRepository
 public class PortatilRepositoryImpl implements IPortatilRepository {
 
 	
-	@PersistenceContext
-    private EntityManagerFactory entityManagerFactory;
+	@PersistenceContext(synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
+    private EntityManager entityManager;
 
 	
 	
 	@Override
 	public List<Portatil> listPortatiles() throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-								
 		// the lowercase p refers to the object
 		// :objectID is a parameterized query thats value is set below
 		String query = "SELECT p FROM Portatil p WHERE p.id IS NOT NULL";
@@ -62,9 +60,6 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 
 	@Override
 	public Portatil findByIdPortatil(long portatil_id) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-								
 		// the lowercase p refers to the object
 		// :objectID is a parameterized query thats value is set below
 		String query = "SELECT p FROM Portatil p WHERE p.id = :portatilID";
@@ -98,8 +93,6 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 
 	@Override
 	public void insertPortatil(Portatil portatil) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 						 
@@ -132,8 +125,6 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 	
 	@Override
 	public void editPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 				
@@ -180,8 +171,6 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 /*
 	@Override
 	public void editPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 						
@@ -222,8 +211,6 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 	
 	@Override
 	public void deleteByIdPortatil(long portatil_id) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 				
@@ -267,8 +254,6 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 /*
 	@Override
 	public void deleteByIdPortatil(long portatil_id) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 								
@@ -304,7 +289,6 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 	
 	@Override
 	public void deletePortatil(Portatil portatil) throws Exception {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 		 

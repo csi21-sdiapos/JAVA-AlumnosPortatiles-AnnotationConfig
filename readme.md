@@ -3,24 +3,25 @@
 # 0. pom.xml
 
 ```xml
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.AlumnosPortatiles</groupId>
-  <artifactId>AlumnosPortatiles-AnnotationConfig</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  
-  <properties>
+<properties>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
   	<java-version>18</java-version>
     <maven.compiler.source>18</maven.compiler.source>
     <maven.compiler.target>18</maven.compiler.target>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<postgresql.connector.version>42.5.1</postgresql.connector.version>
   	<org.springframework.version>5.0.6.RELEASE</org.springframework.version>
-  	<hibernate.version>5.6.12.Final</hibernate.version>
-	<postgresql.connector.version>42.5.1</postgresql.connector.version>
+	<org.springframework.data.version>2.0.7.RELEASE</org.springframework.data.version>
+  	<hibernate.version>5.2.17.Final</hibernate.version>
+<!--<hibernate.validator>5.4.1.Final</hibernate.validator>-->
+  	<jsp.version>2.3.3</jsp.version>
+  	<jstl.version>1.2.1</jstl.version>
+  	<tld.version>1.2.5</tld.version>
+  	<servlets.version>4.0.1</servlets.version>
   </properties>
   
   <dependencies>
+    <!-- ********************************* Spring Framework ************************************* -->
   	<dependency>
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-core</artifactId>
@@ -38,10 +39,16 @@
 	    <artifactId>spring-beans</artifactId>
 	    <version>${org.springframework.version}</version>
 	</dependency>
-
+<!--
 	<dependency>
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-web</artifactId>
+	    <version>${org.springframework.version}</version>
+	</dependency>
+-->	
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-webmvc</artifactId>
 	    <version>${org.springframework.version}</version>
 	</dependency>
 
@@ -56,17 +63,24 @@
 	    <artifactId>spring-context</artifactId>
 	    <version>${org.springframework.version}</version>
 	</dependency>
-	
-	<dependency>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-webmvc</artifactId>
-	    <version>${org.springframework.version}</version>
-	</dependency>
 
 	<dependency>
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-orm</artifactId>
 	    <version>${org.springframework.version}</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.springframework.data</groupId>
+	    <artifactId>spring-data-jpa</artifactId>
+	    <version>${org.springframework.data.version}</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-test</artifactId>
+	    <version>${org.springframework.version}</version>
+	    <scope>test</scope>
 	</dependency>
   	
   	<!-- ********************************* JUnit ************************************* -->
@@ -81,15 +95,22 @@
   	<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>javax.servlet-api</artifactId> <!-- This artifact was moved to: jakarta.servlet » jakarta.servlet-api -->
-	    <version>4.0.1</version>
+	    <version>${servlets.version}</version>
 	    <scope>provided</scope>
 	</dependency>
-
+	
 	<dependency>
-	    <groupId>javax.annotation</groupId>
-	    <artifactId>javax.annotation-api</artifactId>
-	    <version>1.3.2</version>
-	</dependency>
+     	<groupId>javax.servlet.jsp</groupId>
+        <artifactId>javax.servlet.jsp-api</artifactId>
+        <version>${jsp.version}</version>
+        <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+  		<groupId>javax.servlet.jsp.jstl</groupId>
+  		<artifactId>javax.servlet.jsp.jstl-api</artifactId>
+  		<version>${jstl.version}</version>
+  	</dependency>
 
 	<dependency>
 	    <groupId>javax.xml.bind</groupId>
@@ -109,12 +130,6 @@
 	    <version>2.2</version>
 	</dependency>
   	
-  	<dependency>
-  		<groupId>javax.servlet.jsp.jstl</groupId>
-  		<artifactId>javax.servlet.jsp.jstl-api</artifactId>
-  		<version>1.2.1</version>
-  	</dependency>
-  	
   	<!-- ********************************* PostgreSQL ************************************* -->
 	<dependency>
 	    <groupId>org.postgresql</groupId>
@@ -126,20 +141,26 @@
 	<dependency>
 	    <groupId>org.hibernate</groupId>
 	    <artifactId>hibernate-core</artifactId>
-	    <version>5.6.12.Final</version>
+	    <version>${hibernate.version}</version>
 	</dependency>
 		
 	<dependency>
 	    <groupId>org.hibernate</groupId>
 	    <artifactId>hibernate-entitymanager</artifactId>
-	    <version>5.6.12.Final</version>
+	    <version>${hibernate.version}</version>
 	</dependency>
-  	
+<!--	
+	<dependency>
+       	<groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${hibernate.validator}</version>
+    </dependency>
+-->
   	<!-- ********************************* TagLibs ************************************* -->
   	<dependency>
   		<groupId>org.apache.taglibs</groupId>
   		<artifactId>taglibs-standard-impl</artifactId>
-  		<version>1.2.5</version>
+  		<version>${tld.version}</version>
   	</dependency>
   	
   	<!-- ********************************* MapStruct ************************************* -->
@@ -213,8 +234,6 @@
     
     <finalName>AlumnosPortatiles-AnnotationConfig</finalName>
   </build>
-  
-</project>
 ```
 
 # 1. src/main/resources --> application.properties
@@ -223,24 +242,30 @@
 # https://docs.spring.io/spring-boot/docs/1.1.1.RELEASE/reference/html/common-application-properties.html
 
 ####################################### DataBase #######################################
-spring.datasource.url = jdbc:postgresql://localhost/AlumnosVistas-AnnotationConfig
-spring.datasource.username = postgres
-spring.datasource.password = 12345
-spring.datasource.driverClassName = org.postgresql.Driver
+spring.datasource.url=jdbc:postgresql://localhost/AlumnosVistas
+spring.datasource.username=postgres
+spring.datasource.password=12345
+spring.datasource.driverClassName=org.postgresql.Driver
+spring.datasource.initialize=true
 
 
 ####################################### JPA #######################################
-spring.jpa.show-sql = false
-spring.jpa.database-platform = org.hibernate.dialect.PostgreSQLDialect
-spring.jpa.generate-ddl = true
-spring.data.jpa.repositories.enabled = true
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.data.jpa.repositories.enabled=true
+
 
 ####################################### HIBERNATE #######################################
-hibernate.show_sql = false
-hibernate.format_sql = true
-hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
-hibernate.generateDdl = true
-hibernate.hbm2ddl.auto = update
+hibernate.show_sql=false
+hibernate.format_sql=true
+hibernate.generateDdl =true
+hibernate.hbm2ddl.auto=update
+hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+hibernate.cache.use_second_level_cache=false
+hibernate.cache.use_query_cache=false
 ```
 
 # 2. webapp
@@ -298,36 +323,13 @@ public class ServletInitializerConfig extends AbstractAnnotationConfigDispatcher
 
 ```java
 @Configuration
-@ComponentScan
-@EnableJpaRepositories("com.AlumnosPortatiles.project.app.repositories")
+@ComponentScan("com.AlumnosPortatiles.project")
 @PropertySource("classpath:application.properties")
+@EnableJpaRepositories(basePackages = "com.AlumnosPortatiles.project.app.repositories")
 public class AppContextConfig {
 
 	@Autowired
-	private Environment enviroment;
-
-	
-	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-		entityManagerFactory.setDataSource(dataSource());
-		entityManagerFactory.setPackagesToScan(
-			// Alumno.class.getPackage().getName()
-			"com.AlumnosPortatiles.project.app.entities"
-		);
-		
-		JpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
-		entityManagerFactory.setJpaVendorAdapter(hibernateJpaVendorAdapter);
-		
-		Properties jpaProperties = new Properties();
-        jpaProperties.put("hibernate.hbm2ddl.auto", enviroment.getProperty("hibernate.hbm2ddl.auto"));
-        jpaProperties.put("hibernate.show_sql", enviroment.getProperty("spring.jpa.show-sql"));
-        jpaProperties.put("hibernate.format_sql", enviroment.getProperty("spring.jpa.properties.hibernate.format_sql"));
-        jpaProperties.put("hibernate.dialect", enviroment.getProperty("spring.jpa.database-platform"));
-        entityManagerFactory.setJpaProperties(jpaProperties);
-		
-		return entityManagerFactory;
-	}
+	private Environment enviroment;	
 	
 	@Bean
     public DataSource dataSource() {
@@ -342,7 +344,35 @@ public class AppContextConfig {
     }
 	
 	@Bean
-    public PlatformTransactionManager transactionManager() {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+		entityManagerFactory.setDataSource(dataSource());
+		entityManagerFactory.setPackagesToScan(new String[] {
+			// Alumno.class.getPackage().getName()
+			"com.AlumnosPortatiles.project.app.entities"
+	    });
+		
+		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		vendorAdapter.setDatabase(Database.POSTGRESQL);
+		vendorAdapter.setDatabasePlatform(enviroment.getProperty("hibernate.dialect"));
+		vendorAdapter.setGenerateDdl(enviroment.getProperty("hibernate.generateDdl", Boolean.class));
+		vendorAdapter.setShowSql(enviroment.getProperty("hibernate.show_sql", Boolean.class));
+		entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
+		
+		Properties jpaProperties = new Properties();
+		jpaProperties.put("hibernate.hbm2ddl.auto", enviroment.getProperty("hibernate.hbm2ddl.auto"));
+        jpaProperties.put("hibernate.show_sql", enviroment.getProperty("hibernate.show_sql"));
+        jpaProperties.put("hibernate.format_sql", enviroment.getProperty("hibernate.format_sql"));
+        jpaProperties.put("hibernate.dialect", enviroment.getRequiredProperty("hibernate.dialect"));
+        jpaProperties.setProperty("hibernate.cache.use_second_level_cache", enviroment.getProperty("hibernate.cache.use_second_level_cache"));
+        jpaProperties.setProperty("hibernate.cache.use_query_cache", enviroment.getProperty("hibernate.cache.use_query_cache"));
+        entityManagerFactory.setJpaProperties(jpaProperties);
+		
+		return entityManagerFactory;
+	}
+	
+	@Bean
+    public JpaTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         
@@ -367,7 +397,7 @@ public class WebContextConfig {
         internalResourceViewResolver.setSuffix(".jsp");
         
         return internalResourceViewResolver;
-    }
+    }	
 }
 ```
 
@@ -393,7 +423,7 @@ public class Alumno implements Serializable {
 	
 	@Id
 	@Column(table = "alumno", name = "alumno_id", insertable = false, updatable = false, unique = true, nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "alumno_alumno_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long alumno_id;
 	
 	@Column(table = "alumno", name = "alumno_nombre", insertable = true, updatable = true, unique = false, nullable = false)
@@ -434,7 +464,7 @@ public class Portatil implements Serializable {
 	
 	@Id
 	@Column(table = "portatil", name = "portatil_id", insertable = false, updatable = false, unique = true, nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "portatil_portatil_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long portatil_id;
 	
 	@Column(table = "portatil", name = "portatil_marca", insertable = true, updatable = true, unique = false, nullable = false)
@@ -450,6 +480,10 @@ public class Portatil implements Serializable {
 	...
 }
 ```
+
+# Prueba de ejecución 1 --> Conexión icicial con la BBDD autocreando las tablas
+
+[Prueba de ejecución 1](https://user-images.githubusercontent.com/91122596/220164667-dd187b8b-e080-4537-a2f2-44907d817578.mp4)
 
 # 5. Repositories
 
@@ -580,19 +614,12 @@ public interface IPortatilRepository {
 ```java
 @Repository(value = "AlumnoRepositoryImpl")
 public class AlumnoRepositoryImpl implements IAlumnoRepository {
-
-	//	@PersistenceUnit(name = "AlumnosPortatiles", unitName = "AlumnosPortatiles")
-	//  private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("AlumnosPortatiles");
 	
-	@PersistenceContext(name = "entityManagerFactory", synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
+	@PersistenceContext(synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
     private EntityManager entityManager;
 
-
 	@Override
-	public List<Alumno> listAlumnos() throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-						
+	public List<Alumno> listAlumnos() throws Exception {						
 		// the lowercase a refers to the object
 		// :objectID is a parameterized query thats value is set below
 		String query = "SELECT a FROM Alumno a WHERE a.id IS NOT NULL";
@@ -620,13 +647,8 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 		return listaAlumnos;
 	}
 	
-	
-	
 	@Override
 	public Alumno findByIdAlumno(long alumno_id) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-						
 		// the lowercase a refers to the object
 		// :objectID is a parameterized query thats value is set below
 		String query = "SELECT a FROM Alumno a WHERE a.id = :alumnoID";
@@ -656,12 +678,8 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 		return alumno;
 	}
 	
-	
-
 	@Override
 	public void insertAlumno(Alumno alumno) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 				 
@@ -690,12 +708,8 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 		}
 	}
 	
-	
-	
 	@Override
 	public void editAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 						
@@ -740,8 +754,6 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 	
 	@Override
 	public void deleteByIdAlumno(long alumno_id) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 				
@@ -783,7 +795,6 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 	
 	@Override
 	public void deleteAlumno(Alumno alumno) throws Exception {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 		 
@@ -818,16 +829,12 @@ public class AlumnoRepositoryImpl implements IAlumnoRepository {
 ```java
 @Repository(value = "PortatilRepositoryImpl")
 public class PortatilRepositoryImpl implements IPortatilRepository {
+	
+	@PersistenceContext(synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
+    private EntityManager entityManager;
 
-	@PersistenceContext
-    private EntityManagerFactory entityManagerFactory;
-	
-	
 	@Override
 	public List<Portatil> listPortatiles() throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-								
 		// the lowercase p refers to the object
 		// :objectID is a parameterized query thats value is set below
 		String query = "SELECT p FROM Portatil p WHERE p.id IS NOT NULL";
@@ -854,12 +861,9 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 				    	
 		return listaPortatiles;
 	}
-
+	
 	@Override
 	public Portatil findByIdPortatil(long portatil_id) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-								
 		// the lowercase p refers to the object
 		// :objectID is a parameterized query thats value is set below
 		String query = "SELECT p FROM Portatil p WHERE p.id = :portatilID";
@@ -888,11 +892,9 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 				    	
 		return portatil;
 	}
-
+	
 	@Override
 	public void insertPortatil(Portatil portatil) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 						 
@@ -923,8 +925,6 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 	
 	@Override
 	public void editPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 				
@@ -968,8 +968,6 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 	
 	@Override
 	public void deleteByIdPortatil(long portatil_id) throws Exception {
-		// The EntityManager class allows operations such as create, read, update, delete
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 				
@@ -1011,7 +1009,6 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 	
 	@Override
 	public void deletePortatil(Portatil portatil) throws Exception {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		// Used to issue transactions on the EntityManager
 		EntityTransaction entityTransaction = null;
 		 
@@ -1621,6 +1618,8 @@ public class PortatilServiceImpl implements IPortatilService {
 }
 ```
 
+# 8. Controllers
+
 
 
 # Webgrafía
@@ -1628,6 +1627,14 @@ public class PortatilServiceImpl implements IPortatilService {
 ## ⭐ Guía completa de ejemplo de proyecto web de Spring MVC paso a paso (parte 5)
 
 https://www.uv.es/grimo/teaching/SpringMVCv5PasoAPaso/part5.html
+
+## ⭐ Spring Data JPA Tutorial: Annotation Configuration
+
+https://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-one-configuration/
+
+## ⭐ Spring MVC 5 + Spring Data JPA + Hibernate 5 + JSP (Tutorial)
+
+https://www.javaguides.net/2018/11/spring-mvc-5-spring-data-jpa-hibernate-jsp-mysql-tutorial.html
 
 ## ⭐ Database and JPA Configuration without persistence.xml using JavaConfig
 
@@ -1652,3 +1659,15 @@ https://www.baeldung.com/spring-data-entitymanager
 ## JPA/Hibernate Persistence Context
 
 https://www.baeldung.com/jpa-hibernate-persistence-context
+
+# Errores
+
+## org.springframework.web.context.ContextLoaderListener
+
+### Explicación y Solución --> Opción 1
+
+https://www.java67.com/2015/06/org.Springframework.Web.Context.ContextLoaderListener.html
+
+### Explicación y Solución --> Opción 2
+
+https://www.javamexico.org/foros/java_standard_edition/javalangclassnotfoundexception_web_service

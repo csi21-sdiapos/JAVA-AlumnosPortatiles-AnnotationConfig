@@ -38,7 +38,7 @@ public class Portatil implements Serializable {
 	
 	@Id
 	@Column(table = "portatil", name = "portatil_id", insertable = false, updatable = false, unique = true, nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "portatil_portatil_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long portatil_id;
 	
 	@Column(table = "portatil", name = "portatil_marca", insertable = true, updatable = true, unique = false, nullable = false)
