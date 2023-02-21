@@ -29,7 +29,7 @@ public class PortatilesControllerImpl implements IPortatilesController {
 	@RequestMapping(value = "/portatilesListLoader")
 	@Override
 	public ModelAndView portatilesListLoader() throws Exception {
-		logger.info("Entrando en el metodo --> portatilesListLoader()");
+		logger.info("\nEntrando en el metodo --> portatilesListLoader()");
 		List<Portatil> portatilesList = new ArrayList<>();
 		
 		try {

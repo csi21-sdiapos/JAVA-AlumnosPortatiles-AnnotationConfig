@@ -5,9 +5,9 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="theme-color" content="#712cf9">
-	<title>Alumnos</title>
+	<title>Register Form</title>
 </head>
-
+ 
 <body>
 	<header class="p-3 text-bg-dark">
 	    <div class="container">
@@ -19,9 +19,7 @@
 	          <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
 	          <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
 	          <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-	         
-	          <li><a href="<c:url value="goToFormCreateAlumno" />" class="btn btn-primary px-2 text-white">Formulario de Registro</a></li>
-	        </ul>
+	      	</ul>
 	
 	        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
 	          <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
@@ -34,39 +32,29 @@
 	      </div>
 	    </div>
 	</header>
-	
-	<div class="container">
-		<h1 class="text-center">Lista de alumnos</h1>
-		
-		<table class="table table-dark table-hover">
- 			<thead>
-				<tr>
-					<th scope="col">UUID</th>
-					<th scope="col">DATE</th>
-					<th scope="col">ID</th>
-					<th scope="col">Nombre</th>
-					<th scope="col">Apellidos</th>
-					<th scope="col">Teléfono</th>
-					<th scope="col">Portátil ID</th>
-				</tr>
-			</thead>
-			<c:forEach var="alumnoModel" items="${listaAlumnos}">
-				<tbody>
-					<tr>
-						<td><c:out value="${alumnoModel.alumno_uuid}" /></td>
-						<td><c:out value="${alumnoModel.alumno_date.getTime()}" /></td>
-						<td><c:out value="${alumnoModel.alumno_id}" /></td>
-						<td><c:out value="${alumnoModel.alumno_nombre}" /></td>
-						<td><c:out value="${alumnoModel.alumno_apellidos}" /></td>
-						<td><c:out value="${alumnoModel.alumno_telefono}" /></td>
-						<td><c:out value="${alumnoModel.portatil.portatil_id}" /></td>
-					</tr>
-				</tbody>
-			</c:forEach>
-		</table>
-	</div>
-	
-	<footer class="py-5 text-bg-dark">
+    
+    <div class="container">
+    	<h1 class="text-center">Formulario de Registro de Portátiles</h1>
+    	
+    	<form:form method="POST" action="formCreatePortatil" modelAttribute="portatilModel">
+	    	<table>
+	        	<tr class="mb-3">
+	             	<td><form:label path="portatil_marca" for="portatil_marca" class="form-label">Marca</form:label></td>
+	                <td><form:input path="portatil_marca" type="text" class="form-control" id="portatil_marca" placeholder="marca..." /></td>
+	            </tr>
+	            <tr>
+	              	<td><form:label path="portatil_modelo" for="portatil_modelo" class="form-label">Modelo</form:label></td>
+	                <td><form:input path="portatil_modelo" type="text" class="form-control" id="portatil_modelo" placeholder="modelo..." /></td>
+	            </tr>
+	                
+	            <tr>
+	              	<td><input type="submit" class="btn btn-primary" value="Registrar Portátil"/></td>
+	            </tr>
+	        </table>
+	  	</form:form> 
+    </div>
+  	
+  	<footer class="py-5 text-bg-dark">
 	    <div class="row">
 	      <div class="col-6 col-md-2 mb-3">
 	        <h5>Section</h5>
@@ -119,6 +107,6 @@
 	    </div>
 	</footer>
 	
-</body>
+ </body>
 
 </html>

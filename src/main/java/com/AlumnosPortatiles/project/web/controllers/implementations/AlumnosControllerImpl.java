@@ -29,7 +29,7 @@ public class AlumnosControllerImpl implements IAlumnosController {
 	@RequestMapping(value = "/alumnosListLoader")
 	@Override
 	public ModelAndView alumnosListLoader() throws Exception {
-		logger.info("Entrando en el metodo --> alumnosListLoader()");
+		logger.info("\nEntrando en el metodo --> alumnosListLoader()");
 		List<Alumno> alumnosList = new ArrayList<>();
 		
 		try {

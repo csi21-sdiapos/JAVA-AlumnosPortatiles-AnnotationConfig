@@ -1620,6 +1620,11 @@ public class PortatilServiceImpl implements IPortatilService {
 
 # 8. Controllers
 
+Cuando intento crear un portátil a través de su formulario de registro, el insert del repositorio me da error.
+
+`java.lang.NullPointerException: Cannot invoke "javax.persistence.EntityManager.close()" because "this.entityManager" is null`
+`com.AlumnosPortatiles.project.app.repositories.implementations.PortatilRepositoryImpl.insertPortatil(PortatilRepositoryImpl.java:120)`
+`com.AlumnosPortatiles.project.web.controllers.implementations.CreateFormPortatilImpl.formCreatePortatil(CreateFormPortatilImpl.java:35)`
 
 
 # Webgrafía
