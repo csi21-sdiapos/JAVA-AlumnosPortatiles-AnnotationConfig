@@ -5,6 +5,7 @@ import java.util.List;
 import com.AlumnosPortatiles.project.app.entities.Portatil;
 
 
+//public interface IPortatilRepository extends CrudRepository<T, ID> {
 public interface IPortatilRepository {
 
 	

@@ -95,8 +95,8 @@
 	      <h3 class="float-md-start mb-0">WebConfig</h3>
 	      <nav class="nav nav-masthead justify-content-center float-md-end">
 	        <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">Index</a>
-	        <a class="nav-link fw-bold py-1 px-0" href="<c:url value="#" />">[view-1]</a>
-	        <a class="nav-link fw-bold py-1 px-0" href="<c:url value="#" />">[view-2]</a>
+	        <a class="nav-link fw-bold py-1 px-0" href="<c:url value="navigateToAlumnos" />">Alumnos</a>
+	        <a class="nav-link fw-bold py-1 px-0" href="<c:url value="navigateToPortatiles" />">Portatiles</a>
 	      </nav>
 	    </div>
 	  </header>
@@ -107,10 +107,10 @@
 			Esto es un home hecho con una platilla de Bootstrap v5.2
 		</p>
 	    <p class="lead">
-	      <a href="<c:url value="#" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">[view-1]</a>
+	      <a href="<c:url value="navigateToAlumnos" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Alumnos</a>
 	    </p>
 	    <p class="lead">
-	      <a href="<c:url value="#" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">[view-2]</a>
+	      <a href="<c:url value="navigateToPortatiles" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Portatiles</a>
 	    </p>
 	  </main>
 	

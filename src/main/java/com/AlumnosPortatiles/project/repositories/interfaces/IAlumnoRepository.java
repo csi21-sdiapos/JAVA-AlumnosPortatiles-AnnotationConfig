@@ -5,6 +5,7 @@ import java.util.List;
 import com.AlumnosPortatiles.project.app.entities.Alumno;
 
 
+// public interface IAlumnoRepository extends CrudRepository<T, ID> {
 public interface IAlumnoRepository {
 
 	
