@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.AlumnosPortatiles.project.app.entities.Portatil;
 import com.AlumnosPortatiles.project.app.repositories.implementations.PortatilRepositoryImpl;
-import com.AlumnosPortatiles.project.repositories.interfaces.IPortatilRepository;
+import com.AlumnosPortatiles.project.app.repositories.interfaces.IPortatilRepository;
 import com.AlumnosPortatiles.project.web.controllers.interfaces.ICreateFormPortatil;
 
 

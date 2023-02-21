@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.AlumnosPortatiles.project.app.entities.Alumno;
 import com.AlumnosPortatiles.project.app.repositories.implementations.AlumnoRepositoryImpl;
-import com.AlumnosPortatiles.project.repositories.interfaces.IAlumnoRepository;
+import com.AlumnosPortatiles.project.app.repositories.interfaces.IAlumnoRepository;
 import com.AlumnosPortatiles.project.web.controllers.interfaces.IAlumnosController;
 
 

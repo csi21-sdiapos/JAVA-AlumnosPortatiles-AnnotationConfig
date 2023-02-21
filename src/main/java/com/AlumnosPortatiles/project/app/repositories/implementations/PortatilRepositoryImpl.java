@@ -13,20 +13,24 @@ import javax.persistence.SynchronizationType;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.AlumnosPortatiles.project.app.entities.Portatil;
-import com.AlumnosPortatiles.project.repositories.interfaces.IPortatilRepository;
+import com.AlumnosPortatiles.project.app.repositories.interfaces.IPortatilRepository;
 
 
 @Repository(value = "PortatilRepositoryImpl")
 public class PortatilRepositoryImpl implements IPortatilRepository {
 
 	
-	@PersistenceContext(synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
+	@PersistenceContext(synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
 
 	
 	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
 	public List<Portatil> listPortatiles() throws Exception {
 		// the lowercase p refers to the object
@@ -58,6 +62,7 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 	
 	
 
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
 	public Portatil findByIdPortatil(long portatil_id) throws Exception {
 		// the lowercase p refers to the object
@@ -91,6 +96,7 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 	
 	
 
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
 	public void insertPortatil(Portatil portatil) throws Exception {
 		// Used to issue transactions on the EntityManager
@@ -123,6 +129,7 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 	
 	
 	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
 	public void editPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception {
 		// Used to issue transactions on the EntityManager
@@ -209,6 +216,7 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 	
 	
 	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
 	public void deleteByIdPortatil(long portatil_id) throws Exception {
 		// Used to issue transactions on the EntityManager
@@ -286,7 +294,7 @@ public class PortatilRepositoryImpl implements IPortatilRepository {
 */
 	
 	
-	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
 	public void deletePortatil(Portatil portatil) throws Exception {
 		// Used to issue transactions on the EntityManager

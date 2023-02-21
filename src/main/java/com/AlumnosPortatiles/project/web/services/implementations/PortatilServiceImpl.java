@@ -4,17 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.AlumnosPortatiles.project.app.entities.Portatil;
 import com.AlumnosPortatiles.project.app.repositories.implementations.PortatilRepositoryImpl;
-import com.AlumnosPortatiles.project.repositories.interfaces.IPortatilRepository;
-import com.AlumnosPortatiles.project.web.dto.implementations.PortatilToDAOimpl;
-import com.AlumnosPortatiles.project.web.dto.implementations.PortatilToDTOimpl;
-import com.AlumnosPortatiles.project.web.dto.interfaces.IPortatilToDAO;
-import com.AlumnosPortatiles.project.web.dto.interfaces.IPortatilToDTO;
-import com.AlumnosPortatiles.project.web.dto.models.PortatilDTO;
+import com.AlumnosPortatiles.project.app.repositories.interfaces.IPortatilRepository;
 import com.AlumnosPortatiles.project.web.services.interfaces.IPortatilService;
 
 
@@ -23,21 +16,14 @@ public class PortatilServiceImpl implements IPortatilService {
 
 	
 	@Autowired
-	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
-	
-	@Autowired
-	IPortatilToDAO portatilToDAO = new PortatilToDAOimpl();
-	
-	@Autowired
 	IPortatilRepository portatilRepository = new PortatilRepositoryImpl();
 	
 	
 	
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public List<PortatilDTO> listarPortatiles() throws Exception {
+	public List<Portatil> listarPortatiles() throws Exception {
 		try {
-			return portatilToDTO.toListPortatilDTO(portatilRepository.listPortatiles());
+			return portatilRepository.listPortatiles();
 			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al listar los portatiles (return null): " + e);
@@ -47,11 +33,10 @@ public class PortatilServiceImpl implements IPortatilService {
 	
 	
 
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public PortatilDTO buscarPortatilPorId(long portatil_id) throws Exception {
+	public Portatil buscarPortatilPorId(long portatil_id) throws Exception {
 		try {
-			return portatilToDTO.toPortatilDTO(portatilRepository.findByIdPortatil(portatil_id));
+			return portatilRepository.findByIdPortatil(portatil_id);
 			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al buscar el portatil (return null): " + e);
@@ -61,11 +46,10 @@ public class PortatilServiceImpl implements IPortatilService {
 
 	
 	
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void insertarPortatil(PortatilDTO portatilDTO) throws Exception {
+	public void insertarPortatil(Portatil portatil) throws Exception {
 		try {
-			portatilRepository.insertPortatil(portatilToDAO.toPortatilDAO(portatilDTO));
+			portatilRepository.insertPortatil(portatil);
 			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al insertar el nuevo portatil: " + e);
@@ -74,7 +58,6 @@ public class PortatilServiceImpl implements IPortatilService {
 
 	
 	
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
 	public void editarPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception {
 		try {
@@ -87,7 +70,6 @@ public class PortatilServiceImpl implements IPortatilService {
 
 	
 	
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
 	public void eliminarPortatilPorId(long portatil_id) throws Exception {
 		try {

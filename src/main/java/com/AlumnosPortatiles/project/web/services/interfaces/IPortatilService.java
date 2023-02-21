@@ -2,7 +2,7 @@ package com.AlumnosPortatiles.project.web.services.interfaces;
 
 import java.util.List;
 
-import com.AlumnosPortatiles.project.web.dto.models.PortatilDTO;
+import com.AlumnosPortatiles.project.app.entities.Portatil;
 
 
 public interface IPortatilService {
@@ -14,7 +14,7 @@ public interface IPortatilService {
 	 * @return the list
 	 * @throws Exception the exception
 	 */
-	public List<PortatilDTO> listarPortatiles() throws Exception;
+	public List<Portatil> listarPortatiles() throws Exception;
 	
 	
 	
@@ -22,20 +22,20 @@ public interface IPortatilService {
 	 * Buscar portatil por id.
 	 *
 	 * @param portatil_id the portatil id
-	 * @return the portatil DTO
+	 * @return the portatil
 	 * @throws Exception the exception
 	 */
-	public PortatilDTO buscarPortatilPorId(long portatil_id) throws Exception;
+	public Portatil buscarPortatilPorId(long portatil_id) throws Exception;
 	
 	
 	
 	/**
 	 * Insertar portatil.
 	 *
-	 * @param portatilDTO the portatil DTO
+	 * @param portatil the portatil
 	 * @throws Exception the exception
 	 */
-	public void insertarPortatil(PortatilDTO portatilDTO) throws Exception;
+	public void insertarPortatil(Portatil portatil) throws Exception;
 	
 	
 	

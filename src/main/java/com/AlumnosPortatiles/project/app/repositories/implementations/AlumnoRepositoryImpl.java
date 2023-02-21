@@ -16,14 +16,14 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import com.AlumnosPortatiles.project.app.entities.Alumno;
-import com.AlumnosPortatiles.project.repositories.interfaces.IAlumnoRepository;
+import com.AlumnosPortatiles.project.app.repositories.interfaces.IAlumnoRepository;
 
 
 @Repository(value = "AlumnoRepositoryImpl")
 public class AlumnoRepositoryImpl implements IAlumnoRepository {
 
 	
-	@PersistenceContext(synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
+	@PersistenceContext(synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
 
 	

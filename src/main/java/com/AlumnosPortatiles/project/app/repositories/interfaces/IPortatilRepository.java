@@ -1,4 +1,4 @@
-package com.AlumnosPortatiles.project.repositories.interfaces;
+package com.AlumnosPortatiles.project.app.repositories.interfaces;
 
 import java.util.List;
 

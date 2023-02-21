@@ -2,7 +2,7 @@ package com.AlumnosPortatiles.project.web.services.interfaces;
 
 import java.util.List;
 
-import com.AlumnosPortatiles.project.web.dto.models.AlumnoDTO;
+import com.AlumnosPortatiles.project.app.entities.Alumno;
 
 
 public interface IAlumnoService {
@@ -14,7 +14,7 @@ public interface IAlumnoService {
 	 * @return the list
 	 * @throws Exception the exception
 	 */
-	public List<AlumnoDTO> listarAlumnos() throws Exception;
+	public List<Alumno> listarAlumnos() throws Exception;
 	
 	
 	
@@ -22,20 +22,20 @@ public interface IAlumnoService {
 	 * Buscar alumno por id.
 	 *
 	 * @param alumno_id the alumno id
-	 * @return the alumno DTO
+	 * @return the alumno
 	 * @throws Exception the exception
 	 */
-	public AlumnoDTO buscarAlumnoPorId(long alumno_id) throws Exception;
+	public Alumno buscarAlumnoPorId(long alumno_id) throws Exception;
 	
 	
 	
 	/**
 	 * Insertar alumno.
 	 *
-	 * @param alumnoDTO the alumno DTO
+	 * @param alumno the alumno
 	 * @throws Exception the exception
 	 */
-	public void insertarAlumno(AlumnoDTO alumnoDTO) throws Exception;
+	public void insertarAlumno(Alumno alumno) throws Exception;
 	
 	
 	
