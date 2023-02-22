@@ -1,5 +1,87 @@
 # Repetición del proyecto de AlumnosPortatiles con Vistas y Anotaciones (sin context.xml)
 
+- [Repetición del proyecto de AlumnosPortatiles con Vistas y Anotaciones (sin context.xml)](#repetición-del-proyecto-de-alumnosportatiles-con-vistas-y-anotaciones-sin-contextxml)
+- [0. pom.xml](#0-pomxml)
+- [1. src/main/resources --\> application.properties](#1-srcmainresources----applicationproperties)
+- [2. webapp](#2-webapp)
+	- [2.1. config](#21-config)
+		- [header.jsp](#headerjsp)
+	- [2.2. css](#22-css)
+	- [2.3. js](#23-js)
+	- [2.4. META-INF](#24-meta-inf)
+	- [2.5. views](#25-views)
+	- [2.6. WEB-INF](#26-web-inf)
+	- [2.7. index.jsp](#27-indexjsp)
+- [3. Project Annotation Configuration](#3-project-annotation-configuration)
+	- [3.1. com.AlumnosPortatiles.project --\> ServletInitializerConfig.java](#31-comalumnosportatilesproject----servletinitializerconfigjava)
+	- [3.2. com.AlumnosPortatiles.project.app --\> AppContextConfig.java](#32-comalumnosportatilesprojectapp----appcontextconfigjava)
+	- [3.3. com.AlumnosPortatiles.project.web --\> WebContextConfig.java](#33-comalumnosportatilesprojectweb----webcontextconfigjava)
+- [4. Entities](#4-entities)
+	- [4.1. com.AlumnosPortatiles.project.app.entities --\> Alumno.java](#41-comalumnosportatilesprojectappentities----alumnojava)
+	- [4.2. com.AlumnosPortatiles.project.app.entities --\> Portatil.java](#42-comalumnosportatilesprojectappentities----portatiljava)
+- [Prueba de ejecución 1 --\> Conexión icicial con la BBDD autocreando las tablas](#prueba-de-ejecución-1----conexión-icicial-con-la-bbdd-autocreando-las-tablas)
+- [5. Repositories](#5-repositories)
+	- [5.1. Interfaces](#51-interfaces)
+		- [5.1.1. com.AlumnosPortatiles.project.app.repositories.interfaces --\> IAlumnoRepository.java](#511-comalumnosportatilesprojectapprepositoriesinterfaces----ialumnorepositoryjava)
+		- [5.1.2. com.AlumnosPortatiles.project.app.repositories.interfaces --\> IPortatilRepository.java](#512-comalumnosportatilesprojectapprepositoriesinterfaces----iportatilrepositoryjava)
+	- [5.2. Implementations](#52-implementations)
+- [6. DTO](#6-dto)
+	- [6.1. Models](#61-models)
+		- [6.1.1. com.AlumnosPortatiles.project.web.dto.models --\> AlumnoDTO.java](#611-comalumnosportatilesprojectwebdtomodels----alumnodtojava)
+		- [6.1.2. com.AlumnosPortatiles.project.web.dto.models --\> PortatilDTO.java](#612-comalumnosportatilesprojectwebdtomodels----portatildtojava)
+	- [6.2. Interfaces](#62-interfaces)
+		- [6.2.1. com.AlumnosPortatiles.project.web.dto.interfaces --\> IAlumnoToDTO.java](#621-comalumnosportatilesprojectwebdtointerfaces----ialumnotodtojava)
+		- [6.2.2. com.AlumnosPortatiles.project.web.dto.interfaces --\> IAlumnoToDAO.java](#622-comalumnosportatilesprojectwebdtointerfaces----ialumnotodaojava)
+		- [6.2.3. com.AlumnosPortatiles.project.web.dto.interfaces --\> IPortatilToDTO.java](#623-comalumnosportatilesprojectwebdtointerfaces----iportatiltodtojava)
+		- [6.2.4. com.AlumnosPortatiles.project.web.dto.interfaces --\> IPortatilToDAO.java](#624-comalumnosportatilesprojectwebdtointerfaces----iportatiltodaojava)
+	- [6.3. Implementations](#63-implementations)
+		- [6.3.1. com.AlumnosPortatiles.project.web.dto.implementations --\> AlumnoToDTOimpl.java](#631-comalumnosportatilesprojectwebdtoimplementations----alumnotodtoimpljava)
+		- [6.3.2. com.AlumnosPortatiles.project.web.dto.implemenations --\> AlumnoToDAOimpl.java](#632-comalumnosportatilesprojectwebdtoimplemenations----alumnotodaoimpljava)
+		- [6.3.3. com.AlumnosPortatiles.project.web.dto.implemenations --\> PortatilToDTOimpl.java](#633-comalumnosportatilesprojectwebdtoimplemenations----portatiltodtoimpljava)
+		- [6.3.4. com.AlumnosPortatiles.project.web.dto.implemenations --\> PortatilToDAOimpl.java](#634-comalumnosportatilesprojectwebdtoimplemenations----portatiltodaoimpljava)
+- [7. Services (1º versión sin usar los DTOs)](#7-services-1º-versión-sin-usar-los-dtos)
+	- [7.1. Interfaces](#71-interfaces)
+		- [7.1.1. com.AlumnosPortatiles.project.web.services.interfaces --\> IAlumnoService.java](#711-comalumnosportatilesprojectwebservicesinterfaces----ialumnoservicejava)
+		- [7.1.2. com.AlumnosPortatiles.project.web.services.interfaces --\> IPortatilService.java](#712-comalumnosportatilesprojectwebservicesinterfaces----iportatilservicejava)
+	- [7.2. Implementations](#72-implementations)
+		- [7.2.1. com.AlumnosPortatiles.project.web.services.implementations --\> AlumnoServiceImpl.java](#721-comalumnosportatilesprojectwebservicesimplementations----alumnoserviceimpljava)
+		- [7.2.2. com.AlumnosPortatiles.project.web.services.implementations --\> PortatilServiceImpl.java](#722-comalumnosportatilesprojectwebservicesimplementations----portatilserviceimpljava)
+- [8. Controllers and Views](#8-controllers-and-views)
+- [8.1. Index](#81-index)
+		- [8.1.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> IIndexController.java](#811-comalumnosportatilesprojectwebcontrollersinterfaces----iindexcontrollerjava)
+		- [8.1.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> IndexControllerImpl.java](#812-comalumnosportatilesprojectwebcontrollersimplementations----indexcontrollerimpljava)
+		- [8.1.3. webapp --\> index.jsp](#813-webapp----indexjsp)
+- [8.2. Alumnos](#82-alumnos)
+		- [8.2.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> IAlumnosController.java](#821-comalumnosportatilesprojectwebcontrollersinterfaces----ialumnoscontrollerjava)
+		- [8.2.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> AlumnosControllerImpl.java](#822-comalumnosportatilesprojectwebcontrollersimplementations----alumnoscontrollerimpljava)
+		- [8.1.3. webapp/views/ --\> alumnos.jsp](#813-webappviews----alumnosjsp)
+- [8.3. Portátiles](#83-portátiles)
+		- [8.3.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> IPortatilesController.java](#831-comalumnosportatilesprojectwebcontrollersinterfaces----iportatilescontrollerjava)
+		- [8.3.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> PortatilesControllerImpl.java](#832-comalumnosportatilesprojectwebcontrollersimplementations----portatilescontrollerimpljava)
+		- [8.3.3. webapp/views/ --\> portatiles.jsp](#833-webappviews----portatilesjsp)
+- [8.4. Create Form Portátiles](#84-create-form-portátiles)
+		- [8.4.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> ICreateFormPortatilController.java](#841-comalumnosportatilesprojectwebcontrollersinterfaces----icreateformportatilcontrollerjava)
+		- [8.4.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> CreateFormPortatilControllerImpl.java](#842-comalumnosportatilesprojectwebcontrollersimplementations----createformportatilcontrollerimpljava)
+		- [8.4.3. webapp/views/ --\> createFormPortatil.jsp](#843-webappviews----createformportatiljsp)
+- [Prueba de ejecución 2 --\> Probando el insert de Portatil (.save()) y el select de Portatil (.findAll())](#prueba-de-ejecución-2----probando-el-insert-de-portatil-save-y-el-select-de-portatil-findall)
+- [Webgrafía](#webgrafía)
+	- [⭐ Guía completa de ejemplo de proyecto web de Spring MVC paso a paso (parte 5)](#-guía-completa-de-ejemplo-de-proyecto-web-de-spring-mvc-paso-a-paso-parte-5)
+	- [⭐ Spring Data JPA Tutorial: Annotation Configuration](#-spring-data-jpa-tutorial-annotation-configuration)
+	- [⭐ Spring MVC 5 + Spring Data JPA + Hibernate 5 + JSP (Tutorial)](#-spring-mvc-5--spring-data-jpa--hibernate-5--jsp-tutorial)
+	- [⭐ Database and JPA Configuration without persistence.xml using JavaConfig](#-database-and-jpa-configuration-without-persistencexml-using-javaconfig)
+	- [Simplified Web Configuration with Spring MVC](#simplified-web-configuration-with-spring-mvc)
+	- [Spring MVC annotation config example with JavaConfig](#spring-mvc-annotation-config-example-with-javaconfig)
+	- [Pragmatically Spring MVC example without using XML](#pragmatically-spring-mvc-example-without-using-xml)
+	- [How to Access EntityManager with Spring Data](#how-to-access-entitymanager-with-spring-data)
+	- [JPA/Hibernate Persistence Context](#jpahibernate-persistence-context)
+	- [CrudRepository Example](#crudrepository-example)
+	- [JpaRepository Example (es lo mismo que el CrudRepository pero lo he visto más en SpringBoot)](#jparepository-example-es-lo-mismo-que-el-crudrepository-pero-lo-he-visto-más-en-springboot)
+- [Errores](#errores)
+	- [org.springframework.web.context.ContextLoaderListener](#orgspringframeworkwebcontextcontextloaderlistener)
+		- [Explicación y Solución --\> Opción 1](#explicación-y-solución----opción-1)
+		- [Explicación y Solución --\> Opción 2](#explicación-y-solución----opción-2)
+
+
 # 0. pom.xml
 
 ```xml
@@ -295,7 +377,7 @@ hibernate.cache.use_query_cache=false
 ## 2.6. WEB-INF
 ## 2.7. index.jsp
 
-# 3. Routing Configuration
+# 3. Project Annotation Configuration
 
 ## 3.1. com.AlumnosPortatiles.project --> ServletInitializerConfig.java
 
@@ -329,7 +411,7 @@ public class ServletInitializerConfig extends AbstractAnnotationConfigDispatcher
 public class AppContextConfig {
 
 	@Autowired
-	private Environment enviroment;	
+	private Environment enviroment;
 	
 	@Bean
     public DataSource dataSource() {
@@ -492,551 +574,23 @@ public class Portatil implements Serializable {
 ### 5.1.1. com.AlumnosPortatiles.project.app.repositories.interfaces --> IAlumnoRepository.java
 
 ```java
-public interface IAlumnoRepository {
-
-	/**
-	 * List alumnos.
-	 *
-	 * @return the list
-	 * @throws Exception the exception
-	 */
-	public List<Alumno> listAlumnos() throws Exception;
+public interface IAlumnoRepository extends CrudRepository<Alumno, Long> {
 	
-	/**
-	 * Find by id alumno.
-	 *
-	 * @param alumno_id the alumno id
-	 * @return the alumno
-	 * @throws Exception the exception
-	 */
-	public Alumno findByIdAlumno(long alumno_id) throws Exception;
-	
-	/**
-	 * Insert alumno.
-	 *
-	 * @param alumno the alumno
-	 * @throws Exception the exception
-	 */
-	public void insertAlumno(Alumno alumno) throws Exception;
-	
-	/**
-	 * Edits the alumno.
-	 *
-	 * @param alumno_id the alumno id
-	 * @param alumno_nombre the alumno nombre
-	 * @param alumno_apellidos the alumno apellidos
-	 * @param alumno_telefono the alumno telefono
-	 * No recibe ningún portatil porque el enunciado dice que el portatil siempre será el mismo para el alumno
-	 * @throws Exception the exception
-	 */
-	public void editAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception;
-	
-	/**
-	 * Delete by id alumno.
-	 *
-	 * @param alumno_id the alumno id
-	 * @throws Exception the exception
-	 */
-	public void deleteByIdAlumno(long alumno_id) throws Exception;
-	
-	/**
-	 * Delete alumno.
-	 *
-	 * @param alumno the alumno
-	 * @throws Exception the exception
-	 */
-	public void deleteAlumno(Alumno alumno) throws Exception;	
 }
 ```
 
 ### 5.1.2. com.AlumnosPortatiles.project.app.repositories.interfaces --> IPortatilRepository.java
 
 ```java
-public interface IPortatilRepository {
+@Repository(value = "IPortatilRepository")
+public interface IPortatilRepository extends CrudRepository<Portatil, Long> {
 
-	/**
-	 * List portatiles.
-	 *
-	 * @return the list
-	 * @throws Exception the exception
-	 */
-	public List<Portatil> listPortatiles() throws Exception;
-	
-	/**
-	 * Find by id portatil.
-	 *
-	 * @param portatil_id the portatil id
-	 * @return the portatil
-	 * @throws Exception the exception
-	 */
-	public Portatil findByIdPortatil(long portatil_id) throws Exception;
-	
-	/**
-	 * Insert portatil.
-	 *
-	 * @param portatil the portatil
-	 * @throws Exception the exception
-	 */
-	public void insertPortatil(Portatil portatil) throws Exception;
-	
-	/**
-	 * Edits the portatil.
-	 *
-	 * @param portatil_id the portatil id
-	 * @param portatil_marca the portatil marca
-	 * @param portatil_modelo the portatil modelo
-	 * @throws Exception the exception
-	 */
-	public void editPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception;
-	
-	/**
-	 * Delete by id portatil.
-	 *
-	 * @param portatil_id the portatil id
-	 * @throws Exception the exception
-	 */
-	public void deleteByIdPortatil(long portatil_id) throws Exception;
-	
-	/**
-	 * Delete portatil.
-	 *
-	 * @param portatil the portatil
-	 * @throws Exception the exception
-	 */
-	public void deletePortatil(Portatil portatil) throws Exception;	
 }
 ```
 
 ## 5.2. Implementations
 
-### 5.2.1. com.AlumnosPortatiles.project.app.repositories.interfaces --> AlumnoRepositoryImpl.java
-
-```java
-@Repository(value = "AlumnoRepositoryImpl")
-public class AlumnoRepositoryImpl implements IAlumnoRepository {
-	
-	@PersistenceContext(synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
-    private EntityManager entityManager;
-
-	@Override
-	public List<Alumno> listAlumnos() throws Exception {						
-		// the lowercase a refers to the object
-		// :objectID is a parameterized query thats value is set below
-		String query = "SELECT a FROM Alumno a WHERE a.id IS NOT NULL";
-		    	
-		// Issue the query and get a matching object
-		TypedQuery<Alumno> typedQuery = entityManager.createQuery(query, Alumno.class);
-		List<Alumno> listaAlumnos = new ArrayList<>();
-		    	
-		try {
-			// Get matching objects and output
-		    listaAlumnos = typedQuery.getResultList();
-		}
-		    	
-		catch(NoResultException ex) {
-			ex.printStackTrace();
-		}
-		    	
-		finally {
-			// Close EntityManager
-		    // entityManager.flush();
-			// entityManager.clear();
-		    entityManager.close();
-		}
-		    	
-		return listaAlumnos;
-	}
-	
-	@Override
-	public Alumno findByIdAlumno(long alumno_id) throws Exception {
-		// the lowercase a refers to the object
-		// :objectID is a parameterized query thats value is set below
-		String query = "SELECT a FROM Alumno a WHERE a.id = :alumnoID";
-		    	
-		// Issue the query and get a matching object
-		TypedQuery<Alumno> typedQuery = entityManager.createQuery(query, Alumno.class);
-		typedQuery.setParameter("alumnoID", alumno_id);
-
-		Alumno alumno = new Alumno();
-		    	
-		try {
-			// Get matching the object and output
-		    alumno = typedQuery.getSingleResult();	
-		}
-		    	
-		catch(NoResultException e) {
-			e.printStackTrace();
-		}
-		    	
-		finally {
-			// Close EntityManager
-			// entityManager.flush();
-		    // entityManager.clear();
-		    entityManager.close();
-		}
-		    	
-		return alumno;
-	}
-	
-	@Override
-	public void insertAlumno(Alumno alumno) throws Exception {
-		// Used to issue transactions on the EntityManager
-		EntityTransaction entityTransaction = null;
-				 
-		try {
-			// Get transaction and start
-		    entityTransaction = entityManager.getTransaction();
-		    entityTransaction.begin();
-		 
-		    // Save the object
-		    entityManager.merge(alumno);
-		    entityTransaction.commit();
-		            
-		} catch (Exception ex) {
-			// If there is an exception rollback changes
-		    if (entityTransaction != null) {
-		    	entityTransaction.rollback();
-		    }
-		            
-		    ex.printStackTrace();
-		        
-		} finally {
-			// Close EntityManager
-		    // entityManager.flush();
-		    // entityManager.clear();
-		    entityManager.close();
-		}
-	}
-	
-	@Override
-	public void editAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception {
-		// Used to issue transactions on the EntityManager
-		EntityTransaction entityTransaction = null;
-						
-		// the lowercase a refers to the object
-		// :objectID is a parameterized query thats value is set below
-		String jpql = "UPDATE Alumno a SET a.alumno_nombre = :alumnoNOMBRE, a.alumno_apellidos = :alumnoAPELLIDOS, a.alumno_telefono = :alumnoTELEFONO WHERE a.id = :alumnoID";
-		
-		// Issue the query and get a matching object
-		Query query = entityManager.createQuery(jpql);
-		query.setParameter("alumnoID", alumno_id);
-		query.setParameter("alumnoNOMBRE", alumno_nombre);
-		query.setParameter("alumnoAPELLIDOS", alumno_apellidos);
-		query.setParameter("alumnoTELEFONO", alumno_telefono);
-    	
-    	int nRegistrosEditados = 0;
-    	
-    	try {
-    		// Get transaction and start
-		    entityTransaction = entityManager.getTransaction();
-		    entityTransaction.begin();
-		    
-    		// Get matching the object and output
-    		nRegistrosEditados = query.executeUpdate();
-    		entityTransaction.commit();
-    		System.out.println("\n\n[INFO] -Numero de alumnos editados: " + nRegistrosEditados);
-		
-    	} catch (Exception ex) {
-    		// If there is an exception rollback changes
-		    if (entityTransaction != null) {
-		    	entityTransaction.rollback();
-		    }
-		    
-			ex.printStackTrace();
-		
-    	} finally {
-    		// Close EntityManager
-    		// entityManager.flush();
-    		// entityManager.clear();
-    		entityManager.close();
-		}
-	}
-	
-	@Override
-	public void deleteByIdAlumno(long alumno_id) throws Exception {
-		// Used to issue transactions on the EntityManager
-		EntityTransaction entityTransaction = null;
-				
-		// the lowercase a refers to the object
-    	// :objectID is a parameterized query thats value is set below
-		String jpql = "DELETE FROM Alumno a WHERE a.id = :alumnoID";
-    	
-		// Issue the query and get a matching object
-		Query query = entityManager.createQuery(jpql);
-    	query.setParameter("alumnoID", alumno_id);
-    	
-    	int nRegistrosEliminados = 0;
-    	
-    	try {
-    		// Get transaction and start
-		    entityTransaction = entityManager.getTransaction();
-		    entityTransaction.begin();
-		    
-    		// Get matching the object and output
-    		nRegistrosEliminados = query.executeUpdate();
-    		entityTransaction.commit();
-    		System.out.println("\n\n[INFO] -Numero de alumnos eliminados: " + nRegistrosEliminados);
-		
-    	} catch (Exception ex) {
-    		// If there is an exception rollback changes
-		    if (entityTransaction != null) {
-		    	entityTransaction.rollback();
-		    }
-		    
-			ex.printStackTrace();
-		
-    	} finally {
-    		// Close EntityManager
-    		// entityManager.flush();
-    		// entityManager.clear();
-    		entityManager.close();
-		}
-	}
-	
-	@Override
-	public void deleteAlumno(Alumno alumno) throws Exception {
-		// Used to issue transactions on the EntityManager
-		EntityTransaction entityTransaction = null;
-		 
-		try {
-			entityTransaction = entityManager.getTransaction();
-		    entityTransaction.begin();
-		    
-		    entityManager.remove(entityManager.contains(alumno) ? alumno : entityManager.merge(alumno));		    
-		    
-		    entityTransaction.commit();
-		    
-		} catch (Exception ex) {
-		    // If there is an exception rollback changes
-			if (entityTransaction != null) {
-				entityTransaction.rollback();
-		    }
-		            
-		    ex.printStackTrace();
-		        
-		} finally {
-			// Close EntityManager
-		    // entityManager.flush();
-		    // entityManager.clear();
-		    entityManager.close();
-		}
-	}	
-}
-```
-
-### 5.2.2. com.AlumnosPortatiles.project.app.repositories.interfaces --> PortatilRepositoryImpl.java
-
-```java
-@Repository(value = "PortatilRepositoryImpl")
-public class PortatilRepositoryImpl implements IPortatilRepository {
-	
-	@PersistenceContext(synchronization = SynchronizationType.SYNCHRONIZED, type = PersistenceContextType.EXTENDED)
-    private EntityManager entityManager;
-
-	@Override
-	public List<Portatil> listPortatiles() throws Exception {
-		// the lowercase p refers to the object
-		// :objectID is a parameterized query thats value is set below
-		String query = "SELECT p FROM Portatil p WHERE p.id IS NOT NULL";
-				    	
-		// Issue the query and get a matching object
-		TypedQuery<Portatil> typedQuery = entityManager.createQuery(query, Portatil.class);
-		List<Portatil> listaPortatiles = new ArrayList<>();
-				    	
-		try {
-			// Get matching objects and output
-			listaPortatiles = typedQuery.getResultList();
-		}
-				    	
-		catch(NoResultException ex) {
-			ex.printStackTrace();
-		}
-				    	
-		finally {
-			// Close EntityManager
-			// entityManager.flush();
-			// entityManager.clear();
-			entityManager.close();
-		}
-				    	
-		return listaPortatiles;
-	}
-	
-	@Override
-	public Portatil findByIdPortatil(long portatil_id) throws Exception {
-		// the lowercase p refers to the object
-		// :objectID is a parameterized query thats value is set below
-		String query = "SELECT p FROM Portatil p WHERE p.id = :portatilID";
-				    	
-		// Issue the query and get a matching object
-		TypedQuery<Portatil> typedQuery = entityManager.createQuery(query, Portatil.class);
-		typedQuery.setParameter("portatilID", portatil_id);
-
-		Portatil portatil = new Portatil();
-				    	
-		try {
-			// Get matching the object and output
-			portatil = typedQuery.getSingleResult();	
-		}
-				    	
-		catch(NoResultException e) {
-			e.printStackTrace();
-		}
-				    	
-		finally {
-			// Close EntityManager
-			// entityManager.flush();
-			// entityManager.clear();
-			entityManager.close();
-		}
-				    	
-		return portatil;
-	}
-	
-	@Override
-	public void insertPortatil(Portatil portatil) throws Exception {
-		// Used to issue transactions on the EntityManager
-		EntityTransaction entityTransaction = null;
-						 
-		try {
-			// Get transaction and start
-			entityTransaction = entityManager.getTransaction();
-			entityTransaction.begin();
-				 
-			// Save the object
-			entityManager.merge(portatil);
-			entityTransaction.commit();
-				            
-		} catch (Exception ex) {
-			// If there is an exception rollback changes
-			if (entityTransaction != null) {
-			entityTransaction.rollback();
-			}
-				            
-			ex.printStackTrace();
-				        
-		} finally {
-			// Close EntityManager
-			// entityManager.flush();
-			// entityManager.clear();
-			entityManager.close();
-		}
-	}
-	
-	@Override
-	public void editPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception {
-		// Used to issue transactions on the EntityManager
-		EntityTransaction entityTransaction = null;
-				
-		// the lowercase a refers to the object
-    	// :objectID is a parameterized query thats value is set below
-		String jpql = "UPDATE Portatil p SET p.portatil_marca = :portatilMARCA, p.portatil_modelo = :portatilMODELO WHERE p.id = :portatilID";
-    	
-		// Issue the query and get a matching object
-    	Query query = entityManager.createQuery(jpql);
-    	query.setParameter("portatilID", portatil_id);
-    	query.setParameter("portatilMARCA", portatil_marca);
-    	query.setParameter("portatilMODELO", portatil_modelo);
-    	
-    	int nRegistrosEditados = 0;
-    	
-    	try {
-    		// Get transaction and start
-		    entityTransaction = entityManager.getTransaction();
-		    entityTransaction.begin();
-		    
-    		// Get matching the object and output
-    		nRegistrosEditados = query.executeUpdate();
-    		entityTransaction.commit();
-    		System.out.println("\n\n[INFO] -Numero de portatiles editados: " + nRegistrosEditados);
-		
-    	} catch (Exception ex) {
-    		// If there is an exception rollback changes
-		    if (entityTransaction != null) {
-		    	entityTransaction.rollback();
-		    }
-		    
-			ex.printStackTrace();
-		
-    	} finally {
-    		// Close EntityManager
-    		// entityManager.flush();
-    		// entityManager.clear();
-    		entityManager.close();
-		}
-	}
-	
-	@Override
-	public void deleteByIdPortatil(long portatil_id) throws Exception {
-		// Used to issue transactions on the EntityManager
-		EntityTransaction entityTransaction = null;
-				
-		// the lowercase p refers to the object
-		// :objectID is a parameterized query thats value is set below
-		String jpql = "DELETE FROM Portatil p WHERE p.id = :portatilID";
-		    	
-		// Issue the query and get a matching object
-		Query query = entityManager.createQuery(jpql);
-		query.setParameter("portatilID", portatil_id);
-		    	
-		int nRegistrosEliminados = 0;
-		    	
-		try {
-			// Get transaction and start
-		    entityTransaction = entityManager.getTransaction();
-		    entityTransaction.begin();
-		    
-			// Get matching the object and output
-		    nRegistrosEliminados = query.executeUpdate();
-		    entityTransaction.commit();
-		    System.out.println("\n\n[INFO] -Numero de portatiles eliminados: " + nRegistrosEliminados);
-				
-		} catch (Exception ex) {
-			// If there is an exception rollback changes
-		    if (entityTransaction != null) {
-		    	entityTransaction.rollback();
-		    }
-		    
-			ex.printStackTrace();
-				
-		} finally {
-			// Close EntityManager
-		    // entityManager.flush();
-		    // entityManager.clear();
-		    entityManager.close();
-		}
-	}
-	
-	@Override
-	public void deletePortatil(Portatil portatil) throws Exception {
-		// Used to issue transactions on the EntityManager
-		EntityTransaction entityTransaction = null;
-		 
-		try {
-			entityTransaction = entityManager.getTransaction();
-		    entityTransaction.begin();
-		    
-			entityManager.remove(entityManager.contains(portatil) ? portatil : entityManager.merge(portatil));
-		    
-		    entityTransaction.commit();
-		    
-		} catch (Exception ex) {
-		    // If there is an exception rollback changes
-			if (entityTransaction != null) {
-				entityTransaction.rollback();
-		    }
-		            
-		    ex.printStackTrace();
-		        
-		} finally {
-			// Close EntityManager
-		    // entityManager.flush();
-		    // entityManager.clear();
-		    entityManager.close();
-		}
-	}	
-}
-```
+No tenemos que hacer ninguna implementación porque, a parte de que sin contexto.xml no puedo contruir en EntityManagerFactory, para luego usar en un servicio los métodos de CrudRepository tan sólo tendría que instanciar a la interfaz del repositorio con @Autowired.
 
 # 6. DTO
 
@@ -1365,7 +919,7 @@ public class PortatilToDAOimpl implements IPortatilToDAO {
 }
 ```
 
-# 7. Services
+# 7. Services (1º versión sin usar los DTOs)
 
 ## 7.1. Interfaces
 
@@ -1380,24 +934,24 @@ public interface IAlumnoService {
 	 * @return the list
 	 * @throws Exception the exception
 	 */
-	public List<AlumnoDTO> listarAlumnos() throws Exception;
+	public List<Alumno> listarAlumnos() throws Exception;
 	
 	/**
 	 * Buscar alumno por id.
 	 *
 	 * @param alumno_id the alumno id
-	 * @return the alumno DTO
+	 * @return the alumno
 	 * @throws Exception the exception
 	 */
-	public AlumnoDTO buscarAlumnoPorId(long alumno_id) throws Exception;
+	public Alumno buscarAlumnoPorId(long alumno_id) throws Exception;
 	
 	/**
 	 * Insertar alumno.
 	 *
-	 * @param alumnoDTO the alumno DTO
+	 * @param alumno the alumno
 	 * @throws Exception the exception
 	 */
-	public void insertarAlumno(AlumnoDTO alumnoDTO) throws Exception;
+	public void insertarAlumno(Alumno alumno) throws Exception;
 	
 	/**
 	 * Editar alumno.
@@ -1431,24 +985,24 @@ public interface IPortatilService {
 	 * @return the list
 	 * @throws Exception the exception
 	 */
-	public List<PortatilDTO> listarPortatiles() throws Exception;
+	public List<Portatil> listarPortatiles() throws Exception;
 	
 	/**
 	 * Buscar portatil por id.
 	 *
 	 * @param portatil_id the portatil id
-	 * @return the portatil DTO
+	 * @return the portatil
 	 * @throws Exception the exception
 	 */
-	public PortatilDTO buscarPortatilPorId(long portatil_id) throws Exception;
+	public Portatil buscarPortatilPorId(long portatil_id) throws Exception;
 	
 	/**
 	 * Insertar portatil.
 	 *
-	 * @param portatilDTO the portatil DTO
+	 * @param portatil the portatil
 	 * @throws Exception the exception
 	 */
-	public void insertarPortatil(PortatilDTO portatilDTO) throws Exception;
+	public void insertarPortatil(Portatil portatil) throws Exception;
 	
 	/**
 	 * Editar portatil.
@@ -1459,15 +1013,14 @@ public interface IPortatilService {
 	 * @throws Exception the exception
 	 */
 	public void editarPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception;
-		
+	
 	/**
 	 * Eliminar portatil por id.
 	 *
 	 * @param portatil_id the portatil id
 	 * @throws Exception the exception
 	 */
-	public void eliminarPortatilPorId(long portatil_id) throws Exception;
-	
+	public void eliminarPortatilPorId(long portatil_id) throws Exception;	
 }
 ```
 
@@ -1480,20 +1033,14 @@ public interface IPortatilService {
 public class AlumnoServiceImpl implements IAlumnoService {
 
 	@Autowired
-	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
-	
-	@Autowired
-	IAlumnoToDAO alumnoToDAO = new AlumnoToDAOimpl();
-	
-	@Autowired
-	IAlumnoRepository alumnoRepository = new AlumnoRepositoryImpl();
-	
+	IAlumnoRepository alumnoRepository;	
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public List<AlumnoDTO> listarAlumnos() throws Exception {
+	public List<Alumno> listarAlumnos() throws Exception {
 		try {
-			return alumnoToDTO.toListAlumnoDTO(alumnoRepository.listAlumnos());
+			return (List<Alumno>) alumnoRepository.findAll();
+			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al listar los alumnos (return null): " + e);
 			return null;
@@ -1502,30 +1049,38 @@ public class AlumnoServiceImpl implements IAlumnoService {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public AlumnoDTO buscarAlumnoPorId(long alumno_id) throws Exception {
+	public Alumno buscarAlumnoPorId(long alumno_id) throws Exception {
 		try {
-			return alumnoToDTO.toAlumnoDTO(alumnoRepository.findByIdAlumno(alumno_id));
+			return alumnoRepository.findById(alumno_id).orElse(null);
+			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al buscar el alumno (return null): " + e);
 			return null;
 		}
 	}
-
+	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void insertarAlumno(AlumnoDTO alumnoDTO) throws Exception {
+	public void insertarAlumno(Alumno alumno) throws Exception {
 		try {
-			alumnoRepository.insertAlumno(alumnoToDAO.toAlumnoDAO(alumnoDTO));
+			alumnoRepository.save(alumno);
+			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al insertar el nuevo alumno: " + e);
 		}
 	}
-
+	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
 	public void editarAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception {
+		Alumno alumno = alumnoRepository.findById(alumno_id).orElse(null);
+		alumno.setAlumno_nombre(alumno_nombre);
+		alumno.setAlumno_apellidos(alumno_apellidos);
+		alumno.setAlumno_telefono(alumno_telefono);
+		
 		try {
-			alumnoRepository.editAlumno(alumno_id, alumno_nombre, alumno_apellidos, alumno_telefono);
+			alumnoRepository.save(alumno);
+			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al editar el alumno seleccionado: " + e);
 		}
@@ -1535,7 +1090,8 @@ public class AlumnoServiceImpl implements IAlumnoService {
 	@Override
 	public void eliminarAlumnoPorid(long alumno_id) throws Exception {
 		try {
-			alumnoRepository.deleteByIdAlumno(alumno_id);
+			alumnoRepository.deleteById(alumno_id);
+			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al eliminar el alumno seleccionado: " + e);
 		}
@@ -1550,20 +1106,13 @@ public class AlumnoServiceImpl implements IAlumnoService {
 public class PortatilServiceImpl implements IPortatilService {
 	
 	@Autowired
-	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
+	IPortatilRepository portatilRepository;
 	
-	@Autowired
-	IPortatilToDAO portatilToDAO = new PortatilToDAOimpl();
-	
-	@Autowired
-	IPortatilRepository portatilRepository = new PortatilRepositoryImpl();
-
-
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public List<PortatilDTO> listarPortatiles() throws Exception {
+	public List<Portatil> listarPortatiles() throws Exception {
 		try {
-			return portatilToDTO.toListPortatilDTO(portatilRepository.listPortatiles());
+			return (List<Portatil>) portatilRepository.findAll();
 			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al listar los portatiles (return null): " + e);
@@ -1573,21 +1122,21 @@ public class PortatilServiceImpl implements IPortatilService {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public PortatilDTO buscarPortatilPorId(long portatil_id) throws Exception {
+	public Portatil buscarPortatilPorId(long portatil_id) throws Exception {
 		try {
-			return portatilToDTO.toPortatilDTO(portatilRepository.findByIdPortatil(portatil_id));
+			return portatilRepository.findById(portatil_id).orElse(null);
 			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al buscar el portatil (return null): " + e);
 			return null;
 		}
-	}
+	}	
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void insertarPortatil(PortatilDTO portatilDTO) throws Exception {
+	public void insertarPortatil(Portatil portatil) throws Exception {
 		try {
-			portatilRepository.insertPortatil(portatilToDAO.toPortatilDAO(portatilDTO));
+			portatilRepository.save(portatil);
 			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al insertar el nuevo portatil: " + e);
@@ -1597,8 +1146,12 @@ public class PortatilServiceImpl implements IPortatilService {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
 	public void editarPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception {
+		Portatil portatil = portatilRepository.findById(portatil_id).orElse(null);
+		portatil.setPortatil_marca(portatil_marca);
+		portatil.setPortatil_modelo(portatil_modelo);
+		
 		try {
-			portatilRepository.editPortatil(portatil_id, portatil_marca, portatil_modelo);
+			portatilRepository.save(portatil);
 			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al editar el portatil seleccionado: " + e);
@@ -1609,7 +1162,7 @@ public class PortatilServiceImpl implements IPortatilService {
 	@Override
 	public void eliminarPortatilPorId(long portatil_id) throws Exception {
 		try {
-			portatilRepository.deleteByIdPortatil(portatil_id);
+			portatilRepository.deleteById(portatil_id);
 			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al eliminar el portatil seleccionado: " + e);
@@ -1618,14 +1171,335 @@ public class PortatilServiceImpl implements IPortatilService {
 }
 ```
 
-# 8. Controllers
+# 8. Controllers and Views
 
-Cuando intento crear un portátil a través de su formulario de registro, el insert del repositorio me da error.
+# 8.1. Index
 
-`java.lang.NullPointerException: Cannot invoke "javax.persistence.EntityManager.close()" because "this.entityManager" is null`
-`com.AlumnosPortatiles.project.app.repositories.implementations.PortatilRepositoryImpl.insertPortatil(PortatilRepositoryImpl.java:120)`
-`com.AlumnosPortatiles.project.web.controllers.implementations.CreateFormPortatilImpl.formCreatePortatil(CreateFormPortatilImpl.java:35)`
+### 8.1.1. com.AlumnosPortatiles.project.web.controllers.interfaces --> IIndexController.java
 
+```java
+public interface IIndexController {
+
+	/**
+	 * Navigate to alumnos.
+	 *
+	 * @return the string
+	 * @throws Exception the exception
+	 */
+	public String navigateToAlumnos() throws Exception;
+	
+	/**
+	 * Navigate to portatiles.
+	 *
+	 * @return the string
+	 * @throws Exception the exception
+	 */
+	public String navigateToPortatiles() throws Exception;	
+}
+```
+
+### 8.1.2. com.AlumnosPortatiles.project.web.controllers.implementations --> IndexControllerImpl.java
+
+```java
+@Controller(value = "IndexControllerImpl")
+public class IndexControllerImpl implements IIndexController {
+
+	protected final Log logger = LogFactory.getLog(getClass());
+		
+	@RequestMapping(value="/navigateToAlumnos")
+	@Override
+	public String navigateToAlumnos() throws Exception {
+		logger.info("\nNavegamos a la vista de Alumnos");
+		return "alumnos";
+	}
+
+	@RequestMapping(value="/navigateToPortatiles")
+	@Override
+	public String navigateToPortatiles() throws Exception {
+		logger.info("\nNavegamos a la vista de Portatiles");
+		return "portatiles";
+	}
+}
+```
+
+### 8.1.3. webapp --> index.jsp
+
+```html
+<main class="px-3">
+	<h1>Esto es el INDEX</h1>
+	<p class="lead">
+		Esto es un home hecho con una platilla de Bootstrap v5.2
+	</p>
+	<p class="lead">
+	  <a href="<c:url value="navigateToAlumnos" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Alumnos</a>
+	</p>
+	<p class="lead">
+	  <a href="<c:url value="navigateToPortatiles" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Portatiles</a>
+	</p>
+</main>
+```
+
+# 8.2. Alumnos
+
+### 8.2.1. com.AlumnosPortatiles.project.web.controllers.interfaces --> IAlumnosController.java
+
+```java
+public interface IAlumnosController {
+	
+	/**
+	 * Alumnos list loader.
+	 *
+	 * @return the model and view
+	 * @throws Exception the exception
+	 */
+	public ModelAndView alumnosListLoader() throws Exception;
+	
+	/**
+	 * Navigate to create form alumno.
+	 *
+	 * @param Model the model
+	 * @return the string
+	 * @throws Exception the exception
+	 */
+	public String navigateToCreateFormAlumno(Model model) throws Exception;	
+}
+```
+
+### 8.2.2. com.AlumnosPortatiles.project.web.controllers.implementations --> AlumnosControllerImpl.java
+
+```java
+@Controller(value = "AlumnosControllerImpl")
+public class AlumnosControllerImpl implements IAlumnosController {	
+
+	protected final Log logger = LogFactory.getLog(getClass());
+	
+	@Autowired
+	IAlumnoService alumnoService = new AlumnoServiceImpl();
+	
+	@RequestMapping(value = "/alumnosListLoader")
+	@Override
+	public ModelAndView alumnosListLoader() throws Exception {
+		logger.info("\nEntrando en el metodo --> alumnosListLoader()");
+		List<Alumno> alumnosList = new ArrayList<>();
+		
+		try {
+			alumnosList = alumnoService.listarAlumnos();
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
+		}
+		
+		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
+		return new ModelAndView("alumnos", "listaAlumnos", alumnosList);
+	}
+
+	@RequestMapping(value = "/navigateToCreateFormAlumno")
+	@Override
+	public String navigateToCreateFormAlumno(Model model) throws Exception {
+		logger.info("\nNavegamos a la vista del formulario de registro de alumnos, pasando un objeto Alumno");
+		
+		Alumno alumnoModel = new Alumno();
+        model.addAttribute("alumnoModel", alumnoModel);
+        
+		return "createFormAlumno";
+	}
+}
+```
+
+### 8.1.3. webapp/views/ --> alumnos.jsp
+
+```html
+<table class="table table-dark table-hover">
+ 	<thead>
+		<tr>
+			<th scope="col">UUID</th>
+			<th scope="col">DATE</th>
+			<th scope="col">ID</th>
+			<th scope="col">Nombre</th>
+			<th scope="col">Apellidos</th>
+			<th scope="col">Teléfono</th>
+			<th scope="col">Portátil ID</th>
+		</tr>
+	</thead>
+	<c:forEach var="alumnoModel" items="${listaAlumnos}">
+		<tbody>
+			<tr>
+				<td><c:out value="${alumnoModel.alumno_uuid}" /></td>
+				<td><c:out value="${alumnoModel.alumno_date.getTime()}" /></td>
+				<td><c:out value="${alumnoModel.alumno_id}" /></td>
+				<td><c:out value="${alumnoModel.alumno_nombre}" /></td>
+				<td><c:out value="${alumnoModel.alumno_apellidos}" /></td>
+				<td><c:out value="${alumnoModel.alumno_telefono}" /></td>
+				<td><c:out value="${alumnoModel.portatil.portatil_id}" /></td>
+			</tr>
+		</tbody>
+	</c:forEach>
+</table>
+```
+
+# 8.3. Portátiles
+
+### 8.3.1. com.AlumnosPortatiles.project.web.controllers.interfaces --> IPortatilesController.java
+
+```java
+public interface IPortatilesController {
+
+	/**
+	 * Portatiles list loader.
+	 *
+	 * @return the model and view
+	 * @throws Exception the exception
+	 */
+	public ModelAndView portatilesListLoader() throws Exception;
+	
+	/**
+	 * Navigate to create form portatil.
+	 *
+	 * @param model the model
+	 * @return the string
+	 * @throws Exception the exception
+	 */
+	public String navigateToCreateFormPortatil(Model model) throws Exception;
+}
+```
+
+### 8.3.2. com.AlumnosPortatiles.project.web.controllers.implementations --> PortatilesControllerImpl.java
+
+```java
+@Controller(value = "PortatilesControllerImpl")
+public class PortatilesControllerImpl implements IPortatilesController {
+	
+	protected final Log logger = LogFactory.getLog(getClass());
+	
+	@Autowired
+	IPortatilService portatilService = new PortatilServiceImpl();
+	
+	@RequestMapping(value = "/portatilesListLoader")
+	@Override
+	public ModelAndView portatilesListLoader() throws Exception {
+		logger.info("\nEntrando en el metodo --> portatilesListLoader()");
+		List<Portatil> portatilesList = new ArrayList<>();
+		
+		try {
+			portatilesList = portatilService.listarPortatiles();
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
+		}
+		
+		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesList);
+	}
+
+	@RequestMapping(value = "/navigateToCreateFormPortatil")
+	@Override
+	public String navigateToCreateFormPortatil(Model model) throws Exception {
+		logger.info("\nNavegamos a la vista del formulario de registro de portailes, pasando un objeto Portatil");
+		
+		Portatil portatilModel = new Portatil();
+		model.addAttribute("portatilModel", portatilModel);
+		
+		return "createFormPortatil";
+	}
+}
+```
+
+### 8.3.3. webapp/views/ --> portatiles.jsp
+
+```html
+<table class="table table-dark table-hover">
+ 	<thead>
+		<tr>
+			<th scope="col">UUID</th>
+			<th scope="col">DATE</th>
+			<th scope="col">ID</th>
+			<th scope="col">Marca</th>
+			<th scope="col">Modelo</th>
+			<th scope="col">Alumno ID</th>
+		</tr>
+	</thead>
+	<c:forEach var="portatilModel" items="${listaPortatiles}">
+		<tbody>
+			<tr>
+				<td><c:out value="${portatilModel.portatil_uuid}" /></td>
+				<td><c:out value="${portatilModel.portatil_date.getTime()}" /></td>
+				<td><c:out value="${portatilModel.portatil_id}" /></td>
+				<td><c:out value="${portatilModel.portatil_marca}" /></td>
+				<td><c:out value="${portatilModel.portatil_modelo}" /></td>
+				<td><c:out value="${portatilModel.alumno.alumno_id}" /></td>
+			</tr>
+		</tbody>
+	</c:forEach>
+</table>
+```
+
+# 8.4. Create Form Portátiles
+
+### 8.4.1. com.AlumnosPortatiles.project.web.controllers.interfaces --> ICreateFormPortatilController.java
+
+```java
+public interface ICreateFormPortatilController {
+	
+	/**
+	 * Form create portatil.
+	 *
+	 * @param portatilModel the portatil model
+	 * @return the string
+	 * @throws Exception the exception
+	 */
+	public String formCreatePortatil(@ModelAttribute("portatilModel") Portatil portatilModel) throws Exception;	
+}
+```
+
+### 8.4.2. com.AlumnosPortatiles.project.web.controllers.implementations --> CreateFormPortatilControllerImpl.java
+
+```java
+@Controller(value = "CreateFormPortatilControllerImpl")
+public class CreateFormPortatilControllerImpl implements ICreateFormPortatilController {
+	
+	protected final Log logger = LogFactory.getLog(getClass());
+
+	@Autowired
+	IPortatilService portatilService = new PortatilServiceImpl();
+	
+	@RequestMapping(value="/formCreatePortatil", method = RequestMethod.POST)
+	@Override
+	public String formCreatePortatil(Portatil portatilModel) throws Exception {
+		logger.info("\nEntrando en el metodo --> formCreatePortatil()");
+		
+		portatilModel.setPortatil_uuid(UUID.randomUUID());
+		portatilModel.setPortatil_date(Calendar.getInstance());
+		portatilService.insertarPortatil(portatilModel);
+		
+		return "portatiles";
+	}
+}
+```
+
+### 8.4.3. webapp/views/ --> createFormPortatil.jsp
+
+```html
+<form:form method="POST" action="formCreatePortatil" modelAttribute="portatilModel">
+	<table>
+		<tr class="mb-3">
+	        <td><form:label path="portatil_marca" for="portatil_marca" class="form-label">Marca</form:label></td>
+	    	<td><form:input path="portatil_marca" type="text" class="form-control" id="portatil_marca" placeholder="marca..." /></td>
+	    </tr>
+	    <tr>
+	        <td><form:label path="portatil_modelo" for="portatil_modelo" class="form-label">Modelo</form:label></td>
+	        <td><form:input path="portatil_modelo" type="text" class="form-control" id="portatil_modelo" placeholder="modelo..." /></td>
+		</tr>
+	                
+	    <tr>
+	      	<td><input type="submit" class="btn btn-primary" value="Registrar Portátil"/></td>
+	    </tr>
+	</table>
+</form:form> 
+```
+
+# Prueba de ejecución 2 --> Probando el insert de Portatil (.save()) y el select de Portatil (.findAll())
+
+[Prueba de ejecución 2](https://user-images.githubusercontent.com/91122596/220585414-b458842b-fb8f-4a02-b3b9-3e9214fcb20a.mp4)
 
 # Webgrafía
 
@@ -1664,6 +1538,14 @@ https://www.baeldung.com/spring-data-entitymanager
 ## JPA/Hibernate Persistence Context
 
 https://www.baeldung.com/jpa-hibernate-persistence-context
+
+## CrudRepository Example
+
+https://www.codejava.net/frameworks/spring/spring-mvc-spring-data-jpa-hibernate-crud-example
+
+## JpaRepository Example (es lo mismo que el CrudRepository pero lo he visto más en SpringBoot)
+
+https://www.javaguides.net/2018/12/spring-mvc-spring-data-jpa-crud-example.html
 
 # Errores
 

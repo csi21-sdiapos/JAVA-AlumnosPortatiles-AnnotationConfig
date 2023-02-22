@@ -5,15 +5,16 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.AlumnosPortatiles.project.app.entities.Alumno;
-import com.AlumnosPortatiles.project.app.repositories.implementations.AlumnoRepositoryImpl;
-import com.AlumnosPortatiles.project.app.repositories.interfaces.IAlumnoRepository;
 import com.AlumnosPortatiles.project.web.controllers.interfaces.IAlumnosController;
+import com.AlumnosPortatiles.project.web.services.implementations.AlumnoServiceImpl;
+import com.AlumnosPortatiles.project.web.services.interfaces.IAlumnoService;
 
 
 @Controller(value = "AlumnosControllerImpl")
@@ -22,7 +23,8 @@ public class AlumnosControllerImpl implements IAlumnosController {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
-	IAlumnoRepository alumnoRepository = new AlumnoRepositoryImpl();
+	@Autowired
+	IAlumnoService alumnoService = new AlumnoServiceImpl();
 	
 
 	
@@ -33,7 +35,7 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		List<Alumno> alumnosList = new ArrayList<>();
 		
 		try {
-			alumnosList = alumnoRepository.listAlumnos();
+			alumnosList = alumnoService.listarAlumnos();
 			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);

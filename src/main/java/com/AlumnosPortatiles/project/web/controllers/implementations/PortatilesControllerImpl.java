@@ -5,15 +5,16 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.AlumnosPortatiles.project.app.entities.Portatil;
-import com.AlumnosPortatiles.project.app.repositories.implementations.PortatilRepositoryImpl;
-import com.AlumnosPortatiles.project.app.repositories.interfaces.IPortatilRepository;
 import com.AlumnosPortatiles.project.web.controllers.interfaces.IPortatilesController;
+import com.AlumnosPortatiles.project.web.services.implementations.PortatilServiceImpl;
+import com.AlumnosPortatiles.project.web.services.interfaces.IPortatilService;
 
 
 @Controller(value = "PortatilesControllerImpl")
@@ -22,7 +23,8 @@ public class PortatilesControllerImpl implements IPortatilesController {
 	
 	protected final Log logger = LogFactory.getLog(getClass());
 	
-	IPortatilRepository portatilRepository = new PortatilRepositoryImpl();
+	@Autowired
+	IPortatilService portatilService = new PortatilServiceImpl();
 	
 	
 	
@@ -33,7 +35,7 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		List<Portatil> portatilesList = new ArrayList<>();
 		
 		try {
-			portatilesList = portatilRepository.listPortatiles();
+			portatilesList = portatilService.listarPortatiles();
 			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
