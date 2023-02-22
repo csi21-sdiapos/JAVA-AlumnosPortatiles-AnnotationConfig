@@ -1,5 +1,7 @@
 package com.AlumnosPortatiles.project.web.controllers.interfaces;
 
+import org.springframework.web.servlet.ModelAndView;
+
 
 public interface IIndexController {
 
@@ -7,19 +9,19 @@ public interface IIndexController {
 	/**
 	 * Navigate to alumnos.
 	 *
-	 * @return the string
+	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public String navigateToAlumnos() throws Exception;
+	public ModelAndView navigateToAlumnos() throws Exception;
 	
 	
 	
 	/**
 	 * Navigate to portatiles.
 	 *
-	 * @return the string
+	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public String navigateToPortatiles() throws Exception;
+	public ModelAndView navigateToPortatiles() throws Exception;
 	
 }

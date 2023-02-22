@@ -47,19 +47,19 @@
 		- [7.2.1. com.AlumnosPortatiles.project.web.services.implementations --\> AlumnoServiceImpl.java](#721-comalumnosportatilesprojectwebservicesimplementations----alumnoserviceimpljava)
 		- [7.2.2. com.AlumnosPortatiles.project.web.services.implementations --\> PortatilServiceImpl.java](#722-comalumnosportatilesprojectwebservicesimplementations----portatilserviceimpljava)
 - [8. Controllers and Views](#8-controllers-and-views)
-- [8.1. Index](#81-index)
+	- [8.1. Index](#81-index)
 		- [8.1.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> IIndexController.java](#811-comalumnosportatilesprojectwebcontrollersinterfaces----iindexcontrollerjava)
 		- [8.1.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> IndexControllerImpl.java](#812-comalumnosportatilesprojectwebcontrollersimplementations----indexcontrollerimpljava)
 		- [8.1.3. webapp --\> index.jsp](#813-webapp----indexjsp)
-- [8.2. Alumnos](#82-alumnos)
-		- [8.2.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> IAlumnosController.java](#821-comalumnosportatilesprojectwebcontrollersinterfaces----ialumnoscontrollerjava)
-		- [8.2.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> AlumnosControllerImpl.java](#822-comalumnosportatilesprojectwebcontrollersimplementations----alumnoscontrollerimpljava)
-		- [8.1.3. webapp/views/ --\> alumnos.jsp](#813-webappviews----alumnosjsp)
-- [8.3. Portátiles](#83-portátiles)
-		- [8.3.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> IPortatilesController.java](#831-comalumnosportatilesprojectwebcontrollersinterfaces----iportatilescontrollerjava)
-		- [8.3.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> PortatilesControllerImpl.java](#832-comalumnosportatilesprojectwebcontrollersimplementations----portatilescontrollerimpljava)
-		- [8.3.3. webapp/views/ --\> portatiles.jsp](#833-webappviews----portatilesjsp)
-- [8.4. Create Form Portátiles](#84-create-form-portátiles)
+	- [8.2. Portátiles](#82-portátiles)
+		- [8.2.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> IPortatilesController.java](#821-comalumnosportatilesprojectwebcontrollersinterfaces----iportatilescontrollerjava)
+		- [8.2.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> PortatilesControllerImpl.java](#822-comalumnosportatilesprojectwebcontrollersimplementations----portatilescontrollerimpljava)
+		- [8.2.3. webapp/views/ --\> portatiles.jsp](#823-webappviews----portatilesjsp)
+	- [8.3. Alumnos](#83-alumnos)
+		- [8.3.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> IAlumnosController.java](#831-comalumnosportatilesprojectwebcontrollersinterfaces----ialumnoscontrollerjava)
+		- [8.3.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> AlumnosControllerImpl.java](#832-comalumnosportatilesprojectwebcontrollersimplementations----alumnoscontrollerimpljava)
+		- [8.3.3. webapp/views/ --\> alumnos.jsp](#833-webappviews----alumnosjsp)
+	- [8.4. Create Form Portátiles](#84-create-form-portátiles)
 		- [8.4.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> ICreateFormPortatilController.java](#841-comalumnosportatilesprojectwebcontrollersinterfaces----icreateformportatilcontrollerjava)
 		- [8.4.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> CreateFormPortatilControllerImpl.java](#842-comalumnosportatilesprojectwebcontrollersimplementations----createformportatilcontrollerimpljava)
 		- [8.4.3. webapp/views/ --\> createFormPortatil.jsp](#843-webappviews----createformportatiljsp)
@@ -1173,7 +1173,7 @@ public class PortatilServiceImpl implements IPortatilService {
 
 # 8. Controllers and Views
 
-# 8.1. Index
+## 8.1. Index
 
 ### 8.1.1. com.AlumnosPortatiles.project.web.controllers.interfaces --> IIndexController.java
 
@@ -1183,18 +1183,18 @@ public interface IIndexController {
 	/**
 	 * Navigate to alumnos.
 	 *
-	 * @return the string
+	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public String navigateToAlumnos() throws Exception;
+	public ModelAndView navigateToAlumnos() throws Exception;
 	
 	/**
 	 * Navigate to portatiles.
 	 *
-	 * @return the string
+	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public String navigateToPortatiles() throws Exception;	
+	public ModelAndView navigateToPortatiles() throws Exception;
 }
 ```
 
@@ -1203,21 +1203,51 @@ public interface IIndexController {
 ```java
 @Controller(value = "IndexControllerImpl")
 public class IndexControllerImpl implements IIndexController {
-
+	
 	protected final Log logger = LogFactory.getLog(getClass());
-		
+	
+	@Autowired
+	IAlumnoService alumnoService = new AlumnoServiceImpl();
+	
+	@Autowired
+	IPortatilService portatilService = new PortatilServiceImpl();
+	
 	@RequestMapping(value="/navigateToAlumnos")
 	@Override
-	public String navigateToAlumnos() throws Exception {
+	public ModelAndView navigateToAlumnos() throws Exception {
 		logger.info("\nNavegamos a la vista de Alumnos");
-		return "alumnos";
+		
+		List<Alumno> alumnosList = new ArrayList<>();
+		
+		try {
+			alumnosList = alumnoService.listarAlumnos();
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
+		}
+		
+		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
+		
+		return new ModelAndView("alumnos", "listaAlumnos", alumnosList);
 	}
 
 	@RequestMapping(value="/navigateToPortatiles")
 	@Override
-	public String navigateToPortatiles() throws Exception {
+	public ModelAndView navigateToPortatiles() throws Exception {
 		logger.info("\nNavegamos a la vista de Portatiles");
-		return "portatiles";
+		
+		List<Portatil> portatilesList = new ArrayList<>();
+		
+		try {
+			portatilesList = portatilService.listarPortatiles();
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
+		}
+		
+		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
+	
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesList);
 	}
 }
 ```
@@ -1239,74 +1269,125 @@ public class IndexControllerImpl implements IIndexController {
 </main>
 ```
 
-# 8.2. Alumnos
+## 8.2. Portátiles
 
-### 8.2.1. com.AlumnosPortatiles.project.web.controllers.interfaces --> IAlumnosController.java
+### 8.2.1. com.AlumnosPortatiles.project.web.controllers.interfaces --> IPortatilesController.java
+
+```java
+public interface IPortatilesController {
+	
+	/**
+	 * Navigate to create form portatil.
+	 *
+	 * @return the model and view
+	 * @throws Exception the exception
+	 */
+	public ModelAndView navigateToCreateFormPortatil() throws Exception;	
+}
+```
+
+### 8.2.2. com.AlumnosPortatiles.project.web.controllers.implementations --> PortatilesControllerImpl.java
+
+```java
+@Controller(value = "PortatilesControllerImpl")
+public class PortatilesControllerImpl implements IPortatilesController {
+	
+	protected final Log logger = LogFactory.getLog(getClass());
+	
+	@Autowired
+	IPortatilService portatilService = new PortatilServiceImpl();
+
+	@RequestMapping(value = "/navigateToCreateFormPortatil")
+	@Override
+	public ModelAndView navigateToCreateFormPortatil() throws Exception {
+		logger.info("\nNavegamos a la vista del formulario de registro de portailes, pasando un objeto Portatil");
+		
+		Portatil portatil = new Portatil();
+		
+		return new ModelAndView("createFormPortatil", "portatilModel", portatil);
+	}
+}
+```
+
+### 8.2.3. webapp/views/ --> portatiles.jsp
+
+```html
+<table class="table table-dark table-hover">
+	<thead>
+		<tr>
+			<th scope="col">UUID</th>
+			<th scope="col">DATE</th>
+			<th scope="col">ID</th>
+			<th scope="col">Marca</th>
+			<th scope="col">Modelo</th>
+			<th scope="col">Alumno ID</th>
+		</tr>
+	</thead>
+	<c:forEach var="portatilModel" items="${listaPortatiles}">
+		<tbody>
+			<tr>
+				<td><c:out value="${portatilModel.portatil_uuid}" /></td>
+				<td><c:out value="${portatilModel.portatil_date.getTime()}" /></td>
+				<td><c:out value="${portatilModel.portatil_id}" /></td>
+				<td><c:out value="${portatilModel.portatil_marca}" /></td>
+				<td><c:out value="${portatilModel.portatil_modelo}" /></td>
+				<td>
+					<c:choose>
+						<c:when test="${portatilModel.alumno.alumno_id != null}">
+							<c:out value="${portatilModel.alumno.alumno_id}" />
+						</c:when>    
+						<c:otherwise>
+						    <c:out value="sin asignar" />
+						</c:otherwise>
+					</c:choose>
+				</td>
+			</tr>
+		</tbody>
+	</c:forEach>
+</table>
+```
+
+## 8.3. Alumnos
+
+### 8.3.1. com.AlumnosPortatiles.project.web.controllers.interfaces --> IAlumnosController.java
 
 ```java
 public interface IAlumnosController {
 	
 	/**
-	 * Alumnos list loader.
+	 * Navigate to create form alumno.
 	 *
 	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public ModelAndView alumnosListLoader() throws Exception;
-	
-	/**
-	 * Navigate to create form alumno.
-	 *
-	 * @param Model the model
-	 * @return the string
-	 * @throws Exception the exception
-	 */
-	public String navigateToCreateFormAlumno(Model model) throws Exception;	
+	public ModelAndView navigateToCreateFormAlumno() throws Exception;	
 }
 ```
 
-### 8.2.2. com.AlumnosPortatiles.project.web.controllers.implementations --> AlumnosControllerImpl.java
+### 8.3.2. com.AlumnosPortatiles.project.web.controllers.implementations --> AlumnosControllerImpl.java
 
 ```java
 @Controller(value = "AlumnosControllerImpl")
-public class AlumnosControllerImpl implements IAlumnosController {	
+public class AlumnosControllerImpl implements IAlumnosController {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	@Autowired
 	IAlumnoService alumnoService = new AlumnoServiceImpl();
 	
-	@RequestMapping(value = "/alumnosListLoader")
-	@Override
-	public ModelAndView alumnosListLoader() throws Exception {
-		logger.info("\nEntrando en el metodo --> alumnosListLoader()");
-		List<Alumno> alumnosList = new ArrayList<>();
-		
-		try {
-			alumnosList = alumnoService.listarAlumnos();
-			
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
-		}
-		
-		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		return new ModelAndView("alumnos", "listaAlumnos", alumnosList);
-	}
-
 	@RequestMapping(value = "/navigateToCreateFormAlumno")
 	@Override
-	public String navigateToCreateFormAlumno(Model model) throws Exception {
+	public ModelAndView navigateToCreateFormAlumno() throws Exception {
 		logger.info("\nNavegamos a la vista del formulario de registro de alumnos, pasando un objeto Alumno");
 		
-		Alumno alumnoModel = new Alumno();
-        model.addAttribute("alumnoModel", alumnoModel);
+		Alumno alumno = new Alumno();
         
-		return "createFormAlumno";
+		return new ModelAndView("createFormAlumno", "alumnoModel", alumno);
 	}
 }
 ```
 
-### 8.1.3. webapp/views/ --> alumnos.jsp
+### 8.3.3. webapp/views/ --> alumnos.jsp
 
 ```html
 <table class="table table-dark table-hover">
@@ -1337,117 +1418,21 @@ public class AlumnosControllerImpl implements IAlumnosController {
 </table>
 ```
 
-# 8.3. Portátiles
-
-### 8.3.1. com.AlumnosPortatiles.project.web.controllers.interfaces --> IPortatilesController.java
-
-```java
-public interface IPortatilesController {
-
-	/**
-	 * Portatiles list loader.
-	 *
-	 * @return the model and view
-	 * @throws Exception the exception
-	 */
-	public ModelAndView portatilesListLoader() throws Exception;
-	
-	/**
-	 * Navigate to create form portatil.
-	 *
-	 * @param model the model
-	 * @return the string
-	 * @throws Exception the exception
-	 */
-	public String navigateToCreateFormPortatil(Model model) throws Exception;
-}
-```
-
-### 8.3.2. com.AlumnosPortatiles.project.web.controllers.implementations --> PortatilesControllerImpl.java
-
-```java
-@Controller(value = "PortatilesControllerImpl")
-public class PortatilesControllerImpl implements IPortatilesController {
-	
-	protected final Log logger = LogFactory.getLog(getClass());
-	
-	@Autowired
-	IPortatilService portatilService = new PortatilServiceImpl();
-	
-	@RequestMapping(value = "/portatilesListLoader")
-	@Override
-	public ModelAndView portatilesListLoader() throws Exception {
-		logger.info("\nEntrando en el metodo --> portatilesListLoader()");
-		List<Portatil> portatilesList = new ArrayList<>();
-		
-		try {
-			portatilesList = portatilService.listarPortatiles();
-			
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
-		
-		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		return new ModelAndView("portatiles", "listaPortatiles", portatilesList);
-	}
-
-	@RequestMapping(value = "/navigateToCreateFormPortatil")
-	@Override
-	public String navigateToCreateFormPortatil(Model model) throws Exception {
-		logger.info("\nNavegamos a la vista del formulario de registro de portailes, pasando un objeto Portatil");
-		
-		Portatil portatilModel = new Portatil();
-		model.addAttribute("portatilModel", portatilModel);
-		
-		return "createFormPortatil";
-	}
-}
-```
-
-### 8.3.3. webapp/views/ --> portatiles.jsp
-
-```html
-<table class="table table-dark table-hover">
- 	<thead>
-		<tr>
-			<th scope="col">UUID</th>
-			<th scope="col">DATE</th>
-			<th scope="col">ID</th>
-			<th scope="col">Marca</th>
-			<th scope="col">Modelo</th>
-			<th scope="col">Alumno ID</th>
-		</tr>
-	</thead>
-	<c:forEach var="portatilModel" items="${listaPortatiles}">
-		<tbody>
-			<tr>
-				<td><c:out value="${portatilModel.portatil_uuid}" /></td>
-				<td><c:out value="${portatilModel.portatil_date.getTime()}" /></td>
-				<td><c:out value="${portatilModel.portatil_id}" /></td>
-				<td><c:out value="${portatilModel.portatil_marca}" /></td>
-				<td><c:out value="${portatilModel.portatil_modelo}" /></td>
-				<td><c:out value="${portatilModel.alumno.alumno_id}" /></td>
-			</tr>
-		</tbody>
-	</c:forEach>
-</table>
-```
-
-# 8.4. Create Form Portátiles
+## 8.4. Create Form Portátiles
 
 ### 8.4.1. com.AlumnosPortatiles.project.web.controllers.interfaces --> ICreateFormPortatilController.java
 
 ```java
 public interface ICreateFormPortatilController {
-	
+
 	/**
 	 * Form create portatil.
 	 *
 	 * @param portatilModel the portatil model
-	 * @return the string
+	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public String formCreatePortatil(@ModelAttribute("portatilModel") Portatil portatilModel) throws Exception;	
+	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") Portatil portatilModel) throws Exception;	
 }
 ```
 
@@ -1464,14 +1449,27 @@ public class CreateFormPortatilControllerImpl implements ICreateFormPortatilCont
 	
 	@RequestMapping(value="/formCreatePortatil", method = RequestMethod.POST)
 	@Override
-	public String formCreatePortatil(Portatil portatilModel) throws Exception {
+	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") Portatil portatilModel) throws Exception {
 		logger.info("\nEntrando en el metodo --> formCreatePortatil()");
 		
 		portatilModel.setPortatil_uuid(UUID.randomUUID());
 		portatilModel.setPortatil_date(Calendar.getInstance());
 		portatilService.insertarPortatil(portatilModel);
 		
-		return "portatiles";
+		logger.info("\nVolvemos a la vista de los Portatiles");
+		
+		List<Portatil> portatilesList = new ArrayList<>();
+		
+		try {
+			portatilesList = portatilService.listarPortatiles();
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
+		}
+		
+		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
+		
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesList);
 	}
 }
 ```
@@ -1499,7 +1497,7 @@ public class CreateFormPortatilControllerImpl implements ICreateFormPortatilCont
 
 # Prueba de ejecución 2 --> Probando el insert de Portatil (.save()) y el select de Portatil (.findAll())
 
-[Prueba de ejecución 2](https://user-images.githubusercontent.com/91122596/220585414-b458842b-fb8f-4a02-b3b9-3e9214fcb20a.mp4)
+[Prueba de ejecución 2](https://user-images.githubusercontent.com/91122596/220727301-f1ba9007-02d9-4690-9033-e3b834e11240.mp4)
 
 # Webgrafía
 
