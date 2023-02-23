@@ -1,85 +1,5 @@
 # Repetición del proyecto de AlumnosPortatiles con Vistas y Anotaciones (sin context.xml)
 
-- [Repetición del proyecto de AlumnosPortatiles con Vistas y Anotaciones (sin context.xml)](#repetición-del-proyecto-de-alumnosportatiles-con-vistas-y-anotaciones-sin-contextxml)
-- [0. pom.xml](#0-pomxml)
-- [1. src/main/resources --\> application.properties](#1-srcmainresources----applicationproperties)
-- [2. webapp](#2-webapp)
-	- [2.1. config](#21-config)
-		- [header.jsp](#headerjsp)
-	- [2.2. css](#22-css)
-	- [2.3. js](#23-js)
-	- [2.4. META-INF](#24-meta-inf)
-	- [2.5. views](#25-views)
-	- [2.6. WEB-INF](#26-web-inf)
-	- [2.7. index.jsp](#27-indexjsp)
-- [3. Project Annotation Configuration](#3-project-annotation-configuration)
-	- [3.1. com.AlumnosPortatiles.project --\> ServletInitializerConfig.java](#31-comalumnosportatilesproject----servletinitializerconfigjava)
-	- [3.2. com.AlumnosPortatiles.project.app --\> AppContextConfig.java](#32-comalumnosportatilesprojectapp----appcontextconfigjava)
-	- [3.3. com.AlumnosPortatiles.project.web --\> WebContextConfig.java](#33-comalumnosportatilesprojectweb----webcontextconfigjava)
-- [4. Entities](#4-entities)
-	- [4.1. com.AlumnosPortatiles.project.app.entities --\> Alumno.java](#41-comalumnosportatilesprojectappentities----alumnojava)
-	- [4.2. com.AlumnosPortatiles.project.app.entities --\> Portatil.java](#42-comalumnosportatilesprojectappentities----portatiljava)
-- [Prueba de ejecución 1 --\> Conexión icicial con la BBDD autocreando las tablas](#prueba-de-ejecución-1----conexión-icicial-con-la-bbdd-autocreando-las-tablas)
-- [5. Repositories](#5-repositories)
-	- [5.1. Interfaces](#51-interfaces)
-		- [5.1.1. com.AlumnosPortatiles.project.app.repositories.interfaces --\> IAlumnoRepository.java](#511-comalumnosportatilesprojectapprepositoriesinterfaces----ialumnorepositoryjava)
-		- [5.1.2. com.AlumnosPortatiles.project.app.repositories.interfaces --\> IPortatilRepository.java](#512-comalumnosportatilesprojectapprepositoriesinterfaces----iportatilrepositoryjava)
-	- [5.2. Implementations](#52-implementations)
-- [6. DTO](#6-dto)
-	- [6.1. Models](#61-models)
-		- [6.1.1. com.AlumnosPortatiles.project.web.dto.models --\> AlumnoDTO.java](#611-comalumnosportatilesprojectwebdtomodels----alumnodtojava)
-		- [6.1.2. com.AlumnosPortatiles.project.web.dto.models --\> PortatilDTO.java](#612-comalumnosportatilesprojectwebdtomodels----portatildtojava)
-	- [6.2. Interfaces](#62-interfaces)
-		- [6.2.1. com.AlumnosPortatiles.project.web.dto.interfaces --\> IAlumnoToDTO.java](#621-comalumnosportatilesprojectwebdtointerfaces----ialumnotodtojava)
-		- [6.2.2. com.AlumnosPortatiles.project.web.dto.interfaces --\> IAlumnoToDAO.java](#622-comalumnosportatilesprojectwebdtointerfaces----ialumnotodaojava)
-		- [6.2.3. com.AlumnosPortatiles.project.web.dto.interfaces --\> IPortatilToDTO.java](#623-comalumnosportatilesprojectwebdtointerfaces----iportatiltodtojava)
-		- [6.2.4. com.AlumnosPortatiles.project.web.dto.interfaces --\> IPortatilToDAO.java](#624-comalumnosportatilesprojectwebdtointerfaces----iportatiltodaojava)
-	- [6.3. Implementations](#63-implementations)
-		- [6.3.1. com.AlumnosPortatiles.project.web.dto.implementations --\> AlumnoToDTOimpl.java](#631-comalumnosportatilesprojectwebdtoimplementations----alumnotodtoimpljava)
-		- [6.3.2. com.AlumnosPortatiles.project.web.dto.implemenations --\> AlumnoToDAOimpl.java](#632-comalumnosportatilesprojectwebdtoimplemenations----alumnotodaoimpljava)
-		- [6.3.3. com.AlumnosPortatiles.project.web.dto.implemenations --\> PortatilToDTOimpl.java](#633-comalumnosportatilesprojectwebdtoimplemenations----portatiltodtoimpljava)
-		- [6.3.4. com.AlumnosPortatiles.project.web.dto.implemenations --\> PortatilToDAOimpl.java](#634-comalumnosportatilesprojectwebdtoimplemenations----portatiltodaoimpljava)
-- [7. Services (1º versión sin usar los DTOs)](#7-services-1º-versión-sin-usar-los-dtos)
-	- [7.1. Interfaces](#71-interfaces)
-		- [7.1.1. com.AlumnosPortatiles.project.web.services.interfaces --\> IAlumnoService.java](#711-comalumnosportatilesprojectwebservicesinterfaces----ialumnoservicejava)
-		- [7.1.2. com.AlumnosPortatiles.project.web.services.interfaces --\> IPortatilService.java](#712-comalumnosportatilesprojectwebservicesinterfaces----iportatilservicejava)
-	- [7.2. Implementations](#72-implementations)
-		- [7.2.1. com.AlumnosPortatiles.project.web.services.implementations --\> AlumnoServiceImpl.java](#721-comalumnosportatilesprojectwebservicesimplementations----alumnoserviceimpljava)
-		- [7.2.2. com.AlumnosPortatiles.project.web.services.implementations --\> PortatilServiceImpl.java](#722-comalumnosportatilesprojectwebservicesimplementations----portatilserviceimpljava)
-- [8. Controllers and Views](#8-controllers-and-views)
-	- [8.1. Index](#81-index)
-		- [8.1.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> IIndexController.java](#811-comalumnosportatilesprojectwebcontrollersinterfaces----iindexcontrollerjava)
-		- [8.1.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> IndexControllerImpl.java](#812-comalumnosportatilesprojectwebcontrollersimplementations----indexcontrollerimpljava)
-		- [8.1.3. webapp --\> index.jsp](#813-webapp----indexjsp)
-	- [8.2. Portátiles](#82-portátiles)
-		- [8.2.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> IPortatilesController.java](#821-comalumnosportatilesprojectwebcontrollersinterfaces----iportatilescontrollerjava)
-		- [8.2.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> PortatilesControllerImpl.java](#822-comalumnosportatilesprojectwebcontrollersimplementations----portatilescontrollerimpljava)
-		- [8.2.3. webapp/views/ --\> portatiles.jsp](#823-webappviews----portatilesjsp)
-	- [8.3. Alumnos](#83-alumnos)
-		- [8.3.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> IAlumnosController.java](#831-comalumnosportatilesprojectwebcontrollersinterfaces----ialumnoscontrollerjava)
-		- [8.3.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> AlumnosControllerImpl.java](#832-comalumnosportatilesprojectwebcontrollersimplementations----alumnoscontrollerimpljava)
-		- [8.3.3. webapp/views/ --\> alumnos.jsp](#833-webappviews----alumnosjsp)
-	- [8.4. Create Form Portátiles](#84-create-form-portátiles)
-		- [8.4.1. com.AlumnosPortatiles.project.web.controllers.interfaces --\> ICreateFormPortatilController.java](#841-comalumnosportatilesprojectwebcontrollersinterfaces----icreateformportatilcontrollerjava)
-		- [8.4.2. com.AlumnosPortatiles.project.web.controllers.implementations --\> CreateFormPortatilControllerImpl.java](#842-comalumnosportatilesprojectwebcontrollersimplementations----createformportatilcontrollerimpljava)
-		- [8.4.3. webapp/views/ --\> createFormPortatil.jsp](#843-webappviews----createformportatiljsp)
-- [Prueba de ejecución 2 --\> Probando el insert de Portatil (.save()) y el select de Portatil (.findAll())](#prueba-de-ejecución-2----probando-el-insert-de-portatil-save-y-el-select-de-portatil-findall)
-- [Webgrafía](#webgrafía)
-	- [⭐ Guía completa de ejemplo de proyecto web de Spring MVC paso a paso (parte 5)](#-guía-completa-de-ejemplo-de-proyecto-web-de-spring-mvc-paso-a-paso-parte-5)
-	- [⭐ Spring Data JPA Tutorial: Annotation Configuration](#-spring-data-jpa-tutorial-annotation-configuration)
-	- [⭐ Spring MVC 5 + Spring Data JPA + Hibernate 5 + JSP (Tutorial)](#-spring-mvc-5--spring-data-jpa--hibernate-5--jsp-tutorial)
-	- [⭐ Database and JPA Configuration without persistence.xml using JavaConfig](#-database-and-jpa-configuration-without-persistencexml-using-javaconfig)
-	- [Simplified Web Configuration with Spring MVC](#simplified-web-configuration-with-spring-mvc)
-	- [Spring MVC annotation config example with JavaConfig](#spring-mvc-annotation-config-example-with-javaconfig)
-	- [Pragmatically Spring MVC example without using XML](#pragmatically-spring-mvc-example-without-using-xml)
-	- [How to Access EntityManager with Spring Data](#how-to-access-entitymanager-with-spring-data)
-	- [JPA/Hibernate Persistence Context](#jpahibernate-persistence-context)
-	- [CrudRepository Example](#crudrepository-example)
-	- [JpaRepository Example (es lo mismo que el CrudRepository pero lo he visto más en SpringBoot)](#jparepository-example-es-lo-mismo-que-el-crudrepository-pero-lo-he-visto-más-en-springboot)
-- [Errores](#errores)
-	- [org.springframework.web.context.ContextLoaderListener](#orgspringframeworkwebcontextcontextloaderlistener)
-		- [Explicación y Solución --\> Opción 1](#explicación-y-solución----opción-1)
-		- [Explicación y Solución --\> Opción 2](#explicación-y-solución----opción-2)
 
 
 # 0. pom.xml
@@ -1282,7 +1202,16 @@ public interface IPortatilesController {
 	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public ModelAndView navigateToCreateFormPortatil() throws Exception;	
+	public ModelAndView navigateToCreateFormPortatil() throws Exception;
+		
+	/**
+	 * Delete portatil.
+	 *
+	 * @param portatil_id the portatil id
+	 * @return the model and view
+	 * @throws Exception the exception
+	 */
+	public ModelAndView deletePortatil(@RequestParam long portatil_id) throws Exception;
 }
 ```
 
@@ -1306,10 +1235,46 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		
 		return new ModelAndView("createFormPortatil", "portatilModel", portatil);
 	}
+}@Controller(value = "PortatilesControllerImpl")
+public class PortatilesControllerImpl implements IPortatilesController {
+	
+	protected final Log logger = LogFactory.getLog(getClass());
+	
+	@Autowired
+	IPortatilService portatilService = new PortatilServiceImpl();
+	
+	@RequestMapping(value = "/navigateToCreateFormPortatil")
+	@Override
+	public ModelAndView navigateToCreateFormPortatil() throws Exception {
+		logger.info("\nNavegamos a la vista del formulario de registro de portailes, pasando un objeto Portatil");
+		Portatil portatil = new Portatil();
+		
+		return new ModelAndView("createFormPortatil", "portatilModel", portatil);
+	}
+
+	@RequestMapping(value = "/deletePortatil")
+	@Override
+	public ModelAndView deletePortatil(@RequestParam long portatil_id) throws Exception {
+		logger.info("\nEntrando en el metodo --> deletePortatil()");
+		portatilService.eliminarPortatilPorId(portatil_id);
+		List<Portatil> portatilesList = new ArrayList<>();
+		
+		try {
+			portatilesList = portatilService.listarPortatiles();
+			
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
+		}
+		
+		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesList);
+	}
 }
 ```
 
 ### 8.2.3. webapp/views/ --> portatiles.jsp
+
+**Nota**: Para que los modals de bootstrap funcionen, recuerda importar también con CDNs el popper y el jquery.
 
 ```html
 <table class="table table-dark table-hover">
@@ -1321,6 +1286,8 @@ public class PortatilesControllerImpl implements IPortatilesController {
 			<th scope="col">Marca</th>
 			<th scope="col">Modelo</th>
 			<th scope="col">Alumno ID</th>
+			<th scope="col">Editar</th>
+			<th scope="col">Eliminar</th>
 		</tr>
 	</thead>
 	<c:forEach var="portatilModel" items="${listaPortatiles}">
@@ -1333,16 +1300,69 @@ public class PortatilesControllerImpl implements IPortatilesController {
 				<td><c:out value="${portatilModel.portatil_modelo}" /></td>
 				<td>
 					<c:choose>
-						<c:when test="${portatilModel.alumno.alumno_id != null}">
-							<c:out value="${portatilModel.alumno.alumno_id}" />
-						</c:when>    
-						<c:otherwise>
-						    <c:out value="sin asignar" />
-						</c:otherwise>
+					    <c:when test="${portatilModel.alumno.alumno_id != null}">
+					        <c:out value="${portatilModel.alumno.alumno_id}" />
+					    </c:when>    
+					    <c:otherwise>
+					        <c:out value="sin asignar" />
+					    </c:otherwise>
 					</c:choose>
 				</td>
+				<td>
+					<a href="#editModal" data-toggle="modal" class="btn btn-warning px-2 text-white">Editar</a>
+				</td>
+				<td>
+					<a href="#deleteModal" data-toggle="modal" class="btn btn-danger px-2 text-white">Eliminar Modal</a>
+					<!--<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}">Eliminar Sin Modal</a> -->
+				</td>
+						
+				<!-- --------------------------------- Edit Modal -------------------------------------------------- -->
+				<div id="editModal" class="modal fade">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content">
+							<div class="modal-header flex-column">
+								<div class="icon-box">
+									<i class="material-icons">&#xE5CD;</i>
+								</div>						
+								<h4 class="modal-title w-100">Editar</h4>	
+						        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							</div>
+							<div class="modal-body">
+								<p>Do you really want to delete these records? This process cannot be undone.</p>
+							</div>
+							<div class="modal-footer justify-content-center">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+								<button type="button" class="btn btn-danger">Delete</button>
+							</div>
+						</div>
+					</div>
+				</div>  
+						
+				<!-- --------------------------------- Delete Modal --------------------------------------------- -->
+				<div id="deleteModal" class="modal fade">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content">
+							<div class="modal-header flex-column">
+								<div class="icon-box">
+									<i class="material-icons">&#xE5CD;</i>
+								</div>						
+								<h4 class="modal-title w-100">Are you sure?</h4>	
+				                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							</div>
+							<div class="modal-body">
+								<p>Do you really want to delete these records? This process cannot be undone.</p>
+							</div>
+							<div class="modal-footer justify-content-center">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>			
+								<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}">
+									<button type="button" class="btn btn-danger">Delete</button>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div> 			
 			</tr>
-		</tbody>
+		</tbody>		
 	</c:forEach>
 </table>
 ```
@@ -1498,6 +1518,10 @@ public class CreateFormPortatilControllerImpl implements ICreateFormPortatilCont
 # Prueba de ejecución 2 --> Probando el insert de Portatil (.save()) y el select de Portatil (.findAll())
 
 [Prueba de ejecución 2](https://user-images.githubusercontent.com/91122596/220727301-f1ba9007-02d9-4690-9033-e3b834e11240.mp4)
+
+# Prueba de ejecución 3 --> Probando el delete de Portatil
+
+[Prueba de ejecución 3](https://user-images.githubusercontent.com/91122596/220954058-92dba74e-e8f3-4cfd-919e-d0c7e30cd573.mp4)
 
 # Webgrafía
 
