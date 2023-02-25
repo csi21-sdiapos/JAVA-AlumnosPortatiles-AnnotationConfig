@@ -3,7 +3,7 @@ package com.AlumnosPortatiles.project.web.controllers.interfaces;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.AlumnosPortatiles.project.app.entities.Portatil;
+import com.AlumnosPortatiles.project.web.dto.models.PortatilDTO;
 
 
 public interface ICreateFormPortatilController {
@@ -16,6 +16,6 @@ public interface ICreateFormPortatilController {
 	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") Portatil portatilModel) throws Exception;
+	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel) throws Exception;
 	
 }

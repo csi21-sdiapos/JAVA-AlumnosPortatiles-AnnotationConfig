@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import com.AlumnosPortatiles.project.app.entities.Portatil;
-import com.AlumnosPortatiles.project.tools.Tools;
 
 
 @Component(value = "AlumnoDTO")
@@ -23,6 +22,7 @@ public class AlumnoDTO implements Serializable {
 	private String alumno_nombre;
 	private String alumno_apellidos;
 	private String alumno_telefono;
+	private long portatil_id;
 	
 	/******************************************* RELACIONES *********************************************/
 	private Portatil portatil;
@@ -30,13 +30,14 @@ public class AlumnoDTO implements Serializable {
 	
 	/******************************************* CONSTRUCTORES *********************************************/
 	// constructor lleno
-	public AlumnoDTO(String alumno_nombre, String alumno_apellidos, String alumno_telefono, Portatil portatil) {
+	public AlumnoDTO(UUID alumno_uuid, Calendar alumno_date, String alumno_nombre, String alumno_apellidos, String alumno_telefono, Portatil portatil) {
 		super();
-		this.alumno_uuid = Tools.generarUUID();
-		this.alumno_date = Calendar.getInstance();
+		this.alumno_uuid = alumno_uuid;
+		this.alumno_date = alumno_date;
 		this.alumno_nombre = alumno_nombre;
 		this.alumno_apellidos = alumno_apellidos;
 		this.alumno_telefono = alumno_telefono;
+		// this.portatil_id
 		this.portatil = portatil;
 	}
 
@@ -93,6 +94,14 @@ public class AlumnoDTO implements Serializable {
 
 	public void setAlumno_telefono(String alumno_telefono) {
 		this.alumno_telefono = alumno_telefono;
+	}
+
+	public long getPortatil_id() {
+		return portatil_id;
+	}
+
+	public void setPortatil_id(long portatil_id) {
+		this.portatil_id = portatil_id;
 	}
 
 	public Portatil getPortatil() {

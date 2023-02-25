@@ -36,7 +36,7 @@ public interface IPortatilService {
 	 * @throws Exception the exception
 	 */
 	public void insertarPortatil(Portatil portatil) throws Exception;
-	
+
 	
 	
 	/**

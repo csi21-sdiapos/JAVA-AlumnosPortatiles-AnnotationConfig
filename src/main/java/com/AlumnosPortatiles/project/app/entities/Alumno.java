@@ -52,6 +52,9 @@ public class Alumno implements Serializable {
 	@Column(table = "alumno", name = "alumno_telefono", insertable = true, updatable = true, unique = true, nullable = false)
 	private String alumno_telefono;
 	
+	@Column(table = "alumno", name = "portatil_id_extra", insertable = true, updatable = true, unique = true, nullable = false)
+	private long portatil_id;
+	
 	/******************************************* RELACIONES *********************************************/
 	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = false, optional = true)
 	@JoinColumn(table = "alumno", name = "portatil_id", referencedColumnName = "portatil_id", foreignKey = @ForeignKey(name = "fk_portatil_id"), insertable = true, updatable = true, unique = false, nullable = true)
@@ -120,7 +123,19 @@ public class Alumno implements Serializable {
 	public String getAlumno_telefono() {
 		return alumno_telefono;
 	}
+	
+	
 
+	public long getPortatil_id() {
+		return portatil_id;
+	}
+
+	public void setPortatil_id(long portatil_id) {
+		this.portatil_id = portatil_id;
+	}
+
+	
+	
 	public void setAlumno_telefono(String alumno_telefono) {
 		this.alumno_telefono = alumno_telefono;
 	}

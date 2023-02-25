@@ -140,8 +140,7 @@
 					<th scope="col">Marca</th>
 					<th scope="col">Modelo</th>
 					<th scope="col">Alumno ID</th>
-					<th scope="col">Editar</th>
-					<th scope="col">Eliminar</th>
+					<th scope="col">Editar/Eliminar</th>
 				</tr>
 			</thead>
 			<c:forEach var="portatilModel" items="${listaPortatiles}">
@@ -163,61 +162,73 @@
 							</c:choose>
 						</td>
 						<td>
-							<a href="#editModal" data-toggle="modal" class="btn btn-warning px-2 text-white">Editar</a>
-						</td>
-						<td>
-							<a href="#deleteModal" data-toggle="modal" class="btn btn-danger px-2 text-white">Eliminar Modal</a>
+							<a href="navigateToEditFormPortatil/?portatil_id=${portatilModel.portatil_id}" class="btn btn-warning px-2 text-white">Editar</a>
+							<!--<a href="#editModal" data-toggle="modal" class="btn btn-warning px-2 text-white">Editar</a>-->
+						
+							<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}" onclick="openModal();" data-toggle="modal" class="delete btn btn-danger px-2 text-white">Eliminar</a>
 							<!--<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}">Eliminar Sin Modal</a> -->
+							<input type="hidden" id="id" value="${portatilModel.portatil_id}" />
 						</td>
-						
-						<!-- --------------------------------- Edit Modal -------------------------------------------------- -->
-						<div id="editModal" class="modal fade">
-							<div class="modal-dialog modal-confirm">
-								<div class="modal-content">
-									<div class="modal-header flex-column">
-										<div class="icon-box">
-											<i class="material-icons">&#xE5CD;</i>
-										</div>						
-										<h4 class="modal-title w-100">Editar</h4>	
-						                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									</div>
-									<div class="modal-body">
-										<p>Do you really want to delete these records? This process cannot be undone.</p>
-									</div>
-									<div class="modal-footer justify-content-center">
-										<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-										<button type="button" class="btn btn-danger">Delete</button>
-									</div>
-								</div>
-							</div>
-						</div>  
-						
-						<!-- --------------------------------- Delete Modal --------------------------------------------- -->
-						<div id="deleteModal" class="modal fade">
-							<div class="modal-dialog modal-confirm">
-								<div class="modal-content">
-									<div class="modal-header flex-column">
-										<div class="icon-box">
-											<i class="material-icons">&#xE5CD;</i>
-										</div>						
-										<h4 class="modal-title w-100">Are you sure?</h4>	
-						                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									</div>
-									<div class="modal-body">
-										<p>Do you really want to delete these records? This process cannot be undone.</p>
-									</div>
-									<div class="modal-footer justify-content-center">
-										<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>			
-										<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}">
-											<button type="button" class="btn btn-danger">Delete</button>
-										</a>
-									</div>
-								</div>
-							</div>
-						</div> 
-						
 					</tr>
 				</tbody>
+				
+				<!-- --------------------------------- Edit Modal -------------------------------------------------- -->
+			<!--
+				<div id="editModal" class="modal fade">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content">
+							<div class="modal-header flex-column">
+								<div class="icon-box">
+									<i class="material-icons">&#xE5CD;</i>
+								</div>						
+								<h4 class="modal-title w-100">Editar</h4>	
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							</div>
+							<div class="modal-body">
+								<p>Portatil con ID: <c:out value="${portatilModel.portatil_id}" /></p>
+								<p><c:out value="${portatilModel.portatil_marca}" /></p>
+								<p><c:out value="${portatilModel.portatil_modelo}" /></p>
+							</div>
+							<div class="modal-footer justify-content-center">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+								<a href="editPortatil?portatil_id=${portatilModel.portatil_id}">
+									<button type="button" class="btn btn-warning">Edit</button>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>  
+			-->
+			<!-- --------------------------------- Delete Modal --------------------------------------------- -->
+			
+				<div id="deleteModal" class="modal fade">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content">
+							<form method="post" action="deletePortatil">
+								<div class="modal-header flex-column">
+									<div class="icon-box">
+										<i class="material-icons">&#xE5CD;</i>
+									</div>							
+									<h4 class="modal-title w-100">Are you sure?</h4>	
+									<button type="button" onclick="closeModal();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>Do you really want to delete these records? This process cannot be undone.</p>
+									<p><c:out value="${portatilModel.portatil_id}" /></p>
+									<p><c:out value="${portatilModel.portatil_marca}" /></p>
+									<p><c:out value="${portatilModel.portatil_modelo}" /></p>
+								</div>
+								<div class="modal-footer justify-content-center">
+									<button type="button" onclick="closeModal();" class="btn btn-secondary" data-dismiss="modal">Cancel</button>			
+									<input type="submit" class="btn btn-danger" value="Delete" />
+									
+									<input type="hidden" name="id" id="id" />
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				
 			</c:forEach>
 		</table>
 	</div>
@@ -278,6 +289,26 @@
 	    </div>
 	</footer>
 	
+	<script type="text/javascript">
+		function openModal() {
+			$('#deleteModal').modal('show');
+		}
+	</script>
+	
+	<script type="text/javascript">
+		function closeModal() {
+			$('#deleteModal').modal('hide');
+		}
+	</script>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('table .delete').on('click', function(){
+				var id = $(this).parent().find('#id').val();
+				$('#deleteModal #id').val(id);
+			})
+		})
+	</script>
 </body>
 
 </html>

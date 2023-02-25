@@ -1312,7 +1312,7 @@ public class PortatilesControllerImpl implements IPortatilesController {
 					<a href="#editModal" data-toggle="modal" class="btn btn-warning px-2 text-white">Editar</a>
 				</td>
 				<td>
-					<a href="#deleteModal" data-toggle="modal" class="btn btn-danger px-2 text-white">Eliminar Modal</a>
+					<a href="#deleteModal" data-toggle="modal" class="btn btn-danger px-2 text-white">Eliminar</a>
 					<!--<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}">Eliminar Sin Modal</a> -->
 				</td>
 						

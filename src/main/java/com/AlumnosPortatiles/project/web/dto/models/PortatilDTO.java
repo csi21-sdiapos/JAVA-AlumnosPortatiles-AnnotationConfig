@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import com.AlumnosPortatiles.project.app.entities.Alumno;
-import com.AlumnosPortatiles.project.tools.Tools;
 
 
 @Component(value = "PortatilDTO")
@@ -29,13 +28,13 @@ public class PortatilDTO implements Serializable {
 	
 	/******************************************* CONSTRUCTORES *********************************************/
 	// constructor vacío
-	public PortatilDTO(String portatil_marca, String portatil_modelo) {
+	public PortatilDTO(UUID portatil_uuid, Calendar portatil_date, String portatil_marca, String portatil_modelo, Alumno alumno) {
 		super();
-		this.portatil_uuid = Tools.generarUUID();
-		this.portatil_date = Calendar.getInstance();
+		this.portatil_uuid = portatil_uuid;
+		this.portatil_date = portatil_date;
 		this.portatil_marca = portatil_marca;
 		this.portatil_modelo = portatil_modelo;
-		// this.alumno = null;
+		this.alumno = alumno;
 	}
 
 	// constructor vacío

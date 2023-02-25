@@ -16,6 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.AlumnosPortatiles.project.app.entities.Portatil;
 import com.AlumnosPortatiles.project.web.controllers.interfaces.ICreateFormPortatilController;
+import com.AlumnosPortatiles.project.web.dto.implementations.PortatilToDAOimpl;
+import com.AlumnosPortatiles.project.web.dto.implementations.PortatilToDTOimpl;
+import com.AlumnosPortatiles.project.web.dto.interfaces.IPortatilToDAO;
+import com.AlumnosPortatiles.project.web.dto.interfaces.IPortatilToDTO;
+import com.AlumnosPortatiles.project.web.dto.models.PortatilDTO;
 import com.AlumnosPortatiles.project.web.services.implementations.PortatilServiceImpl;
 import com.AlumnosPortatiles.project.web.services.interfaces.IPortatilService;
 
@@ -29,31 +34,35 @@ public class CreateFormPortatilControllerImpl implements ICreateFormPortatilCont
 	@Autowired
 	IPortatilService portatilService = new PortatilServiceImpl();
 	
+	@Autowired
+	IPortatilToDAO portatilToDAO = new PortatilToDAOimpl();
+	
+	@Autowired
+	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
+	
 	
 	
 	@RequestMapping(value="/formCreatePortatil", method = RequestMethod.POST)
 	@Override
-	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") Portatil portatilModel) throws Exception {
+	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel) throws Exception {
 		logger.info("\nEntrando en el metodo --> formCreatePortatil()");
 		
 		portatilModel.setPortatil_uuid(UUID.randomUUID());
 		portatilModel.setPortatil_date(Calendar.getInstance());
-		portatilService.insertarPortatil(portatilModel);
+		portatilService.insertarPortatil(portatilToDAO.toPortatilDAO(portatilModel));
 		
 		logger.info("\nVolvemos a la vista de los Portatiles");
-		
 		List<Portatil> portatilesList = new ArrayList<>();
 		
 		try {
 			portatilesList = portatilService.listarPortatiles();
-			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
 		}
-		
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
 		
-		return new ModelAndView("portatiles", "listaPortatiles", portatilesList);
+		List<PortatilDTO> portatilesListModel = portatilToDTO.toListPortatilDTO(portatilesList);
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesListModel);
 	}
-
+	
 }
