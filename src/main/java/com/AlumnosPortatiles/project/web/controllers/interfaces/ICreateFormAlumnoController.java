@@ -3,7 +3,7 @@ package com.AlumnosPortatiles.project.web.controllers.interfaces;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.AlumnosPortatiles.project.app.entities.Alumno;
+import com.AlumnosPortatiles.project.web.dto.models.AlumnoDTO;
 
 
 public interface ICreateFormAlumnoController {
@@ -16,6 +16,6 @@ public interface ICreateFormAlumnoController {
 	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") Alumno alumnoModel) throws Exception;
+	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel) throws Exception;
 
 }

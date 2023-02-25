@@ -3,6 +3,8 @@ package com.AlumnosPortatiles.project.web.controllers.implementations;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.AlumnosPortatiles.project.app.entities.Alumno;
 import com.AlumnosPortatiles.project.app.entities.Portatil;
 import com.AlumnosPortatiles.project.web.controllers.interfaces.IAlumnosController;
+import com.AlumnosPortatiles.project.web.dto.implementations.AlumnoToDTOimpl;
+import com.AlumnosPortatiles.project.web.dto.implementations.PortatilToDTOimpl;
+import com.AlumnosPortatiles.project.web.dto.interfaces.IAlumnoToDTO;
+import com.AlumnosPortatiles.project.web.dto.interfaces.IPortatilToDTO;
+import com.AlumnosPortatiles.project.web.dto.models.AlumnoDTO;
+import com.AlumnosPortatiles.project.web.dto.models.PortatilDTO;
 import com.AlumnosPortatiles.project.web.services.implementations.AlumnoServiceImpl;
 import com.AlumnosPortatiles.project.web.services.implementations.PortatilServiceImpl;
 import com.AlumnosPortatiles.project.web.services.interfaces.IAlumnoService;
@@ -22,6 +30,7 @@ import com.AlumnosPortatiles.project.web.services.interfaces.IPortatilService;
 
 
 @Controller(value = "AlumnosControllerImpl")
+@RequestMapping(value = { "", "alumno" })
 public class AlumnosControllerImpl implements IAlumnosController {
 	
 
@@ -33,6 +42,12 @@ public class AlumnosControllerImpl implements IAlumnosController {
 	@Autowired
 	IPortatilService portatilService = new PortatilServiceImpl();
 	
+	@Autowired
+	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
+	
+	@Autowired
+	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
+	
 
 	
 	@RequestMapping(value = "/navigateToCreateFormAlumno")
@@ -40,8 +55,8 @@ public class AlumnosControllerImpl implements IAlumnosController {
 	public String navigateToCreateFormAlumno(Model model) throws Exception {
 		logger.info("\nNavegamos a la vista del formulario de registro de alumnos, pasando un objeto Alumno");
 		
-		Alumno alumno = new Alumno();
-		model.addAttribute("alumnoModel" ,alumno);
+		AlumnoDTO alumnoDTO = new AlumnoDTO();
+		model.addAttribute("alumnoModel", alumnoDTO);
 		
 		List<Portatil> portatilesList = new ArrayList<>();
 		try {
@@ -49,8 +64,10 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
 		}
-		model.addAttribute("listaPortatiles" ,portatilesList);
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
+
+		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		model.addAttribute("listaPortatiles" ,portatilesListDTO);
 
 		return "createFormAlumno";
 	}
@@ -65,36 +82,16 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		
 		return new ModelAndView("editFormAlumno", "alumnoModel", alumno);
 	}
+
 	
-/*	
-	@RequestMapping(value = "/editAlumno")
-	@Override
-	public ModelAndView editAlumno(@RequestParam long alumno_id) throws Exception {
-		logger.info("\nEntrando en el metodo --> editAlumno()");
-		
-		Alumno alumno = alumnoService.buscarAlumnoPorId(alumno_id);
-		alumno.set_alumno_nombre("nuevo nombre");
-		alumnoService.editarAlumno(alumno.getAlumno_id(), alumno.getAlumno_nombre(), alumno.getAlumno_apellidos(), alumno.getAlumno_telefono);
-		
-		List<Alumno> alumnosList = new ArrayList<>();
-		try {
-			alumnosList = alumnoService.listarALumnos();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
-		}
-		
-		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		return new ModelAndView("alumnos", "listaAlumnos", alumnosList);
-	}
-*/
-
-
 
 	@RequestMapping(value = "/deleteAlumno")
 	@Override
-	public ModelAndView deleteAlumno(@RequestParam long alumno_id) throws Exception {
+	public ModelAndView deleteAlumno(HttpServletRequest request) throws Exception {
 		logger.info("\nEntrando en el metodo --> deleteAlumno()");
-		alumnoService.eliminarAlumnoPorid(alumno_id);
+
+		long id = Long.parseLong(request.getParameter("id"));
+		alumnoService.eliminarAlumnoPorid(id);
 		
 		List<Alumno> alumnosList = new ArrayList<>();
 		try {
@@ -102,9 +99,10 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
 		}
-		
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		return new ModelAndView("alumnos", "listaAlumnos", alumnosList);
+		
+		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 
 }

@@ -53,7 +53,6 @@ public class CreateFormPortatilControllerImpl implements ICreateFormPortatilCont
 		
 		logger.info("\nVolvemos a la vista de los Portatiles");
 		List<Portatil> portatilesList = new ArrayList<>();
-		
 		try {
 			portatilesList = portatilService.listarPortatiles();
 		} catch (Exception e) {
@@ -61,8 +60,8 @@ public class CreateFormPortatilControllerImpl implements ICreateFormPortatilCont
 		}
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
 		
-		List<PortatilDTO> portatilesListModel = portatilToDTO.toListPortatilDTO(portatilesList);
-		return new ModelAndView("portatiles", "listaPortatiles", portatilesListModel);
+		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 	
 }

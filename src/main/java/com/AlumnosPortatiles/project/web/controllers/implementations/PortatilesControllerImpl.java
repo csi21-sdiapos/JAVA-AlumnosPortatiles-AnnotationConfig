@@ -10,7 +10,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.AlumnosPortatiles.project.app.entities.Portatil;
@@ -23,6 +22,7 @@ import com.AlumnosPortatiles.project.web.services.interfaces.IPortatilService;
 
 
 @Controller(value = "PortatilesControllerImpl")
+@RequestMapping(value = { "", "portatil" })
 public class PortatilesControllerImpl implements IPortatilesController {
 
 	
@@ -47,26 +47,15 @@ public class PortatilesControllerImpl implements IPortatilesController {
 	
 	
 	
-	@RequestMapping(value = "/navigateToEditFormPortatil")
+	@RequestMapping(value = "/editPortatil")
 	@Override
-	public ModelAndView navigateToEditFormPortatil(@RequestParam long portatil_id) throws Exception {
-		logger.info("\nNavegamos a la vista del formulario de edicion de portatiles, pasando un objeto Portatil");
-		Portatil portatil = portatilService.buscarPortatilPorId(portatil_id);
-		PortatilDTO portatilDTO = portatilToDTO.toPortatilDTO(portatil);
-		
-		return new ModelAndView("editFormPortatil", "portatilModel", portatilDTO);
-	}
-	
-	
-	
-/*	
-	@RequestMapping(value = "/editPortatil") --> para el edit con el modal
-	@Override
-	public ModelAndView editPortatil(@RequestParam long portatil_id) throws Exception {
+	public ModelAndView editPortatil(HttpServletRequest request) throws Exception {
 		logger.info("\nEntrando en el metodo --> editPortatil()");
 		
-		Portatil portatil = portatilService.buscarPortatilPorId(portatil_id);
-		portatil.setPortatil_modelo("nuevo modelo");
+		long id = Long.parseLong(request.getParameter("id"));
+		Portatil portatil = portatilService.buscarPortatilPorId(id);
+		portatil.setPortatil_marca(request.getParameter("marca").trim());
+		portatil.setPortatil_modelo(request.getParameter("modelo").trim());
 		portatilService.editarPortatil(portatil.getPortatil_id(), portatil.getPortatil_marca(), portatil.getPortatil_modelo());
 		
 		List<Portatil> portatilesList = new ArrayList<>();
@@ -75,11 +64,12 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
 		}
-		
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		return new ModelAndView("portatiles", "listaPortatiles", portatilesList);
+		
+		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
-*/
+
 
 
 	

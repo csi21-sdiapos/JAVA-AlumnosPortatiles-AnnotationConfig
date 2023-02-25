@@ -17,6 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.AlumnosPortatiles.project.app.entities.Alumno;
 import com.AlumnosPortatiles.project.app.entities.Portatil;
 import com.AlumnosPortatiles.project.web.controllers.interfaces.ICreateFormAlumnoController;
+import com.AlumnosPortatiles.project.web.dto.implementations.AlumnoToDAOimpl;
+import com.AlumnosPortatiles.project.web.dto.implementations.AlumnoToDTOimpl;
+import com.AlumnosPortatiles.project.web.dto.interfaces.IAlumnoToDAO;
+import com.AlumnosPortatiles.project.web.dto.interfaces.IAlumnoToDTO;
+import com.AlumnosPortatiles.project.web.dto.models.AlumnoDTO;
 import com.AlumnosPortatiles.project.web.services.implementations.AlumnoServiceImpl;
 import com.AlumnosPortatiles.project.web.services.implementations.PortatilServiceImpl;
 import com.AlumnosPortatiles.project.web.services.interfaces.IAlumnoService;
@@ -35,30 +40,36 @@ public class CreateFormAlumnoControllerImpl implements ICreateFormAlumnoControll
 	@Autowired
 	IPortatilService portatilService = new PortatilServiceImpl();
 	
+	@Autowired
+	IAlumnoToDAO alumnoToDAO = new AlumnoToDAOimpl();
+	
+	@Autowired
+	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
+	
 
 	
 	@RequestMapping(value="/formCreateAlumno", method = RequestMethod.POST)
 	@Override
-	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") Alumno alumnoModel) throws Exception {
+	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel) throws Exception {
 		logger.info("\nEntrando en el metodo --> formCreateAlumno()");
 		Portatil portatil = portatilService.buscarPortatilPorId(alumnoModel.getPortatil_id());
 		
 		alumnoModel.setAlumno_uuid(UUID.randomUUID());
 		alumnoModel.setAlumno_date(Calendar.getInstance());
 		alumnoModel.setPortatil(portatil);
-		alumnoService.insertarAlumno(alumnoModel);
+		alumnoService.insertarAlumno(alumnoToDAO.toAlumnoDAO(alumnoModel));
 		
 		logger.info("\nVolvemos a la vista de los Alumnos");
 		List<Alumno> alumnosList = new ArrayList<>();
-		
 		try {
 			alumnosList = alumnoService.listarAlumnos();
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
-		}
-		
+		}	
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		return new ModelAndView("alumnos", "listaAlumnos", alumnosList);
+		
+		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 
 }

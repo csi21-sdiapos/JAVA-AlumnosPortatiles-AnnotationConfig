@@ -34,6 +34,10 @@
 	</header>
     
     <div class="container">
+    	<a class="btn btn-warning mt-2 px-2 text-white" onCLick="history.back()">
+			<i class="fa fa-arrow-left" aria-hidden="true"></i>
+		</a>
+		
     	<h1 class="text-center">Formulario de Edición de Portátiles</h1>
     	
     	<form:form method="POST" action="formEditPortatil" modelAttribute="portatilModel">

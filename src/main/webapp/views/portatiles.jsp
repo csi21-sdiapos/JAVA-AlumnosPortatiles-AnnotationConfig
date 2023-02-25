@@ -106,12 +106,11 @@
 	      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 	
 	        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-	          <li><a href="<c:url value="navigateToIndex" />" class="nav-link px-2 text-secondary">Home</a></li>
+	          <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
 	          <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
 	          <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
 	          <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
 	          <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-	         
 	          <li><a href="<c:url value="navigateToCreateFormPortatil" />" class="btn btn-primary px-2 text-white">Nuevo Portatil</a></li>
 	        </ul>
 	
@@ -129,6 +128,10 @@
 	
 	<!-- -------------------------------------- Main ----------------------------------------- -->
 	<div class="container">
+		<a class="btn btn-warning mt-2 px-2 text-white" onCLick="history.back()">
+			<i class="fa fa-arrow-left" aria-hidden="true"></i>
+		</a>
+		
 		<h1 class="text-center">Lista de portatiles</h1>
 		
 		<table class="table table-dark table-hover">
@@ -162,43 +165,55 @@
 							</c:choose>
 						</td>
 						<td>
-							<a href="navigateToEditFormPortatil/?portatil_id=${portatilModel.portatil_id}" class="btn btn-warning px-2 text-white">Editar</a>
-							<!--<a href="#editModal" data-toggle="modal" class="btn btn-warning px-2 text-white">Editar</a>-->
+							<a href="editPortatil?portatil_id=${portatilModel.portatil_id}" onclick="openEditModal();" data-toggle="modal" class="edit btn btn-warning px-2 text-white">
+								<i class="fa fa-pencil" aria-hidden="true"></i>
+							</a>
+							<!--<a href="navigateToEditFormPortatil/?portatil_id=${portatilModel.portatil_id}" class="btn btn-warning px-2 text-white">Editar</a>-->
 						
-							<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}" onclick="openModal();" data-toggle="modal" class="delete btn btn-danger px-2 text-white">Eliminar</a>
+							<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}" onclick="openDeleteModal();" data-toggle="modal" class="delete btn btn-danger px-2 text-white">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</a>
 							<!--<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}">Eliminar Sin Modal</a> -->
+							
 							<input type="hidden" id="id" value="${portatilModel.portatil_id}" />
 						</td>
 					</tr>
 				</tbody>
 				
 				<!-- --------------------------------- Edit Modal -------------------------------------------------- -->
-			<!--
+			
 				<div id="editModal" class="modal fade">
 					<div class="modal-dialog modal-confirm">
 						<div class="modal-content">
-							<div class="modal-header flex-column">
-								<div class="icon-box">
-									<i class="material-icons">&#xE5CD;</i>
-								</div>						
-								<h4 class="modal-title w-100">Editar</h4>	
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							</div>
-							<div class="modal-body">
-								<p>Portatil con ID: <c:out value="${portatilModel.portatil_id}" /></p>
-								<p><c:out value="${portatilModel.portatil_marca}" /></p>
-								<p><c:out value="${portatilModel.portatil_modelo}" /></p>
-							</div>
-							<div class="modal-footer justify-content-center">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-								<a href="editPortatil?portatil_id=${portatilModel.portatil_id}">
-									<button type="button" class="btn btn-warning">Edit</button>
-								</a>
-							</div>
+							<form method="post" action="editPortatil">
+								<div class="modal-header flex-column">
+									<div class="icon-box">
+										<i class="material-icons">&#xf040;</i>
+									</div>						
+									<h4 class="modal-title w-100">Editar</h4>	
+									<button type="button" onclick="closeEditModal();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<label>Marca</label>
+										<input id="marca" name="marca" type="text" class="form-control" required="required" />
+									</div>
+									<div class="form-group">
+										<label>Modelo</label>
+										<input id="modelo" name="modelo" type="text" class="form-control" required="required" />
+									</div>
+								</div>
+								<div class="modal-footer justify-content-center">
+									<button type="button" onclick="closeEditModal();" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+									<input type="submit" class="btn btn-danger" value="Edit" />
+									
+									<input type="hidden" name="id" id="id" />
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>  
-			-->
+			
 			<!-- --------------------------------- Delete Modal --------------------------------------------- -->
 			
 				<div id="deleteModal" class="modal fade">
@@ -210,16 +225,13 @@
 										<i class="material-icons">&#xE5CD;</i>
 									</div>							
 									<h4 class="modal-title w-100">Are you sure?</h4>	
-									<button type="button" onclick="closeModal();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<button type="button" onclick="closeDeleteModal();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">
 									<p>Do you really want to delete these records? This process cannot be undone.</p>
-									<p><c:out value="${portatilModel.portatil_id}" /></p>
-									<p><c:out value="${portatilModel.portatil_marca}" /></p>
-									<p><c:out value="${portatilModel.portatil_modelo}" /></p>
 								</div>
 								<div class="modal-footer justify-content-center">
-									<button type="button" onclick="closeModal();" class="btn btn-secondary" data-dismiss="modal">Cancel</button>			
+									<button type="button" onclick="closeDeleteModal();" class="btn btn-secondary" data-dismiss="modal">Cancel</button>			
 									<input type="submit" class="btn btn-danger" value="Delete" />
 									
 									<input type="hidden" name="id" id="id" />
@@ -289,14 +301,25 @@
 	    </div>
 	</footer>
 	
+	<!-- -------------------------------------- Scripts ----------------------------------------- -->
 	<script type="text/javascript">
-		function openModal() {
-			$('#deleteModal').modal('show');
+		function openEditModal() {
+			$('#editModal').modal('show');
+		}
+	</script>
+	<script type="text/javascript">
+		function closeEditModal() {
+			$('#editModal').modal('hide');
 		}
 	</script>
 	
 	<script type="text/javascript">
-		function closeModal() {
+		function openDeleteModal() {
+			$('#deleteModal').modal('show');
+		}
+	</script>
+	<script type="text/javascript">
+		function closeDeleteModal() {
 			$('#deleteModal').modal('hide');
 		}
 	</script>
@@ -306,8 +329,22 @@
 			$('table .delete').on('click', function(){
 				var id = $(this).parent().find('#id').val();
 				$('#deleteModal #id').val(id);
-			})
-		})
+			});
+			
+			$('table .edit').on('click', function(){
+				var id = $(this).parent().find('#id').val();
+				$.ajax({
+					type: 'GET',
+					//url: '${pageContext.request.contextPath}/api/portatil/findPortatilById/' + id,
+					url: 'api/portatil/findPortatilById/' + id,
+					success: function(portatil) {
+						$('#editModal #id').val(portatil.portatil_id);
+						$('#editModal #marca').val(portatil.portatil_marca);
+						$('#editModal #modelo').val(portatil.portatil_modelo);
+					}
+				});
+			});
+		});
 	</script>
 </body>
 

@@ -34,6 +34,10 @@
 	</header>
     
     <div class="container">
+    	<a class="btn btn-warning mt-2 px-2 text-white" onCLick="history.back()">
+			<i class="fa fa-arrow-left" aria-hidden="true"></i>
+		</a>
+    	
     	<h1 class="text-center">Formulario de Registro de Portátiles</h1>
     	
     	<form:form method="POST" action="formCreateAlumno" modelAttribute="alumnoModel">
@@ -51,7 +55,7 @@
 	                <td><form:input path="alumno_telefono" type="text" class="form-control" id="alumno_telefono" placeholder="teléfono..." /></td>
 	            </tr>
 	            <tr>
-	              	<td><form:label path="portatil_id" for="portatil_id" class="form-label">Portátil</form:label></td>
+	              	<td><form:label path="portatil_id" for="portatil_id" class="form-label">Portátil ID</form:label></td>
 	                <td><form:input path="portatil_id" type="text" class="form-control" id="portatil_id" placeholder="portátil ID..." /></td>
 	            </tr>
 	                
@@ -61,6 +65,7 @@
 	        </table>
 	  	</form:form>
 	  	
+	  	<h2 class="text-center">Portátiles Disponibles</h2>
 	  	<table class="table table-dark table-hover">
  			<thead>
 				<tr>

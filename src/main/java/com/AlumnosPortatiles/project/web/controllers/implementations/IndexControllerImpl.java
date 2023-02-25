@@ -13,8 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.AlumnosPortatiles.project.app.entities.Alumno;
 import com.AlumnosPortatiles.project.app.entities.Portatil;
 import com.AlumnosPortatiles.project.web.controllers.interfaces.IIndexController;
+import com.AlumnosPortatiles.project.web.dto.implementations.AlumnoToDTOimpl;
 import com.AlumnosPortatiles.project.web.dto.implementations.PortatilToDTOimpl;
+import com.AlumnosPortatiles.project.web.dto.interfaces.IAlumnoToDTO;
 import com.AlumnosPortatiles.project.web.dto.interfaces.IPortatilToDTO;
+import com.AlumnosPortatiles.project.web.dto.models.AlumnoDTO;
 import com.AlumnosPortatiles.project.web.dto.models.PortatilDTO;
 import com.AlumnosPortatiles.project.web.services.implementations.AlumnoServiceImpl;
 import com.AlumnosPortatiles.project.web.services.implementations.PortatilServiceImpl;
@@ -35,6 +38,9 @@ public class IndexControllerImpl implements IIndexController {
 	IPortatilService portatilService = new PortatilServiceImpl();
 	
 	@Autowired
+	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
+	
+	@Autowired
 	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
 	
 	
@@ -52,8 +58,8 @@ public class IndexControllerImpl implements IIndexController {
 		}
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
 		
-		
-		return new ModelAndView("alumnos", "listaAlumnos", alumnosList);
+		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 
 	
