@@ -46,6 +46,28 @@ public class PortatilesControllerImpl implements IPortatilesController {
 	}
 	
 	
+/*
+	@Override
+	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) throws Exception {
+		logger.info("\nVamos a buscar un alumno a través del id de un portatil");
+		
+		Portatil portatil = portatilService.buscarPortatilPorId(portatil_id);
+		Alumno alumno = portatil.getAlumno();
+		model.addAttribute("alumnoModel", alumno);
+		
+		List<Portatil> portatilesList = new ArrayList<>();
+		try {
+			portatilesList = portatilService.listarPortatiles();
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
+		}
+		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
+		model.addAttribute("listaPortatiles", portatilesList);
+		
+		return "portatiles";
+	}
+*/
+	
 	
 	@RequestMapping(value = "/editPortatil")
 	@Override

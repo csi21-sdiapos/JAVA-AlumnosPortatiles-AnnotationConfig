@@ -107,11 +107,8 @@
 	
 	        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 	          <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-	          <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
-	          <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-	          <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-	          <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-	          <li><a href="<c:url value="navigateToCreateFormPortatil" />" class="btn btn-primary px-2 text-white">Nuevo Portatil</a></li>
+	          <li><a href="<c:url value="navigateToAlumnos" />" class="nav-link px-2 text-white">Alumnos</a></li>
+	          <li><a href="<c:url value="navigateToPortatiles" />" class="nav-link px-2 text-white">Portatiles</a></li>	         
 	        </ul>
 	
 	        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -131,6 +128,52 @@
 		<a class="btn btn-warning mt-2 px-2 text-white" onCLick="history.back()">
 			<i class="fa fa-arrow-left" aria-hidden="true"></i>
 		</a>
+<!--	
+		<h3 class="text-center">Consultar el alumno de un portátil</h3>
+		<form method="post" action="findAlumnoByPortatilId">
+			<div class="modal-body">
+				<div class="form-group">
+					<label>Portatil ID</label>
+					<input id="portatil_id" name="portatil_id" type="text" class="form-control" required="required" />
+				</div>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<input type="submit" class="btn btn-success" value="buscar" />
+			</div>
+		</form>
+		
+		<c:choose>
+			<c:when test="${alumnoModel != null}">
+				<table class="table table-dark table-hover">
+		 			<thead>
+						<tr>
+							<th scope="col">UUID</th>
+							<th scope="col">DATE</th>
+							<th scope="col">ID</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Apellidos</th>
+							<th scope="col">Teléfono</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><c:out value="${alumnoModel.alumno_uuid}" /></td>
+							<td><c:out value="${alumnoModel.alumno_date.getTime()}" /></td>
+							<td><c:out value="${alumnoModel.alumno_id}" /></td>
+							<td><c:out value="${alumnoModel.alumno_nombre}" /></td>
+							<td><c:out value="${alumnoModel.alumno_apellidos}" /></td>
+							<td><c:out value="${alumnoModel.alumno_telefono}" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</c:when>    
+			<c:otherwise>
+				
+			</c:otherwise>
+		</c:choose>
+-->
+		
+		
 		
 		<h1 class="text-center">Lista de portatiles</h1>
 		
@@ -165,6 +208,10 @@
 							</c:choose>
 						</td>
 						<td>
+							<a href="<c:url value="navigateToCreateFormPortatil" />" class="btn btn-success px-2 text-white">
+								<i class="fa fa-plus" aria-hidden="true"></i>
+							</a>
+						
 							<a href="editPortatil?portatil_id=${portatilModel.portatil_id}" onclick="openEditModal();" data-toggle="modal" class="edit btn btn-warning px-2 text-white">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</a>

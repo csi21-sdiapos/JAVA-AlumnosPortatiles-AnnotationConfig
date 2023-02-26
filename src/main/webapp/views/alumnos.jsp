@@ -106,12 +106,8 @@
 	
 	        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 	          <li><a href="<c:url value="navigateToIndex" />" class="nav-link px-2 text-secondary">Home</a></li>
-	          <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
-	          <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-	          <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-	          <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-	         
-	          <li><a href="<c:url value="navigateToCreateFormAlumno" />" class="btn btn-primary px-2 text-white">Nuevo Alumno</a></li>
+	          <li><a href="<c:url value="navigateToAlumnos" />" class="nav-link px-2 text-white">Alumnos</a></li>
+	          <li><a href="<c:url value="navigateToPortatiles" />" class="nav-link px-2 text-white">Portatiles</a></li>	         
 	        </ul>
 	
 	        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -126,13 +122,60 @@
 	    </div>
 	</header>
 	
+	
+	
 	<div class="container">
 		<a class="btn btn-warning mt-2 px-2 text-white" onCLick="history.back()">
 			<i class="fa fa-arrow-left" aria-hidden="true"></i>
 		</a>
 		
-		<h1 class="text-center">Lista de alumnos</h1>
+		<form method="post" action="findPortatilByAlumnoId">
+			<div class="modal-body">
+				<div class="form-group">
+					<label>Introduzca el ID de un alumno para consultar su portatil asignado</label>
+					<input id="alumno_id" name="alumno_id" type="text" class="form-control" required="required" />
+				</div>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<input type="submit" class="btn btn-primary" value="buscar" />
+			</div>
+		</form>
 		
+		<c:choose>
+			<c:when test="${portatilModel != null}">
+				<table class="table table-dark table-hover">
+		 			<thead>
+						<tr>
+							<th scope="col">Alumno ID</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Apellidos</th>
+							<th scope="col"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></th>
+							<th scope="col">Portatil ID</th>
+							<th scope="col">Marca</th>
+							<th scope="col">Modelo</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><c:out value="${alumnoModel.alumno_id}" /></td>
+							<td><c:out value="${alumnoModel.alumno_nombre}" /></td>
+							<td><c:out value="${alumnoModel.alumno_apellidos}" /></td>
+							<td><i class="fa fa-long-arrow-right" aria-hidden="true"></i></td>
+							<td><c:out value="${portatilModel.portatil_id}" /></td>
+							<td><c:out value="${portatilModel.portatil_marca}" /></td>
+							<td><c:out value="${portatilModel.portatil_modelo}" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</c:when>    
+			<c:otherwise>
+				
+			</c:otherwise>
+		</c:choose>
+		
+
+		
+		<h1 class="text-center">Lista de alumnos</h1>
 		<table class="table table-dark table-hover">
  			<thead>
 				<tr>
@@ -157,6 +200,10 @@
 						<td><c:out value="${alumnoModel.alumno_telefono}" /></td>
 						<td><c:out value="${alumnoModel.portatil.portatil_id}" /></td>
 						<td>
+							<a href="<c:url value="navigateToCreateFormAlumno" />" class="btn btn-success px-2 text-white">
+								<i class="fa fa-plus" aria-hidden="true"></i>
+							</a>
+						
 							<a href="editAlumno?alumno_id=${alumnoModel.alumno_id}" onclick="openEditModal();" data-toggle="modal" class="edit btn btn-warning px-2 text-white">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</a>
@@ -171,6 +218,7 @@
 						</td>
 					</tr>
 				</tbody>
+				
 				
 				<!-- --------------------------------- Edit Modal -------------------------------------------------- -->
 				
@@ -240,6 +288,8 @@
 			</c:forEach>
 		</table>
 	</div>
+	
+	
 	
 	<footer class="py-5 text-bg-dark">
 	    <div class="row">
@@ -318,6 +368,17 @@
 	</script>
 	
 	<script type="text/javascript">
+		function openViewModal() {
+			$('#viewModal').modal('show');
+		}
+	</script>
+	<script type="text/javascript">
+		function closeViewModal() {
+			$('#viewModal').modal('hide');
+		}
+	</script>
+	
+	<script type="text/javascript">		
 		$(document).ready(function(){
 			$('table .delete').on('click', function(){
 				var id = $(this).parent().find('#id').val();

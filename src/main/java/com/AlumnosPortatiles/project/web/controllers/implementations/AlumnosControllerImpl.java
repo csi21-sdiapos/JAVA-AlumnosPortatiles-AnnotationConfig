@@ -71,6 +71,30 @@ public class AlumnosControllerImpl implements IAlumnosController {
 
 		return "createFormAlumno";
 	}
+	
+	
+
+	@RequestMapping(value = "/findPortatilByAlumnoId")
+	@Override
+	public String findPortatilByAlumnoId(@RequestParam long alumno_id, Model model) throws Exception {
+		logger.info("\nVamos a buscar un portatil a través del id de un alumno");
+		
+		Alumno alumno = alumnoService.buscarAlumnoPorId(alumno_id);
+		model.addAttribute("alumnoModel", alumno);
+		Portatil portatil = alumno.getPortatil();
+		model.addAttribute("portatilModel", portatil);
+		
+		List<Alumno> alumnosList = new ArrayList<>();
+		try {
+			alumnosList = alumnoService.listarAlumnos();
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
+		}
+		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
+		model.addAttribute("listaAlumnos", alumnosList);
+		
+		return "alumnos";
+	}
 
 
 

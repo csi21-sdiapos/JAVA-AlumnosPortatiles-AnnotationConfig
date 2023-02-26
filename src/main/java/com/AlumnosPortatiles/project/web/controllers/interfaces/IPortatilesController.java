@@ -17,6 +17,18 @@ public interface IPortatilesController {
 	public ModelAndView navigateToCreateFormPortatil() throws Exception;
 	
 	
+
+	/**
+	 * Find alumno by portatil id.
+	 *
+	 * @param portatil_id the portatil id
+	 * @param model the model
+	 * @return the string
+	 * @throws Exception the exception
+	 */
+//	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) throws Exception;
+	
+	
 	
 	
 	/**

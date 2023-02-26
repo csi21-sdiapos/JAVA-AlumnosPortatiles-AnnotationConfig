@@ -23,6 +23,18 @@ public interface IAlumnosController {
 	
 	
 	/**
+	 * Find portatil by alumno id.
+	 *
+	 * @param alumno_id the alumno id
+	 * @param model the model
+	 * @return the string
+	 * @throws Exception the exception
+	 */
+	public String findPortatilByAlumnoId(@RequestParam long alumno_id, Model model) throws Exception;
+	
+	
+	
+	/**
 	 * Navigate to edit form alumno.
 	 *
 	 * @param alumno_id the alumno id
