@@ -9,12 +9,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.AlumnosPortatiles.project.app.entities.Alumno;
 import com.AlumnosPortatiles.project.app.entities.Portatil;
 import com.AlumnosPortatiles.project.web.controllers.interfaces.IPortatilesController;
+import com.AlumnosPortatiles.project.web.dto.implementations.AlumnoToDTOimpl;
 import com.AlumnosPortatiles.project.web.dto.implementations.PortatilToDTOimpl;
+import com.AlumnosPortatiles.project.web.dto.interfaces.IAlumnoToDTO;
 import com.AlumnosPortatiles.project.web.dto.interfaces.IPortatilToDTO;
 import com.AlumnosPortatiles.project.web.dto.models.PortatilDTO;
 import com.AlumnosPortatiles.project.web.services.implementations.PortatilServiceImpl;
@@ -32,6 +37,9 @@ public class PortatilesControllerImpl implements IPortatilesController {
 	IPortatilService portatilService = new PortatilServiceImpl();
 	
 	@Autowired
+	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
+	
+	@Autowired
 	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
 
 	
@@ -46,14 +54,16 @@ public class PortatilesControllerImpl implements IPortatilesController {
 	}
 	
 	
-/*
+
+	@RequestMapping(value = "/findAlumnoByPortatilId")
 	@Override
 	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) throws Exception {
 		logger.info("\nVamos a buscar un alumno a través del id de un portatil");
 		
 		Portatil portatil = portatilService.buscarPortatilPorId(portatil_id);
+		model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
 		Alumno alumno = portatil.getAlumno();
-		model.addAttribute("alumnoModel", alumno);
+		model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
 		
 		List<Portatil> portatilesList = new ArrayList<>();
 		try {
@@ -62,11 +72,13 @@ public class PortatilesControllerImpl implements IPortatilesController {
 			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
 		}
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		model.addAttribute("listaPortatiles", portatilesList);
+		
+		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		model.addAttribute("listaPortatiles", portatilesListDTO);
 		
 		return "portatiles";
 	}
-*/
+
 	
 	
 	@RequestMapping(value = "/editPortatil")

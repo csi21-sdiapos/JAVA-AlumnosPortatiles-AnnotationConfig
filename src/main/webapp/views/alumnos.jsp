@@ -175,7 +175,10 @@
 		
 
 		
-		<h1 class="text-center">Lista de alumnos</h1>
+		<div class="d-flex justify-content-between">
+			<h1 class="text-center">Lista de alumnos</h1>
+			<a href="<c:url value="navigateToCreateFormAlumno" />" class="btn btn-success px-2 py-2 mb-2 text-white">Nuevo Alumno</a>
+		</div>
 		<table class="table table-dark table-hover">
  			<thead>
 				<tr>
@@ -200,10 +203,6 @@
 						<td><c:out value="${alumnoModel.alumno_telefono}" /></td>
 						<td><c:out value="${alumnoModel.portatil.portatil_id}" /></td>
 						<td>
-							<a href="<c:url value="navigateToCreateFormAlumno" />" class="btn btn-success px-2 text-white">
-								<i class="fa fa-plus" aria-hidden="true"></i>
-							</a>
-						
 							<a href="editAlumno?alumno_id=${alumnoModel.alumno_id}" onclick="openEditModal();" data-toggle="modal" class="edit btn btn-warning px-2 text-white">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</a>
@@ -230,7 +229,7 @@
 									<div class="icon-box">
 										<i class="material-icons">&#xf040;</i>
 									</div>						
-									<h4 class="modal-title w-100">Editar</h4>	
+									<h4 class="modal-title w-100">Editar (No funciona)</h4>	
 									<button type="button" onclick="closeEditModal();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">

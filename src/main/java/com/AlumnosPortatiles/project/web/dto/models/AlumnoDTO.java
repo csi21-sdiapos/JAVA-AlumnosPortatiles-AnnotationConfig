@@ -22,7 +22,7 @@ public class AlumnoDTO implements Serializable {
 	private String alumno_nombre;
 	private String alumno_apellidos;
 	private String alumno_telefono;
-	private long portatil_id;
+	private long portatil_id;	// este campo extra será para obtener de la vista el número de portatil_id que introduzca el usuario para buscar y asignar un portatil en la creación de un alumno
 	
 	/******************************************* RELACIONES *********************************************/
 	private Portatil portatil;

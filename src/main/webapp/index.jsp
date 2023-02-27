@@ -106,12 +106,15 @@
 	    <p class="lead">
 			Esto es un home hecho con una platilla de Bootstrap v5.2
 		</p>
-	    <p class="lead">
-	      <a href="<c:url value="navigateToAlumnos" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Alumnos</a>
-	    </p>
-	    <p class="lead">
-	      <a href="<c:url value="navigateToPortatiles" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Portatiles</a>
-	    </p>
+	    <div class="d-flex justify-content-center">
+	    	<p class="lead">
+		      <a href="<c:url value="navigateToAlumnos" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Alumnos</a>
+		    </p>
+		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		    <p class="lead">
+		      <a href="<c:url value="navigateToPortatiles" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Portatiles</a>
+		    </p>
+	    </div>
 	  </main>
 	
 	  <footer class="mt-auto text-white-50">

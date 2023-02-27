@@ -2,6 +2,8 @@ package com.AlumnosPortatiles.project.web.controllers.interfaces;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -26,7 +28,7 @@ public interface IPortatilesController {
 	 * @return the string
 	 * @throws Exception the exception
 	 */
-//	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) throws Exception;
+	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) throws Exception;
 	
 	
 	

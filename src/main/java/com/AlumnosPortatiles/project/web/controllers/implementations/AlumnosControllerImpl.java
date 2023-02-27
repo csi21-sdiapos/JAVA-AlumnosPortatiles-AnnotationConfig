@@ -80,9 +80,9 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		logger.info("\nVamos a buscar un portatil a través del id de un alumno");
 		
 		Alumno alumno = alumnoService.buscarAlumnoPorId(alumno_id);
-		model.addAttribute("alumnoModel", alumno);
+		model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
 		Portatil portatil = alumno.getPortatil();
-		model.addAttribute("portatilModel", portatil);
+		model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
 		
 		List<Alumno> alumnosList = new ArrayList<>();
 		try {
@@ -91,7 +91,9 @@ public class AlumnosControllerImpl implements IAlumnosController {
 			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
 		}
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		model.addAttribute("listaAlumnos", alumnosList);
+		
+		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		model.addAttribute("listaAlumnos", alumnosListDTO);
 		
 		return "alumnos";
 	}

@@ -128,17 +128,18 @@
 		<a class="btn btn-warning mt-2 px-2 text-white" onCLick="history.back()">
 			<i class="fa fa-arrow-left" aria-hidden="true"></i>
 		</a>
-<!--	
-		<h3 class="text-center">Consultar el alumno de un portátil</h3>
+
+
+
 		<form method="post" action="findAlumnoByPortatilId">
 			<div class="modal-body">
 				<div class="form-group">
-					<label>Portatil ID</label>
+					<label>Introduzca el ID de un portatil para consultar su alumno</label>
 					<input id="portatil_id" name="portatil_id" type="text" class="form-control" required="required" />
 				</div>
 			</div>
 			<div class="modal-footer justify-content-center">
-				<input type="submit" class="btn btn-success" value="buscar" />
+				<input type="submit" class="btn btn-primary" value="buscar" />
 			</div>
 		</form>
 		
@@ -147,22 +148,24 @@
 				<table class="table table-dark table-hover">
 		 			<thead>
 						<tr>
-							<th scope="col">UUID</th>
-							<th scope="col">DATE</th>
-							<th scope="col">ID</th>
+							<th scope="col">Portatil ID</th>
+							<th scope="col">Marca</th>
+							<th scope="col">Modelo</th>
+							<th scope="col"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></th>
+							<th scope="col">Alumno ID</th>
 							<th scope="col">Nombre</th>
 							<th scope="col">Apellidos</th>
-							<th scope="col">Teléfono</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td><c:out value="${alumnoModel.alumno_uuid}" /></td>
-							<td><c:out value="${alumnoModel.alumno_date.getTime()}" /></td>
+							<td><c:out value="${portatilModel.portatil_id}" /></td>
+							<td><c:out value="${portatilModel.portatil_marca}" /></td>
+							<td><c:out value="${portatilModel.portatil_modelo}" /></td>
+							<td><i class="fa fa-long-arrow-right" aria-hidden="true"></i></td>
 							<td><c:out value="${alumnoModel.alumno_id}" /></td>
 							<td><c:out value="${alumnoModel.alumno_nombre}" /></td>
 							<td><c:out value="${alumnoModel.alumno_apellidos}" /></td>
-							<td><c:out value="${alumnoModel.alumno_telefono}" /></td>
 						</tr>
 					</tbody>
 				</table>
@@ -171,11 +174,13 @@
 				
 			</c:otherwise>
 		</c:choose>
--->
 		
 		
 		
-		<h1 class="text-center">Lista de portatiles</h1>
+		<div class="d-flex justify-content-between">
+			<h1 class="text-center">Lista de portatiles</h1>
+			<a href="<c:url value="navigateToCreateFormPortatil" />" class="btn btn-success px-2 py-2 mb-2 text-white">Nuevo Portatil</a>
+		</div>
 		
 		<table class="table table-dark table-hover">
  			<thead>
@@ -207,11 +212,7 @@
 							    </c:otherwise>
 							</c:choose>
 						</td>
-						<td>
-							<a href="<c:url value="navigateToCreateFormPortatil" />" class="btn btn-success px-2 text-white">
-								<i class="fa fa-plus" aria-hidden="true"></i>
-							</a>
-						
+						<td>					
 							<a href="editPortatil?portatil_id=${portatilModel.portatil_id}" onclick="openEditModal();" data-toggle="modal" class="edit btn btn-warning px-2 text-white">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</a>
@@ -237,7 +238,7 @@
 									<div class="icon-box">
 										<i class="material-icons">&#xf040;</i>
 									</div>						
-									<h4 class="modal-title w-100">Editar</h4>	
+									<h4 class="modal-title w-100">Editar (No funciona)</h4>	
 									<button type="button" onclick="closeEditModal();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">
@@ -378,7 +379,7 @@
 				$('#deleteModal #id').val(id);
 			});
 			
-			$('table .edit').on('click', function(){
+			$('table .edit').on('click', function(){ // mi humilde intento de AJAX para la funcionalidad de editar
 				var id = $(this).parent().find('#id').val();
 				$.ajax({
 					type: 'GET',

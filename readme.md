@@ -243,6 +243,13 @@
 ```properties
 # https://docs.spring.io/spring-boot/docs/1.1.1.RELEASE/reference/html/common-application-properties.html
 
+####################################### ProjectConfig #######################################
+spring.mvc.view.prefix=/views/
+spring.mvc.view.suffix=.jsp
+spring.mvc.static-path-pattern=/resources/**
+# server.port=
+
+
 ####################################### DataBase #######################################
 spring.datasource.url=jdbc:postgresql://localhost/AlumnosVistas
 spring.datasource.username=postgres
@@ -276,7 +283,7 @@ hibernate.cache.use_query_cache=false
 
 ### header.jsp
 
-```jsp
+```html
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ page session="false" %>
@@ -287,7 +294,17 @@ hibernate.cache.use_query_cache=false
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" /></script>
+
+<!-- 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+ -->
 ```
 
 ## 2.2. css
@@ -483,10 +500,6 @@ public class Portatil implements Serializable {
 }
 ```
 
-# Prueba de ejecución 1 --> Conexión icicial con la BBDD autocreando las tablas
-
-[Prueba de ejecución 1](https://user-images.githubusercontent.com/91122596/220164667-dd187b8b-e080-4537-a2f2-44907d817578.mp4)
-
 # 5. Repositories
 
 ## 5.1. Interfaces
@@ -494,6 +507,7 @@ public class Portatil implements Serializable {
 ### 5.1.1. com.AlumnosPortatiles.project.app.repositories.interfaces --> IAlumnoRepository.java
 
 ```java
+@Repository(value = "IAlumnoRepository")
 public interface IAlumnoRepository extends CrudRepository<Alumno, Long> {
 	
 }
@@ -531,6 +545,8 @@ public class AlumnoDTO implements Serializable {
 	private String alumno_nombre;
 	private String alumno_apellidos;
 	private String alumno_telefono;
+	private long portatil_id;	// este campo extra será para obtener de la vista el número de portatil_id que introduzca el usuario para buscar y asignar un portatil en la creación de un alumno
+
 	
 	/******************************************* RELACIONES *********************************************/
 	private Portatil portatil;
@@ -839,7 +855,7 @@ public class PortatilToDAOimpl implements IPortatilToDAO {
 }
 ```
 
-# 7. Services (1º versión sin usar los DTOs)
+# 7. Services
 
 ## 7.1. Interfaces
 
@@ -898,7 +914,7 @@ public interface IAlumnoService {
 
 ```java
 public interface IPortatilService {
-
+	
 	/**
 	 * Listar portatiles.
 	 *
@@ -923,7 +939,7 @@ public interface IPortatilService {
 	 * @throws Exception the exception
 	 */
 	public void insertarPortatil(Portatil portatil) throws Exception;
-	
+
 	/**
 	 * Editar portatil.
 	 *
@@ -951,9 +967,9 @@ public interface IPortatilService {
 ```java
 @Service(value = "AlumnoServiceImpl")
 public class AlumnoServiceImpl implements IAlumnoService {
-
+	
 	@Autowired
-	IAlumnoRepository alumnoRepository;	
+	IAlumnoRepository alumnoRepository;
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
@@ -966,7 +982,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
 			return null;
 		}
 	}
-
+	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
 	public Alumno buscarAlumnoPorId(long alumno_id) throws Exception {
@@ -1024,10 +1040,10 @@ public class AlumnoServiceImpl implements IAlumnoService {
 ```java
 @Service(value = "PortatilServiceImpl")
 public class PortatilServiceImpl implements IPortatilService {
-	
+
 	@Autowired
 	IPortatilRepository portatilRepository;
-	
+		
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
 	public List<Portatil> listarPortatiles() throws Exception {
@@ -1050,7 +1066,7 @@ public class PortatilServiceImpl implements IPortatilService {
 			System.out.println("\n[ERROR] - Error al buscar el portatil (return null): " + e);
 			return null;
 		}
-	}	
+	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
@@ -1132,23 +1148,27 @@ public class IndexControllerImpl implements IIndexController {
 	@Autowired
 	IPortatilService portatilService = new PortatilServiceImpl();
 	
+	@Autowired
+	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
+	
+	@Autowired
+	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();	
+	
 	@RequestMapping(value="/navigateToAlumnos")
 	@Override
 	public ModelAndView navigateToAlumnos() throws Exception {
 		logger.info("\nNavegamos a la vista de Alumnos");
 		
 		List<Alumno> alumnosList = new ArrayList<>();
-		
 		try {
 			alumnosList = alumnoService.listarAlumnos();
-			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
 		}
-		
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
 		
-		return new ModelAndView("alumnos", "listaAlumnos", alumnosList);
+		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 
 	@RequestMapping(value="/navigateToPortatiles")
@@ -1157,17 +1177,15 @@ public class IndexControllerImpl implements IIndexController {
 		logger.info("\nNavegamos a la vista de Portatiles");
 		
 		List<Portatil> portatilesList = new ArrayList<>();
-		
 		try {
-			portatilesList = portatilService.listarPortatiles();
-			
+			portatilesList = portatilService.listarPortatiles();	
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
 		}
-		
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-	
-		return new ModelAndView("portatiles", "listaPortatiles", portatilesList);
+		
+		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 }
 ```
@@ -1180,12 +1198,15 @@ public class IndexControllerImpl implements IIndexController {
 	<p class="lead">
 		Esto es un home hecho con una platilla de Bootstrap v5.2
 	</p>
-	<p class="lead">
-	  <a href="<c:url value="navigateToAlumnos" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Alumnos</a>
-	</p>
-	<p class="lead">
-	  <a href="<c:url value="navigateToPortatiles" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Portatiles</a>
-	</p>
+	<div class="d-flex justify-content-center">
+	    <p class="lead">
+		    <a href="<c:url value="navigateToAlumnos" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Alumnos</a>
+		</p>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<p class="lead">
+		    <a href="<c:url value="navigateToPortatiles" />" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Portatiles</a>
+		</p>
+	</div>
 </main>
 ```
 
@@ -1195,7 +1216,7 @@ public class IndexControllerImpl implements IIndexController {
 
 ```java
 public interface IPortatilesController {
-	
+		
 	/**
 	 * Navigate to create form portatil.
 	 *
@@ -1203,15 +1224,35 @@ public interface IPortatilesController {
 	 * @throws Exception the exception
 	 */
 	public ModelAndView navigateToCreateFormPortatil() throws Exception;
-		
+	
 	/**
-	 * Delete portatil.
+	 * Find alumno by portatil id.
 	 *
 	 * @param portatil_id the portatil id
+	 * @param model the model
+	 * @return the string
+	 * @throws Exception the exception
+	 */
+	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) throws Exception;
+	
+	/**
+	 * Edits the portatil.
+	 *
+	 * @param request the request
 	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public ModelAndView deletePortatil(@RequestParam long portatil_id) throws Exception;
+	public ModelAndView editPortatil(HttpServletRequest request) throws Exception;
+	//public ModelAndView navigateToEditFormPortatil(@RequestParam long portatil_id) throws Exception;
+	
+	/**
+	 * Delete portatil.
+	 *
+	 * @param request the request
+	 * @return the model and view
+	 * @throws Exception the exception
+	 */
+	public ModelAndView deletePortatil(HttpServletRequest request) throws Exception;	
 }
 ```
 
@@ -1219,55 +1260,94 @@ public interface IPortatilesController {
 
 ```java
 @Controller(value = "PortatilesControllerImpl")
+@RequestMapping(value = { "", "portatil" })
 public class PortatilesControllerImpl implements IPortatilesController {
 	
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	@Autowired
 	IPortatilService portatilService = new PortatilServiceImpl();
-
+	
+	@Autowired
+	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
+	
+	@Autowired
+	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
+	
 	@RequestMapping(value = "/navigateToCreateFormPortatil")
 	@Override
 	public ModelAndView navigateToCreateFormPortatil() throws Exception {
-		logger.info("\nNavegamos a la vista del formulario de registro de portailes, pasando un objeto Portatil");
+		logger.info("\nNavegamos a la vista del formulario de registro de portatiles, pasando un objeto Portatil");
+		PortatilDTO portatilDTO = new PortatilDTO();
 		
-		Portatil portatil = new Portatil();
-		
-		return new ModelAndView("createFormPortatil", "portatilModel", portatil);
+		return new ModelAndView("createFormPortatil", "portatilModel", portatilDTO);
 	}
-}@Controller(value = "PortatilesControllerImpl")
-public class PortatilesControllerImpl implements IPortatilesController {
-	
-	protected final Log logger = LogFactory.getLog(getClass());
-	
-	@Autowired
-	IPortatilService portatilService = new PortatilServiceImpl();
-	
-	@RequestMapping(value = "/navigateToCreateFormPortatil")
+
+	@RequestMapping(value = "/findAlumnoByPortatilId")
 	@Override
-	public ModelAndView navigateToCreateFormPortatil() throws Exception {
-		logger.info("\nNavegamos a la vista del formulario de registro de portailes, pasando un objeto Portatil");
-		Portatil portatil = new Portatil();
+	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) throws Exception {
+		logger.info("\nVamos a buscar un alumno a través del id de un portatil");
 		
-		return new ModelAndView("createFormPortatil", "portatilModel", portatil);
+		Portatil portatil = portatilService.buscarPortatilPorId(portatil_id);
+		model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
+		Alumno alumno = portatil.getAlumno();
+		model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
+		
+		List<Portatil> portatilesList = new ArrayList<>();
+		try {
+			portatilesList = portatilService.listarPortatiles();
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
+		}
+		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
+		
+		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		model.addAttribute("listaPortatiles", portatilesListDTO);
+		
+		return "portatiles";
+	}
+	
+	@RequestMapping(value = "/editPortatil")
+	@Override
+	public ModelAndView editPortatil(HttpServletRequest request) throws Exception {
+		logger.info("\nEntrando en el metodo --> editPortatil()");
+		
+		long id = Long.parseLong(request.getParameter("id"));
+		Portatil portatil = portatilService.buscarPortatilPorId(id);
+		portatil.setPortatil_marca(request.getParameter("marca").trim());
+		portatil.setPortatil_modelo(request.getParameter("modelo").trim());
+		portatilService.editarPortatil(portatil.getPortatil_id(), portatil.getPortatil_marca(), portatil.getPortatil_modelo());
+		
+		List<Portatil> portatilesList = new ArrayList<>();
+		try {
+			portatilesList = portatilService.listarPortatiles();
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
+		}
+		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
+		
+		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 
 	@RequestMapping(value = "/deletePortatil")
 	@Override
-	public ModelAndView deletePortatil(@RequestParam long portatil_id) throws Exception {
+	public ModelAndView deletePortatil(HttpServletRequest request) throws Exception {
 		logger.info("\nEntrando en el metodo --> deletePortatil()");
-		portatilService.eliminarPortatilPorId(portatil_id);
-		List<Portatil> portatilesList = new ArrayList<>();
 		
+		long id = Long.parseLong(request.getParameter("id"));
+		portatilService.eliminarPortatilPorId(id);
+		
+		List<Portatil> portatilesList = new ArrayList<>();
 		try {
 			portatilesList = portatilService.listarPortatiles();
-			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
 		}
-		
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		return new ModelAndView("portatiles", "listaPortatiles", portatilesList);
+		
+		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 }
 ```
@@ -1277,94 +1357,174 @@ public class PortatilesControllerImpl implements IPortatilesController {
 **Nota**: Para que los modals de bootstrap funcionen, recuerda importar también con CDNs el popper y el jquery.
 
 ```html
-<table class="table table-dark table-hover">
-	<thead>
-		<tr>
-			<th scope="col">UUID</th>
-			<th scope="col">DATE</th>
-			<th scope="col">ID</th>
-			<th scope="col">Marca</th>
-			<th scope="col">Modelo</th>
-			<th scope="col">Alumno ID</th>
-			<th scope="col">Editar</th>
-			<th scope="col">Eliminar</th>
-		</tr>
-	</thead>
-	<c:forEach var="portatilModel" items="${listaPortatiles}">
-		<tbody>
-			<tr>
-				<td><c:out value="${portatilModel.portatil_uuid}" /></td>
-				<td><c:out value="${portatilModel.portatil_date.getTime()}" /></td>
-				<td><c:out value="${portatilModel.portatil_id}" /></td>
-				<td><c:out value="${portatilModel.portatil_marca}" /></td>
-				<td><c:out value="${portatilModel.portatil_modelo}" /></td>
-				<td>
-					<c:choose>
-					    <c:when test="${portatilModel.alumno.alumno_id != null}">
-					        <c:out value="${portatilModel.alumno.alumno_id}" />
-					    </c:when>    
-					    <c:otherwise>
-					        <c:out value="sin asignar" />
-					    </c:otherwise>
-					</c:choose>
-				</td>
-				<td>
-					<a href="#editModal" data-toggle="modal" class="btn btn-warning px-2 text-white">Editar</a>
-				</td>
-				<td>
-					<a href="#deleteModal" data-toggle="modal" class="btn btn-danger px-2 text-white">Eliminar</a>
-					<!--<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}">Eliminar Sin Modal</a> -->
-				</td>
+<div class="container">
+		<a class="btn btn-warning mt-2 px-2 text-white" onCLick="history.back()">
+			<i class="fa fa-arrow-left" aria-hidden="true"></i>
+		</a>
+
+
+
+		<form method="post" action="findAlumnoByPortatilId">
+			<div class="modal-body">
+				<div class="form-group">
+					<label>Introduzca el ID de un portatil para consultar su alumno</label>
+					<input id="portatil_id" name="portatil_id" type="text" class="form-control" required="required" />
+				</div>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<input type="submit" class="btn btn-primary" value="buscar" />
+			</div>
+		</form>
+		
+		<c:choose>
+			<c:when test="${alumnoModel != null}">
+				<table class="table table-dark table-hover">
+		 			<thead>
+						<tr>
+							<th scope="col">Portatil ID</th>
+							<th scope="col">Marca</th>
+							<th scope="col">Modelo</th>
+							<th scope="col"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></th>
+							<th scope="col">Alumno ID</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Apellidos</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><c:out value="${portatilModel.portatil_id}" /></td>
+							<td><c:out value="${portatilModel.portatil_marca}" /></td>
+							<td><c:out value="${portatilModel.portatil_modelo}" /></td>
+							<td><i class="fa fa-long-arrow-right" aria-hidden="true"></i></td>
+							<td><c:out value="${alumnoModel.alumno_id}" /></td>
+							<td><c:out value="${alumnoModel.alumno_nombre}" /></td>
+							<td><c:out value="${alumnoModel.alumno_apellidos}" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</c:when>    
+			<c:otherwise>
+				
+			</c:otherwise>
+		</c:choose>
+		
+		
+		
+		<div class="d-flex justify-content-between">
+			<h1 class="text-center">Lista de portatiles</h1>
+			<a href="<c:url value="navigateToCreateFormPortatil" />" class="btn btn-success px-2 py-2 mb-2 text-white">Nuevo Portatil</a>
+		</div>
+		
+		<table class="table table-dark table-hover">
+ 			<thead>
+				<tr>
+					<th scope="col">UUID</th>
+					<th scope="col">DATE</th>
+					<th scope="col">ID</th>
+					<th scope="col">Marca</th>
+					<th scope="col">Modelo</th>
+					<th scope="col">Alumno ID</th>
+					<th scope="col">Editar/Eliminar</th>
+				</tr>
+			</thead>
+			<c:forEach var="portatilModel" items="${listaPortatiles}">
+				<tbody>
+					<tr>
+						<td><c:out value="${portatilModel.portatil_uuid}" /></td>
+						<td><c:out value="${portatilModel.portatil_date.getTime()}" /></td>
+						<td><c:out value="${portatilModel.portatil_id}" /></td>
+						<td><c:out value="${portatilModel.portatil_marca}" /></td>
+						<td><c:out value="${portatilModel.portatil_modelo}" /></td>
+						<td>
+							<c:choose>
+							    <c:when test="${portatilModel.alumno.alumno_id != null}">
+							        <c:out value="${portatilModel.alumno.alumno_id}" />
+							    </c:when>    
+							    <c:otherwise>
+							        <c:out value="sin asignar" />
+							    </c:otherwise>
+							</c:choose>
+						</td>
+						<td>					
+							<a href="editPortatil?portatil_id=${portatilModel.portatil_id}" onclick="openEditModal();" data-toggle="modal" class="edit btn btn-warning px-2 text-white">
+								<i class="fa fa-pencil" aria-hidden="true"></i>
+							</a>
+							<!--<a href="navigateToEditFormPortatil/?portatil_id=${portatilModel.portatil_id}" class="btn btn-warning px-2 text-white">Editar</a>-->
 						
+							<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}" onclick="openDeleteModal();" data-toggle="modal" class="delete btn btn-danger px-2 text-white">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</a>
+							<!--<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}">Eliminar Sin Modal</a> -->
+							
+							<input type="hidden" id="id" value="${portatilModel.portatil_id}" />
+						</td>
+					</tr>
+				</tbody>
+				
 				<!-- --------------------------------- Edit Modal -------------------------------------------------- -->
+			
 				<div id="editModal" class="modal fade">
 					<div class="modal-dialog modal-confirm">
 						<div class="modal-content">
-							<div class="modal-header flex-column">
-								<div class="icon-box">
-									<i class="material-icons">&#xE5CD;</i>
-								</div>						
-								<h4 class="modal-title w-100">Editar</h4>	
-						        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							</div>
-							<div class="modal-body">
-								<p>Do you really want to delete these records? This process cannot be undone.</p>
-							</div>
-							<div class="modal-footer justify-content-center">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-								<button type="button" class="btn btn-danger">Delete</button>
-							</div>
+							<form method="post" action="editPortatil">
+								<div class="modal-header flex-column">
+									<div class="icon-box">
+										<i class="material-icons">&#xf040;</i>
+									</div>						
+									<h4 class="modal-title w-100">Editar (No funciona)</h4>	
+									<button type="button" onclick="closeEditModal();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<label>Marca</label>
+										<input id="marca" name="marca" type="text" class="form-control" required="required" />
+									</div>
+									<div class="form-group">
+										<label>Modelo</label>
+										<input id="modelo" name="modelo" type="text" class="form-control" required="required" />
+									</div>
+								</div>
+								<div class="modal-footer justify-content-center">
+									<button type="button" onclick="closeEditModal();" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+									<input type="submit" class="btn btn-danger" value="Edit" />
+									
+									<input type="hidden" name="id" id="id" />
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>  
-						
-				<!-- --------------------------------- Delete Modal --------------------------------------------- -->
+			
+			<!-- --------------------------------- Delete Modal --------------------------------------------- -->
+			
 				<div id="deleteModal" class="modal fade">
 					<div class="modal-dialog modal-confirm">
 						<div class="modal-content">
-							<div class="modal-header flex-column">
-								<div class="icon-box">
-									<i class="material-icons">&#xE5CD;</i>
-								</div>						
-								<h4 class="modal-title w-100">Are you sure?</h4>	
-				                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							</div>
-							<div class="modal-body">
-								<p>Do you really want to delete these records? This process cannot be undone.</p>
-							</div>
-							<div class="modal-footer justify-content-center">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>			
-								<a href="deletePortatil?portatil_id=${portatilModel.portatil_id}">
-									<button type="button" class="btn btn-danger">Delete</button>
-								</a>
-							</div>
+							<form method="post" action="deletePortatil">
+								<div class="modal-header flex-column">
+									<div class="icon-box">
+										<i class="material-icons">&#xE5CD;</i>
+									</div>							
+									<h4 class="modal-title w-100">Are you sure?</h4>	
+									<button type="button" onclick="closeDeleteModal();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>Do you really want to delete these records? This process cannot be undone.</p>
+								</div>
+								<div class="modal-footer justify-content-center">
+									<button type="button" onclick="closeDeleteModal();" class="btn btn-secondary" data-dismiss="modal">Cancel</button>			
+									<input type="submit" class="btn btn-danger" value="Delete" />
+									
+									<input type="hidden" name="id" id="id" />
+								</div>
+							</form>
 						</div>
 					</div>
-				</div> 			
-			</tr>
-		</tbody>		
-	</c:forEach>
-</table>
+				</div>
+				
+			</c:forEach>
+		</table>
+	</div>
 ```
 
 ## 8.3. Alumnos
@@ -1377,10 +1537,40 @@ public interface IAlumnosController {
 	/**
 	 * Navigate to create form alumno.
 	 *
+	 * @param model the model
+	 * @return the string
+	 * @throws Exception the exception
+	 */
+	public String navigateToCreateFormAlumno(Model model) throws Exception;
+	
+	/**
+	 * Find portatil by alumno id.
+	 *
+	 * @param alumno_id the alumno id
+	 * @param model the model
+	 * @return the string
+	 * @throws Exception the exception
+	 */
+	public String findPortatilByAlumnoId(@RequestParam long alumno_id, Model model) throws Exception;
+	
+	/**
+	 * Navigate to edit form alumno.
+	 *
+	 * @param alumno_id the alumno id
 	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public ModelAndView navigateToCreateFormAlumno() throws Exception;	
+	public ModelAndView navigateToEditFormAlumno(@RequestParam long alumno_id) throws Exception;
+	// public ModelAndView editAlumno(HttpServletRequest request) throws Exception;
+	
+	/**
+	 * Delete alumno.
+	 *
+	 * @param request the request
+	 * @return the model and view
+	 * @throws Exception the exception
+	 */
+	public ModelAndView deleteAlumno(HttpServletRequest request) throws Exception;	
 }
 ```
 
@@ -1388,6 +1578,7 @@ public interface IAlumnosController {
 
 ```java
 @Controller(value = "AlumnosControllerImpl")
+@RequestMapping(value = { "", "alumno" })
 public class AlumnosControllerImpl implements IAlumnosController {
 
 	protected final Log logger = LogFactory.getLog(getClass());
@@ -1395,14 +1586,88 @@ public class AlumnosControllerImpl implements IAlumnosController {
 	@Autowired
 	IAlumnoService alumnoService = new AlumnoServiceImpl();
 	
+	@Autowired
+	IPortatilService portatilService = new PortatilServiceImpl();
+	
+	@Autowired
+	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
+	
+	@Autowired
+	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
+	
 	@RequestMapping(value = "/navigateToCreateFormAlumno")
 	@Override
-	public ModelAndView navigateToCreateFormAlumno() throws Exception {
+	public String navigateToCreateFormAlumno(Model model) throws Exception {
 		logger.info("\nNavegamos a la vista del formulario de registro de alumnos, pasando un objeto Alumno");
 		
-		Alumno alumno = new Alumno();
-        
-		return new ModelAndView("createFormAlumno", "alumnoModel", alumno);
+		AlumnoDTO alumnoDTO = new AlumnoDTO();
+		model.addAttribute("alumnoModel", alumnoDTO);
+		
+		List<Portatil> portatilesList = new ArrayList<>();
+		try {
+			portatilesList = portatilService.listarPortatiles();
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
+		}
+		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
+
+		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		model.addAttribute("listaPortatiles" ,portatilesListDTO);
+
+		return "createFormAlumno";
+	}
+
+	@RequestMapping(value = "/findPortatilByAlumnoId")
+	@Override
+	public String findPortatilByAlumnoId(@RequestParam long alumno_id, Model model) throws Exception {
+		logger.info("\nVamos a buscar un portatil a través del id de un alumno");
+		
+		Alumno alumno = alumnoService.buscarAlumnoPorId(alumno_id);
+		model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
+		Portatil portatil = alumno.getPortatil();
+		model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
+		
+		List<Alumno> alumnosList = new ArrayList<>();
+		try {
+			alumnosList = alumnoService.listarAlumnos();
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
+		}
+		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
+		
+		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		model.addAttribute("listaAlumnos", alumnosListDTO);
+		
+		return "alumnos";
+	}
+
+	@RequestMapping(value = "/navigateToEditFormAlumno")
+	@Override
+	public ModelAndView navigateToEditFormAlumno(@RequestParam long alumno_id) throws Exception {
+		logger.info("\nNavegamos a la vista del formulario de edicion de alumnos, pasando un objeto Alumno");
+		Alumno alumno = alumnoService.buscarAlumnoPorId(alumno_id);
+		
+		return new ModelAndView("editFormAlumno", "alumnoModel", alumno);
+	}
+
+	@RequestMapping(value = "/deleteAlumno")
+	@Override
+	public ModelAndView deleteAlumno(HttpServletRequest request) throws Exception {
+		logger.info("\nEntrando en el metodo --> deleteAlumno()");
+
+		long id = Long.parseLong(request.getParameter("id"));
+		alumnoService.eliminarAlumnoPorid(id);
+		
+		List<Alumno> alumnosList = new ArrayList<>();
+		try {
+			alumnosList = alumnoService.listarAlumnos();
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
+		}
+		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
+		
+		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 }
 ```
@@ -1410,32 +1675,169 @@ public class AlumnosControllerImpl implements IAlumnosController {
 ### 8.3.3. webapp/views/ --> alumnos.jsp
 
 ```html
-<table class="table table-dark table-hover">
- 	<thead>
-		<tr>
-			<th scope="col">UUID</th>
-			<th scope="col">DATE</th>
-			<th scope="col">ID</th>
-			<th scope="col">Nombre</th>
-			<th scope="col">Apellidos</th>
-			<th scope="col">Teléfono</th>
-			<th scope="col">Portátil ID</th>
-		</tr>
-	</thead>
-	<c:forEach var="alumnoModel" items="${listaAlumnos}">
-		<tbody>
-			<tr>
-				<td><c:out value="${alumnoModel.alumno_uuid}" /></td>
-				<td><c:out value="${alumnoModel.alumno_date.getTime()}" /></td>
-				<td><c:out value="${alumnoModel.alumno_id}" /></td>
-				<td><c:out value="${alumnoModel.alumno_nombre}" /></td>
-				<td><c:out value="${alumnoModel.alumno_apellidos}" /></td>
-				<td><c:out value="${alumnoModel.alumno_telefono}" /></td>
-				<td><c:out value="${alumnoModel.portatil.portatil_id}" /></td>
-			</tr>
-		</tbody>
-	</c:forEach>
-</table>
+<div class="container">
+		<a class="btn btn-warning mt-2 px-2 text-white" onCLick="history.back()">
+			<i class="fa fa-arrow-left" aria-hidden="true"></i>
+		</a>
+		
+		<form method="post" action="findPortatilByAlumnoId">
+			<div class="modal-body">
+				<div class="form-group">
+					<label>Introduzca el ID de un alumno para consultar su portatil asignado</label>
+					<input id="alumno_id" name="alumno_id" type="text" class="form-control" required="required" />
+				</div>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<input type="submit" class="btn btn-primary" value="buscar" />
+			</div>
+		</form>
+		
+		<c:choose>
+			<c:when test="${portatilModel != null}">
+				<table class="table table-dark table-hover">
+		 			<thead>
+						<tr>
+							<th scope="col">Alumno ID</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Apellidos</th>
+							<th scope="col"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></th>
+							<th scope="col">Portatil ID</th>
+							<th scope="col">Marca</th>
+							<th scope="col">Modelo</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><c:out value="${alumnoModel.alumno_id}" /></td>
+							<td><c:out value="${alumnoModel.alumno_nombre}" /></td>
+							<td><c:out value="${alumnoModel.alumno_apellidos}" /></td>
+							<td><i class="fa fa-long-arrow-right" aria-hidden="true"></i></td>
+							<td><c:out value="${portatilModel.portatil_id}" /></td>
+							<td><c:out value="${portatilModel.portatil_marca}" /></td>
+							<td><c:out value="${portatilModel.portatil_modelo}" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</c:when>    
+			<c:otherwise>
+				
+			</c:otherwise>
+		</c:choose>
+		
+
+		
+		<div class="d-flex justify-content-between">
+			<h1 class="text-center">Lista de alumnos</h1>
+			<a href="<c:url value="navigateToCreateFormAlumno" />" class="btn btn-success px-2 py-2 mb-2 text-white">Nuevo Alumno</a>
+		</div>
+		<table class="table table-dark table-hover">
+ 			<thead>
+				<tr>
+					<th scope="col">UUID</th>
+					<th scope="col">DATE</th>
+					<th scope="col">ID</th>
+					<th scope="col">Nombre</th>
+					<th scope="col">Apellidos</th>
+					<th scope="col">Teléfono</th>
+					<th scope="col">Portátil ID</th>
+					<th scope="col">Editar/Eliminar</th>
+				</tr>
+			</thead>
+			<c:forEach var="alumnoModel" items="${listaAlumnos}">
+				<tbody>
+					<tr>
+						<td><c:out value="${alumnoModel.alumno_uuid}" /></td>
+						<td><c:out value="${alumnoModel.alumno_date.getTime()}" /></td>
+						<td><c:out value="${alumnoModel.alumno_id}" /></td>
+						<td><c:out value="${alumnoModel.alumno_nombre}" /></td>
+						<td><c:out value="${alumnoModel.alumno_apellidos}" /></td>
+						<td><c:out value="${alumnoModel.alumno_telefono}" /></td>
+						<td><c:out value="${alumnoModel.portatil.portatil_id}" /></td>
+						<td>
+							<a href="editAlumno?alumno_id=${alumnoModel.alumno_id}" onclick="openEditModal();" data-toggle="modal" class="edit btn btn-warning px-2 text-white">
+								<i class="fa fa-pencil" aria-hidden="true"></i>
+							</a>
+							<!--<a href="navigateToEditFormAlumno/?alumno_id=${alumnoModel.alumno_id}" class="btn btn-warning px-2 text-white">Editar</a>-->
+						
+							<a href="deleteAlumno?alumno_id=${alumnoModel.alumno_id}" onclick="openDeleteModal();" data-toggle="modal" class="delete btn btn-danger px-2 text-white">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</a>
+							<!--<a href="deleteAlumno?alumno_id=${alumnoModel.alumno_id}">Eliminar Sin Modal</a> -->
+							
+							<input type="hidden" id="id" value="${alumnoModel.alumno_id}" />
+						</td>
+					</tr>
+				</tbody>
+				
+				
+				<!-- --------------------------------- Edit Modal -------------------------------------------------- -->
+				
+				<div id="editModal" class="modal fade">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content">
+							<form method="post" action="editAlumno">
+								<div class="modal-header flex-column">
+									<div class="icon-box">
+										<i class="material-icons">&#xf040;</i>
+									</div>						
+									<h4 class="modal-title w-100">Editar (No funciona)</h4>	
+									<button type="button" onclick="closeEditModal();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<label>Nombre</label>
+										<input id="nombre" name="nombre" type="text" class="form-control" required="required" />
+									</div>
+									<div class="form-group">
+										<label>Apellidos</label>
+										<input id="apellidos" name="apellidos" type="text" class="form-control" required="required" />
+									</div>
+									<div class="form-group">
+										<label>Teléfono</label>
+										<input id="telefono" name="telefono" type="text" class="form-control" required="required" />
+									</div>
+								</div>
+								<div class="modal-footer justify-content-center">
+									<button type="button" onclick="closeEditModal();" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+									<input type="submit" class="btn btn-danger" value="Edit" />
+									
+									<input type="hidden" name="id" id="id" />
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>  
+				
+				<!-- --------------------------------- Delete Modal --------------------------------------------- -->
+				
+				<div id="deleteModal" class="modal fade">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content">
+							<form method="post" action="deleteAlumno">
+								<div class="modal-header flex-column">
+									<div class="icon-box">
+										<i class="material-icons">&#xE5CD;</i>
+									</div>							
+									<h4 class="modal-title w-100">Are you sure?</h4>	
+									<button type="button" onclick="closeDeleteModal();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>Do you really want to delete these records? This process cannot be undone.</p>
+								</div>
+								<div class="modal-footer justify-content-center">
+									<button type="button" onclick="closeDeleteModal();" class="btn btn-secondary" data-dismiss="modal">Cancel</button>			
+									<input type="submit" class="btn btn-danger" value="Delete" />
+									
+									<input type="hidden" name="id" id="id" />
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				 
+			</c:forEach>
+		</table>
+	</div>
 ```
 
 ## 8.4. Create Form Portátiles
@@ -1444,7 +1846,7 @@ public class AlumnosControllerImpl implements IAlumnosController {
 
 ```java
 public interface ICreateFormPortatilController {
-
+	
 	/**
 	 * Form create portatil.
 	 *
@@ -1452,7 +1854,7 @@ public interface ICreateFormPortatilController {
 	 * @return the model and view
 	 * @throws Exception the exception
 	 */
-	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") Portatil portatilModel) throws Exception;	
+	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel) throws Exception;	
 }
 ```
 
@@ -1467,61 +1869,222 @@ public class CreateFormPortatilControllerImpl implements ICreateFormPortatilCont
 	@Autowired
 	IPortatilService portatilService = new PortatilServiceImpl();
 	
+	@Autowired
+	IPortatilToDAO portatilToDAO = new PortatilToDAOimpl();
+	
+	@Autowired
+	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
+	
 	@RequestMapping(value="/formCreatePortatil", method = RequestMethod.POST)
 	@Override
-	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") Portatil portatilModel) throws Exception {
+	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel) throws Exception {
 		logger.info("\nEntrando en el metodo --> formCreatePortatil()");
 		
 		portatilModel.setPortatil_uuid(UUID.randomUUID());
 		portatilModel.setPortatil_date(Calendar.getInstance());
-		portatilService.insertarPortatil(portatilModel);
+		portatilService.insertarPortatil(portatilToDAO.toPortatilDAO(portatilModel));
 		
 		logger.info("\nVolvemos a la vista de los Portatiles");
-		
 		List<Portatil> portatilesList = new ArrayList<>();
-		
 		try {
 			portatilesList = portatilService.listarPortatiles();
-			
 		} catch (Exception e) {
 			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
 		}
-		
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
 		
-		return new ModelAndView("portatiles", "listaPortatiles", portatilesList);
-	}
+		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
+	}	
 }
 ```
 
 ### 8.4.3. webapp/views/ --> createFormPortatil.jsp
 
 ```html
-<form:form method="POST" action="formCreatePortatil" modelAttribute="portatilModel">
-	<table>
-		<tr class="mb-3">
-	        <td><form:label path="portatil_marca" for="portatil_marca" class="form-label">Marca</form:label></td>
-	    	<td><form:input path="portatil_marca" type="text" class="form-control" id="portatil_marca" placeholder="marca..." /></td>
-	    </tr>
-	    <tr>
-	        <td><form:label path="portatil_modelo" for="portatil_modelo" class="form-label">Modelo</form:label></td>
-	        <td><form:input path="portatil_modelo" type="text" class="form-control" id="portatil_modelo" placeholder="modelo..." /></td>
-		</tr>
+<div class="container">
+    <a class="btn btn-warning mt-2 px-2 text-white" onCLick="history.back()">
+		<i class="fa fa-arrow-left" aria-hidden="true"></i>
+	</a>
+		
+    <h1 class="text-center">Formulario de Registro de Portátiles</h1>
+    	
+    <form:form method="POST" action="formCreatePortatil" modelAttribute="portatilModel">
+	    <table>
+	        <tr class="mb-3">
+	        	<td><form:label path="portatil_marca" for="portatil_marca" class="form-label">Marca</form:label></td>
+	            <td><form:input path="portatil_marca" type="text" class="form-control" id="portatil_marca" placeholder="marca..." /></td>
+	        </tr>
+	        <tr>
+	          	<td><form:label path="portatil_modelo" for="portatil_modelo" class="form-label">Modelo</form:label></td>
+                <td><form:input path="portatil_modelo" type="text" class="form-control" id="portatil_modelo" placeholder="modelo..." /></td>
+            </tr>
 	                
-	    <tr>
-	      	<td><input type="submit" class="btn btn-primary" value="Registrar Portátil"/></td>
-	    </tr>
-	</table>
-</form:form> 
+            <tr>
+              	<td><input type="submit" class="btn btn-primary" value="Registrar Portátil"/></td>
+            </tr>
+        </table>
+  	</form:form> 
+</div>
 ```
 
-# Prueba de ejecución 2 --> Probando el insert de Portatil (.save()) y el select de Portatil (.findAll())
+## 8.5. Create Form Alumnos
+
+### 8.5.1. com.AlumnosPortatiles.project.web.controllers.interfaces --> ICreateFormAlumnoController.java
+
+```java
+public interface ICreateFormAlumnoController {
+	
+	/**
+	 * Form create alumno.
+	 *
+	 * @param alumnoModel the alumno model
+	 * @return the model and view
+	 * @throws Exception the exception
+	 */
+	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel) throws Exception;
+}
+```
+
+### 8.5.2. com.AlumnosPortatiles.project.web.controllers.implementations --> CreateFormAlumnoControllerImpl.java
+
+```java
+@Controller(value = "CreateFormAlumnoControllerImpl")
+public class CreateFormAlumnoControllerImpl implements ICreateFormAlumnoController {
+	
+	protected final Log logger = LogFactory.getLog(getClass());
+	
+	@Autowired
+	IAlumnoService alumnoService = new AlumnoServiceImpl();
+	
+	@Autowired
+	IPortatilService portatilService = new PortatilServiceImpl();
+	
+	@Autowired
+	IAlumnoToDAO alumnoToDAO = new AlumnoToDAOimpl();
+	
+	@Autowired
+	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
+	
+	@RequestMapping(value="/formCreateAlumno", method = RequestMethod.POST)
+	@Override
+	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel) throws Exception {
+		logger.info("\nEntrando en el metodo --> formCreateAlumno()");
+		Portatil portatil = portatilService.buscarPortatilPorId(alumnoModel.getPortatil_id());
+		
+		alumnoModel.setAlumno_uuid(UUID.randomUUID());
+		alumnoModel.setAlumno_date(Calendar.getInstance());
+		alumnoModel.setPortatil(portatil);
+		alumnoService.insertarAlumno(alumnoToDAO.toAlumnoDAO(alumnoModel));
+		
+		logger.info("\nVolvemos a la vista de los Alumnos");
+		List<Alumno> alumnosList = new ArrayList<>();
+		try {
+			alumnosList = alumnoService.listarAlumnos();
+		} catch (Exception e) {
+			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
+		}	
+		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
+		
+		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
+	}
+}
+```
+
+### 8.5.3. webapp/views/ --> createFormAlumno.jsp
+
+```html
+<div class="container">
+    <a class="btn btn-warning mt-2 px-2 text-white" onCLick="history.back()">
+		<i class="fa fa-arrow-left" aria-hidden="true"></i>
+	</a>
+    	
+    <h1 class="text-center">Formulario de Registro de Portátiles</h1>
+    	
+    <form:form method="POST" action="formCreateAlumno" modelAttribute="alumnoModel">
+	    <table>
+	        <tr class="mb-3">
+	            <td><form:label path="alumno_nombre" for="alumno_nombre" class="form-label">Nombre</form:label></td>
+	            <td><form:input path="alumno_nombre" type="text" class="form-control" id="alumno_nombre" placeholder="nombre..." /></td>
+	        </tr>
+	        <tr>
+	            <td><form:label path="alumno_apellidos" for="alumno_apellidos" class="form-label">Apellidos</form:label></td>
+	            <td><form:input path="alumno_apellidos" type="text" class="form-control" id="alumno_apellidos" placeholder="apellidos..." /></td>
+	        </tr>
+	        <tr>
+	            <td><form:label path="alumno_telefono" for="alumno_telefono" class="form-label">Teléfono</form:label></td>
+	            <td><form:input path="alumno_telefono" type="text" class="form-control" id="alumno_telefono" placeholder="teléfono..." /></td>
+	        </tr>
+	        <tr>
+             	<td><form:label path="portatil_id" for="portatil_id" class="form-label">Portátil ID</form:label></td>
+	            <td><form:input path="portatil_id" type="text" class="form-control" id="portatil_id" placeholder="portátil ID..." /></td>
+	        </tr>
+	                
+	        <tr>
+	            <td><input type="submit" class="btn btn-primary" value="Registrar Alumno"/></td>
+	        </tr>
+	    </table>
+	</form:form>
+	  	
+	<h2 class="text-center">Portátiles Disponibles</h2>
+	<table class="table table-dark table-hover">
+ 		<thead>
+			<tr>
+				<th scope="col">UUID</th>
+				<th scope="col">DATE</th>
+				<th scope="col">ID</th>
+				<th scope="col">Marca</th>
+				<th scope="col">Modelo</th>
+			</tr>
+		</thead>
+		<c:forEach var="portatilModel" items="${listaPortatiles}">
+			<tbody>
+				<c:choose>
+					<c:when test="${portatilModel.alumno.alumno_id == null}">
+						<tr>
+							<td><c:out value="${portatilModel.portatil_uuid}" /></td>
+							<td><c:out value="${portatilModel.portatil_date.getTime()}" /></td>
+							<td><c:out value="${portatilModel.portatil_id}" /></td>
+							<td><c:out value="${portatilModel.portatil_marca}" /></td>
+							<td><c:out value="${portatilModel.portatil_modelo}" /></td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+						<tr></tr>
+					</c:otherwise>
+				</c:choose>
+			</tbody>
+		</c:forEach>
+	</table> 
+</div>
+```
+
+# Pruebas de Ejecución
+
+## Prueba de ejecución 1 --> Conexión icicial con la BBDD autocreando las tablas
+
+[Prueba de ejecución 1](https://user-images.githubusercontent.com/91122596/220164667-dd187b8b-e080-4537-a2f2-44907d817578.mp4)
+
+## Prueba de ejecución 2 --> Probando el insert de Portatil (.save()) y el select de Portatil (.findAll())
 
 [Prueba de ejecución 2](https://user-images.githubusercontent.com/91122596/220727301-f1ba9007-02d9-4690-9033-e3b834e11240.mp4)
 
-# Prueba de ejecución 3 --> Probando el delete de Portatil
+## Prueba de ejecución 3 --> Probando el delete de Portatil
 
-[Prueba de ejecución 3](https://user-images.githubusercontent.com/91122596/220954058-92dba74e-e8f3-4cfd-919e-d0c7e30cd573.mp4)
+[Prueba de ejecución 3](https://user-images.githubusercontent.com/91122596/221555331-e1f5159f-5319-47d4-899a-784ccc6e1735.mp4)
+
+## Prueba de ejecución 4 --> Probando el insert de Alumno asignando un portátil
+
+[Prueba de ejecución 4](https://user-images.githubusercontent.com/91122596/221556468-f8dbc648-0d3b-4308-be7a-0db1964fa8ea.mp4)
+
+## Prueba de ejecución 5 --> Probando el delete de Alumno
+
+[Prueba de ejecución 5](https://user-images.githubusercontent.com/91122596/221558062-2ed078ae-2a3e-4299-beb3-b86f65865dfd.mp4)
+
+## Prueba de ejecución 6 --> Probando la funcionalidad de buscar un portátil por el ID de un alumno, y viceversa
+
+[Prueba de ejecución 6](https://user-images.githubusercontent.com/91122596/221559557-8a679eb9-c2a3-44e2-aa88-036e56cd9863.mp4)
 
 # Webgrafía
 
@@ -1568,6 +2131,10 @@ https://www.codejava.net/frameworks/spring/spring-mvc-spring-data-jpa-hibernate-
 ## JpaRepository Example (es lo mismo que el CrudRepository pero lo he visto más en SpringBoot)
 
 https://www.javaguides.net/2018/12/spring-mvc-spring-data-jpa-crud-example.html
+
+## Curiosidad extra: Cómo declarar e inicializar EntityManager sin contexto.xml
+
+https://github.com/codspire/JPA-HikariCP-without-Spring/blob/develop/src/main/java/com/codspire/db/mgmt/repository/Repository.java
 
 # Errores
 
