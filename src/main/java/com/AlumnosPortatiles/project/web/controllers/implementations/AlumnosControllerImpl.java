@@ -1,6 +1,5 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,14 +57,8 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		AlumnoDTO alumnoDTO = new AlumnoDTO();
 		model.addAttribute("alumnoModel", alumnoDTO);
 		
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
 		model.addAttribute("listaPortatiles" ,portatilesListDTO);
 
@@ -84,14 +77,8 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		Portatil portatil = alumno.getPortatil();
 		model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
 		
-		List<Alumno> alumnosList = new ArrayList<>();
-		try {
-			alumnosList = alumnoService.listarAlumnos();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
-		}
+		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		
 		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
 		model.addAttribute("listaAlumnos", alumnosListDTO);
 		
@@ -119,15 +106,10 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		long id = Long.parseLong(request.getParameter("id"));
 		alumnoService.eliminarAlumnoPorid(id);
 		
-		List<Alumno> alumnosList = new ArrayList<>();
-		try {
-			alumnosList = alumnoService.listarAlumnos();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
-		}
+		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		
 		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 

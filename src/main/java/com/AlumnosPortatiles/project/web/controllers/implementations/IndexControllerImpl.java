@@ -1,6 +1,5 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -50,15 +49,10 @@ public class IndexControllerImpl implements IIndexController {
 	public ModelAndView navigateToAlumnos() throws Exception {
 		logger.info("\nNavegamos a la vista de Alumnos");
 		
-		List<Alumno> alumnosList = new ArrayList<>();
-		try {
-			alumnosList = alumnoService.listarAlumnos();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
-		}
+		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		
 		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 
@@ -69,15 +63,10 @@ public class IndexControllerImpl implements IIndexController {
 	public ModelAndView navigateToPortatiles() throws Exception {
 		logger.info("\nNavegamos a la vista de Portatiles");
 		
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();	
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 

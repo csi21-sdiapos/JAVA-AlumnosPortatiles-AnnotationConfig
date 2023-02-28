@@ -1,6 +1,5 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.AlumnosPortatiles.project.app.entities.Portatil;
 import com.AlumnosPortatiles.project.web.controllers.interfaces.IEditFormPortatilController;
+import com.AlumnosPortatiles.project.web.dto.implementations.PortatilToDTOimpl;
+import com.AlumnosPortatiles.project.web.dto.interfaces.IPortatilToDTO;
+import com.AlumnosPortatiles.project.web.dto.models.PortatilDTO;
 import com.AlumnosPortatiles.project.web.services.implementations.PortatilServiceImpl;
 import com.AlumnosPortatiles.project.web.services.interfaces.IPortatilService;
 
@@ -27,6 +29,9 @@ public class EditPortatilControllerImpl implements IEditFormPortatilController {
 
 	@Autowired
 	IPortatilService portatilService = new PortatilServiceImpl();
+	
+	@Autowired
+	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
 	
 	
 
@@ -44,16 +49,11 @@ public class EditPortatilControllerImpl implements IEditFormPortatilController {
 		portatilService.editarPortatil(portatil.getPortatil_id(), portatil.getPortatil_marca(), portatil.getPortatil_modelo());
 		
 		logger.info("\nVolvemos a la vista de los Portatiles");
-		List<Portatil> portatilesList = new ArrayList<>();
-		
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
-		
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		return new ModelAndView("portatiles", "listaPortatiles", portatilesList);
+		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		
+		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 	
 /*
@@ -64,13 +64,7 @@ public class EditPortatilControllerImpl implements IEditFormPortatilController {
 		portatilService.editarPortatil(portatilModel.getPortatil_id(), portatilModel.getPortatil_marca(), portatilModel.getPortatil_modelo());
 		
 		logger.info("\nVolvemos a la vista de los Portatiles");
-		List<Portatil> portatilesList = new ArrayList<>();
-		
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
 		logger.info(portatilModel);

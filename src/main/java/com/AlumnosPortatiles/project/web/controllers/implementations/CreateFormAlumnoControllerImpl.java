@@ -1,6 +1,5 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -60,15 +59,10 @@ public class CreateFormAlumnoControllerImpl implements ICreateFormAlumnoControll
 		alumnoService.insertarAlumno(alumnoToDAO.toAlumnoDAO(alumnoModel));
 		
 		logger.info("\nVolvemos a la vista de los Alumnos");
-		List<Alumno> alumnosList = new ArrayList<>();
-		try {
-			alumnosList = alumnoService.listarAlumnos();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
-		}	
+		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		
 		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 

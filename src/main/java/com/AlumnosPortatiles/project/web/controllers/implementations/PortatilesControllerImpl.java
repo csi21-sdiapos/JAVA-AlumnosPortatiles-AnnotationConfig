@@ -1,6 +1,5 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,14 +64,8 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		Alumno alumno = portatil.getAlumno();
 		model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
 		
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
 		model.addAttribute("listaPortatiles", portatilesListDTO);
 		
@@ -92,15 +85,10 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		portatil.setPortatil_modelo(request.getParameter("modelo").trim());
 		portatilService.editarPortatil(portatil.getPortatil_id(), portatil.getPortatil_marca(), portatil.getPortatil_modelo());
 		
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 
@@ -115,15 +103,10 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		long id = Long.parseLong(request.getParameter("id"));
 		portatilService.eliminarPortatilPorId(id);
 		
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 

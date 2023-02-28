@@ -1,6 +1,5 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -52,15 +51,10 @@ public class CreateFormPortatilControllerImpl implements ICreateFormPortatilCont
 		portatilService.insertarPortatil(portatilToDAO.toPortatilDAO(portatilModel));
 		
 		logger.info("\nVolvemos a la vista de los Portatiles");
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 	
