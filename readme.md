@@ -1249,15 +1249,10 @@ public class IndexControllerImpl implements IIndexController {
 	public ModelAndView navigateToAlumnos() throws Exception {
 		logger.info("\nNavegamos a la vista de Alumnos");
 		
-		List<Alumno> alumnosList = new ArrayList<>();
-		try {
-			alumnosList = alumnoService.listarAlumnos();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
-		}
+		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		
 		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 
@@ -1266,15 +1261,10 @@ public class IndexControllerImpl implements IIndexController {
 	public ModelAndView navigateToPortatiles() throws Exception {
 		logger.info("\nNavegamos a la vista de Portatiles");
 		
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();	
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 }
@@ -1383,14 +1373,8 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		Alumno alumno = portatil.getAlumno();
 		model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
 		
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
 		model.addAttribute("listaPortatiles", portatilesListDTO);
 		
@@ -1408,15 +1392,10 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		portatil.setPortatil_modelo(request.getParameter("modelo").trim());
 		portatilService.editarPortatil(portatil.getPortatil_id(), portatil.getPortatil_marca(), portatil.getPortatil_modelo());
 		
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 
@@ -1428,15 +1407,10 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		long id = Long.parseLong(request.getParameter("id"));
 		portatilService.eliminarPortatilPorId(id);
 		
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 }
@@ -1693,14 +1667,8 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		AlumnoDTO alumnoDTO = new AlumnoDTO();
 		model.addAttribute("alumnoModel", alumnoDTO);
 		
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
 		model.addAttribute("listaPortatiles" ,portatilesListDTO);
 
@@ -1717,14 +1685,8 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		Portatil portatil = alumno.getPortatil();
 		model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
 		
-		List<Alumno> alumnosList = new ArrayList<>();
-		try {
-			alumnosList = alumnoService.listarAlumnos();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
-		}
+		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		
 		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
 		model.addAttribute("listaAlumnos", alumnosListDTO);
 		
@@ -1748,15 +1710,10 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		long id = Long.parseLong(request.getParameter("id"));
 		alumnoService.eliminarAlumnoPorid(id);
 		
-		List<Alumno> alumnosList = new ArrayList<>();
-		try {
-			alumnosList = alumnoService.listarAlumnos();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
-		}
+		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		
 		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 }
@@ -1975,15 +1932,10 @@ public class CreateFormPortatilControllerImpl implements ICreateFormPortatilCont
 		portatilService.insertarPortatil(portatilToDAO.toPortatilDAO(portatilModel));
 		
 		logger.info("\nVolvemos a la vista de los Portatiles");
-		List<Portatil> portatilesList = new ArrayList<>();
-		try {
-			portatilesList = portatilService.listarPortatiles();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de portatiles: " + e);
-		}
+		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		
 		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}	
 }
@@ -2068,15 +2020,10 @@ public class CreateFormAlumnoControllerImpl implements ICreateFormAlumnoControll
 		alumnoService.insertarAlumno(alumnoToDAO.toAlumnoDAO(alumnoModel));
 		
 		logger.info("\nVolvemos a la vista de los Alumnos");
-		List<Alumno> alumnosList = new ArrayList<>();
-		try {
-			alumnosList = alumnoService.listarAlumnos();
-		} catch (Exception e) {
-			System.out.println("\n[ERROR] - Error al cargar la lista de alumnos: " + e);
-		}	
+		List<Alumno> alumnosList = alumnoService.listarAlumnos();	
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		
 		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 }
