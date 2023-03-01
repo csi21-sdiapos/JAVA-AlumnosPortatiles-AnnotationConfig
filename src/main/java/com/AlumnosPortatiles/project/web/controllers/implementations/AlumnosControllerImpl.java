@@ -1,5 +1,6 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,7 @@ public class AlumnosControllerImpl implements IAlumnosController {
 	
 	@RequestMapping(value = "/navigateToCreateFormAlumno")
 	@Override
-	public String navigateToCreateFormAlumno(Model model) throws Exception {
+	public String navigateToCreateFormAlumno(Model model) {
 		logger.info("\nNavegamos a la vista del formulario de registro de alumnos, pasando un objeto Alumno");
 		
 		AlumnoDTO alumnoDTO = new AlumnoDTO();
@@ -59,7 +60,13 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		model.addAttribute("listaPortatiles" ,portatilesListDTO);
 
 		return "createFormAlumno";
@@ -69,17 +76,34 @@ public class AlumnosControllerImpl implements IAlumnosController {
 
 	@RequestMapping(value = "/findPortatilByAlumnoId")
 	@Override
-	public String findPortatilByAlumnoId(@RequestParam long alumno_id, Model model) throws Exception {
+	public String findPortatilByAlumnoId(@RequestParam long alumno_id, Model model) {
 		logger.info("\nVamos a buscar un portatil a través del id de un alumno");
 		
 		Alumno alumno = alumnoService.buscarAlumnoPorId(alumno_id);
-		model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
+		try {
+			model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Portatil portatil = alumno.getPortatil();
-		model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
+		try {
+			model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		List<AlumnoDTO> alumnosListDTO = new ArrayList<>();
+		try {
+			alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		model.addAttribute("listaAlumnos", alumnosListDTO);
 		
 		return "alumnos";
@@ -89,7 +113,7 @@ public class AlumnosControllerImpl implements IAlumnosController {
 
 	@RequestMapping(value = "/navigateToEditFormAlumno")
 	@Override
-	public ModelAndView navigateToEditFormAlumno(@RequestParam long alumno_id) throws Exception {
+	public ModelAndView navigateToEditFormAlumno(@RequestParam long alumno_id) {
 		logger.info("\nNavegamos a la vista del formulario de edicion de alumnos, pasando un objeto Alumno");
 		Alumno alumno = alumnoService.buscarAlumnoPorId(alumno_id);
 		
@@ -100,7 +124,7 @@ public class AlumnosControllerImpl implements IAlumnosController {
 
 	@RequestMapping(value = "/deleteAlumno")
 	@Override
-	public ModelAndView deleteAlumno(HttpServletRequest request) throws Exception {
+	public ModelAndView deleteAlumno(HttpServletRequest request) {
 		logger.info("\nEntrando en el metodo --> deleteAlumno()");
 
 		long id = Long.parseLong(request.getParameter("id"));
@@ -108,7 +132,13 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		
 		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		List<AlumnoDTO> alumnosListDTO = new ArrayList<>();
+		try {
+			alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}

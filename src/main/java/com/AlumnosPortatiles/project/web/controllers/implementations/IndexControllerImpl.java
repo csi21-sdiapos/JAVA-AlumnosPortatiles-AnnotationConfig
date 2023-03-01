@@ -1,5 +1,6 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -46,12 +47,18 @@ public class IndexControllerImpl implements IIndexController {
 	
 	@RequestMapping(value="/navigateToAlumnos")
 	@Override
-	public ModelAndView navigateToAlumnos() throws Exception {
+	public ModelAndView navigateToAlumnos() {
 		logger.info("\nNavegamos a la vista de Alumnos");
 		
 		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		List<AlumnoDTO> alumnosListDTO = new ArrayList<>();
+		try {
+			alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
@@ -60,12 +67,18 @@ public class IndexControllerImpl implements IIndexController {
 	
 	@RequestMapping(value="/navigateToPortatiles")
 	@Override
-	public ModelAndView navigateToPortatiles() throws Exception {
+	public ModelAndView navigateToPortatiles() {
 		logger.info("\nNavegamos a la vista de Portatiles");
 		
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}

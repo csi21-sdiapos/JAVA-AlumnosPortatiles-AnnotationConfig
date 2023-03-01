@@ -24,7 +24,7 @@ public class PortatilServiceImpl implements IPortatilService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public List<Portatil> listarPortatiles() throws Exception {
+	public List<Portatil> listarPortatiles() {
 		try {
 			return (List<Portatil>) portatilRepository.findAll();
 			
@@ -38,7 +38,7 @@ public class PortatilServiceImpl implements IPortatilService {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public Portatil buscarPortatilPorId(long portatil_id) throws Exception {
+	public Portatil buscarPortatilPorId(long portatil_id) {
 		try {
 			return portatilRepository.findById(portatil_id).orElse(null);
 			
@@ -52,7 +52,7 @@ public class PortatilServiceImpl implements IPortatilService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void insertarPortatil(Portatil portatil) throws Exception {
+	public void insertarPortatil(Portatil portatil) {
 		try {
 			portatilRepository.save(portatil);
 			
@@ -65,7 +65,7 @@ public class PortatilServiceImpl implements IPortatilService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void editarPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception {
+	public void editarPortatil(long portatil_id, String portatil_marca, String portatil_modelo) {
 		Portatil portatil = portatilRepository.findById(portatil_id).orElse(null);
 		portatil.setPortatil_marca(portatil_marca);
 		portatil.setPortatil_modelo(portatil_modelo);
@@ -82,7 +82,7 @@ public class PortatilServiceImpl implements IPortatilService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void eliminarPortatilPorId(long portatil_id) throws Exception {
+	public void eliminarPortatilPorId(long portatil_id) {
 		try {
 			portatilRepository.deleteById(portatil_id);
 			

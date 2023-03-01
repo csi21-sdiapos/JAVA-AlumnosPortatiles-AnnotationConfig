@@ -15,7 +15,7 @@ public class PortatilToDAOimpl implements IPortatilToDAO {
 
 	
 	@Override
-	public Portatil toPortatilDAO(PortatilDTO portatilDTO) throws Exception {
+	public Portatil toPortatilDAO(PortatilDTO portatilDTO) {
 		Portatil portatilDAO = new Portatil();
 		
 		try {
@@ -36,7 +36,7 @@ public class PortatilToDAOimpl implements IPortatilToDAO {
 	
 	
 	@Override
-	public List<Portatil> toListPortatilDAO(List<PortatilDTO> listPortatilDTO) throws Exception {
+	public List<Portatil> toListPortatilDAO(List<PortatilDTO> listPortatilDTO) {
 		List<Portatil> listPortatilDAO = new ArrayList<>();
 		
 		try {

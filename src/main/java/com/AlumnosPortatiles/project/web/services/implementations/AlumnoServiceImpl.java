@@ -24,7 +24,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public List<Alumno> listarAlumnos() throws Exception {
+	public List<Alumno> listarAlumnos() {
 		try {
 			return (List<Alumno>) alumnoRepository.findAll();
 			
@@ -38,7 +38,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public Alumno buscarAlumnoPorId(long alumno_id) throws Exception {
+	public Alumno buscarAlumnoPorId(long alumno_id) {
 		try {
 			return alumnoRepository.findById(alumno_id).orElse(null);
 			
@@ -52,7 +52,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void insertarAlumno(Alumno alumno) throws Exception {
+	public void insertarAlumno(Alumno alumno) {
 		try {
 			alumnoRepository.save(alumno);
 			
@@ -65,7 +65,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void editarAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception {
+	public void editarAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) {
 		Alumno alumno = alumnoRepository.findById(alumno_id).orElse(null);
 		alumno.setAlumno_nombre(alumno_nombre);
 		alumno.setAlumno_apellidos(alumno_apellidos);
@@ -83,7 +83,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void eliminarAlumnoPorid(long alumno_id) throws Exception {
+	public void eliminarAlumnoPorid(long alumno_id) {
 		try {
 			alumnoRepository.deleteById(alumno_id);
 			

@@ -14,9 +14,8 @@ public interface IPortatilToDTO {
 	 *
 	 * @param portatilDAO the portatil DAO
 	 * @return the portatil DTO
-	 * @throws Exception the exception
 	 */
-	public PortatilDTO toPortatilDTO(Portatil portatilDAO) throws Exception;
+	public PortatilDTO toPortatilDTO(Portatil portatilDAO);
 	
 	
 	
@@ -25,8 +24,7 @@ public interface IPortatilToDTO {
 	 *
 	 * @param listPortatilDAO the list portatil DAO
 	 * @return the list
-	 * @throws Exception the exception
 	 */
-	public List<PortatilDTO> toListPortatilDTO(List<Portatil> listPortatilDAO) throws Exception;
+	public List<PortatilDTO> toListPortatilDTO(List<Portatil> listPortatilDAO);
 	
 }

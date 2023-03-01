@@ -1,5 +1,6 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +46,7 @@ public class PortatilesControllerImpl implements IPortatilesController {
 	
 	@RequestMapping(value = "/navigateToCreateFormPortatil")
 	@Override
-	public ModelAndView navigateToCreateFormPortatil() throws Exception {
+	public ModelAndView navigateToCreateFormPortatil() {
 		logger.info("\nNavegamos a la vista del formulario de registro de portatiles, pasando un objeto Portatil");
 		PortatilDTO portatilDTO = new PortatilDTO();
 		
@@ -56,17 +57,34 @@ public class PortatilesControllerImpl implements IPortatilesController {
 
 	@RequestMapping(value = "/findAlumnoByPortatilId")
 	@Override
-	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) throws Exception {
+	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) {
 		logger.info("\nVamos a buscar un alumno a través del id de un portatil");
 		
 		Portatil portatil = portatilService.buscarPortatilPorId(portatil_id);
-		model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
+		try {
+			model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Alumno alumno = portatil.getAlumno();
-		model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
+		try {
+			model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		model.addAttribute("listaPortatiles", portatilesListDTO);
 		
 		return "portatiles";
@@ -76,7 +94,7 @@ public class PortatilesControllerImpl implements IPortatilesController {
 	
 	@RequestMapping(value = "/editPortatil")
 	@Override
-	public ModelAndView editPortatil(HttpServletRequest request) throws Exception {
+	public ModelAndView editPortatil(HttpServletRequest request) {
 		logger.info("\nEntrando en el metodo --> editPortatil()");
 		
 		long id = Long.parseLong(request.getParameter("id"));
@@ -87,7 +105,13 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
@@ -97,7 +121,7 @@ public class PortatilesControllerImpl implements IPortatilesController {
 	
 	@RequestMapping(value = "/deletePortatil")
 	@Override
-	public ModelAndView deletePortatil(HttpServletRequest request) throws Exception {
+	public ModelAndView deletePortatil(HttpServletRequest request) {
 		logger.info("\nEntrando en el metodo --> deletePortatil()");
 		
 		long id = Long.parseLong(request.getParameter("id"));
@@ -105,7 +129,13 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}

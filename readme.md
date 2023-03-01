@@ -679,18 +679,16 @@ public interface IAlumnoToDTO {
 	 *
 	 * @param AlumnoDAO the alumno DAO
 	 * @return the alumno DTO
-	 * @throws Exception the exception
 	 */
-	public AlumnoDTO toAlumnoDTO(Alumno AlumnoDAO) throws Exception;
+	public AlumnoDTO toAlumnoDTO(Alumno AlumnoDAO);
 	
 	/**
 	 * To list alumno DTO.
 	 *
 	 * @param listAlumnoDAO the list alumno DAO
 	 * @return the list
-	 * @throws Exception the exception
 	 */
-	public List<AlumnoDTO> toListAlumnoDTO(List<Alumno> listAlumnoDAO) throws Exception;	
+	public List<AlumnoDTO> toListAlumnoDTO(List<Alumno> listAlumnoDAO);	
 }
 ```
 
@@ -704,18 +702,16 @@ public interface IAlumnoToDAO {
 	 *
 	 * @param alumnoDTO the alumno DTO
 	 * @return the alumno
-	 * @throws Exception the exception
 	 */
-	public Alumno toAlumnoDAO(AlumnoDTO alumnoDTO) throws Exception;
+	public Alumno toAlumnoDAO(AlumnoDTO alumnoDTO);
 	
 	/**
 	 * To list alumno DAO.
 	 *
 	 * @param listAlumnoDTO the list alumno DTO
 	 * @return the list
-	 * @throws Exception the exception
 	 */
-	public List<Alumno> toListAlumnoDAO(List<AlumnoDTO> listAlumnoDTO) throws Exception;	
+	public List<Alumno> toListAlumnoDAO(List<AlumnoDTO> listAlumnoDTO);	
 }
 ```
 
@@ -729,18 +725,16 @@ public interface IPortatilToDTO {
 	 *
 	 * @param portatilDAO the portatil DAO
 	 * @return the portatil DTO
-	 * @throws Exception the exception
 	 */
-	public PortatilDTO toPortatilDTO(Portatil portatilDAO) throws Exception;	
+	public PortatilDTO toPortatilDTO(Portatil portatilDAO);	
 	
 	/**
 	 * To list portatil DTO.
 	 *
 	 * @param listPortatilDAO the list portatil DAO
 	 * @return the list
-	 * @throws Exception the exception
 	 */
-	public List<PortatilDTO> toListPortatilDTO(List<Portatil> listPortatilDAO) throws Exception;	
+	public List<PortatilDTO> toListPortatilDTO(List<Portatil> listPortatilDAO);	
 }
 ```
 
@@ -754,18 +748,16 @@ public interface IPortatilToDAO {
 	 *
 	 * @param portatilDTO the portatil DTO
 	 * @return the portatil
-	 * @throws Exception the exception
 	 */
-	public Portatil toPortatilDAO(PortatilDTO portatilDTO) throws Exception;
+	public Portatil toPortatilDAO(PortatilDTO portatilDTO);
 	
 	/**
 	 * To list portatil DAO.
 	 *
 	 * @param listPortatilDTO the list portatil DTO
 	 * @return the list
-	 * @throws Exception the exception
 	 */
-	public List<Portatil> toListPortatilDAO(List<PortatilDTO> listPortatilDTO) throws Exception;	
+	public List<Portatil> toListPortatilDAO(List<PortatilDTO> listPortatilDTO);	
 }
 ```
 
@@ -778,7 +770,7 @@ public interface IPortatilToDAO {
 public class AlumnoToDTOimpl implements IAlumnoToDTO {
 	
 	@Override
-	public AlumnoDTO toAlumnoDTO(Alumno AlumnoDAO) throws Exception {
+	public AlumnoDTO toAlumnoDTO(Alumno AlumnoDAO) {
 		AlumnoDTO alumnoDTO = new AlumnoDTO();
 		
 		try {
@@ -798,7 +790,7 @@ public class AlumnoToDTOimpl implements IAlumnoToDTO {
 	}
 
 	@Override
-	public List<AlumnoDTO> toListAlumnoDTO(List<Alumno> listAlumnoDAO) throws Exception {
+	public List<AlumnoDTO> toListAlumnoDTO(List<Alumno> listAlumnoDAO) {
 		List<AlumnoDTO> listAlumnoDTO = new ArrayList<>();
 		
 		try {
@@ -822,7 +814,7 @@ public class AlumnoToDTOimpl implements IAlumnoToDTO {
 public class AlumnoToDAOimpl implements IAlumnoToDAO {
 	
 	@Override
-	public Alumno toAlumnoDAO(AlumnoDTO alumnoDTO) throws Exception {
+	public Alumno toAlumnoDAO(AlumnoDTO alumnoDTO) {
 		Alumno alumnoDAO = new Alumno();
 		
 		try {
@@ -842,7 +834,7 @@ public class AlumnoToDAOimpl implements IAlumnoToDAO {
 	}
 
 	@Override
-	public List<Alumno> toListAlumnoDAO(List<AlumnoDTO> listAlumnoDTO) throws Exception {
+	public List<Alumno> toListAlumnoDAO(List<AlumnoDTO> listAlumnoDTO) {
 		List<Alumno> listAlumnoDAO = new ArrayList<>();
 		
 		try {
@@ -866,7 +858,7 @@ public class AlumnoToDAOimpl implements IAlumnoToDAO {
 public class PortatilToDTOimpl implements IPortatilToDTO {
 
 	@Override
-	public PortatilDTO toPortatilDTO(Portatil portatilDAO) throws Exception {
+	public PortatilDTO toPortatilDTO(Portatil portatilDAO) {
 		PortatilDTO portatilDTO = new PortatilDTO();
 		
 		try {
@@ -885,7 +877,7 @@ public class PortatilToDTOimpl implements IPortatilToDTO {
 	}	
 	
 	@Override
-	public List<PortatilDTO> toListPortatilDTO(List<Portatil> listPortatilDAO) throws Exception {
+	public List<PortatilDTO> toListPortatilDTO(List<Portatil> listPortatilDAO) {
 		List<PortatilDTO> listPortatilDTO = new ArrayList<>();
 		
 		try {
@@ -909,7 +901,7 @@ public class PortatilToDTOimpl implements IPortatilToDTO {
 public class PortatilToDAOimpl implements IPortatilToDAO {
 	
 	@Override
-	public Portatil toPortatilDAO(PortatilDTO portatilDTO) throws Exception {
+	public Portatil toPortatilDAO(PortatilDTO portatilDTO) {
 		Portatil portatilDAO = new Portatil();
 		
 		try {
@@ -928,7 +920,7 @@ public class PortatilToDAOimpl implements IPortatilToDAO {
 	}
 
 	@Override
-	public List<Portatil> toListPortatilDAO(List<PortatilDTO> listPortatilDTO) throws Exception {
+	public List<Portatil> toListPortatilDAO(List<PortatilDTO> listPortatilDTO) {
 		List<Portatil> listPortatilDAO = new ArrayList<>();
 		
 		try {
@@ -958,26 +950,23 @@ public interface IAlumnoService {
 	 * Listar alumnos.
 	 *
 	 * @return the list
-	 * @throws Exception the exception
 	 */
-	public List<Alumno> listarAlumnos() throws Exception;
+	public List<Alumno> listarAlumnos();
 	
 	/**
 	 * Buscar alumno por id.
 	 *
 	 * @param alumno_id the alumno id
 	 * @return the alumno
-	 * @throws Exception the exception
 	 */
-	public Alumno buscarAlumnoPorId(long alumno_id) throws Exception;
+	public Alumno buscarAlumnoPorId(long alumno_id);
 	
 	/**
 	 * Insertar alumno.
 	 *
 	 * @param alumno the alumno
-	 * @throws Exception the exception
 	 */
-	public void insertarAlumno(Alumno alumno) throws Exception;
+	public void insertarAlumno(Alumno alumno);
 	
 	/**
 	 * Editar alumno.
@@ -986,17 +975,15 @@ public interface IAlumnoService {
 	 * @param alumno_nombre the alumno nombre
 	 * @param alumno_apellidos the alumno apellidos
 	 * @param alumno_telefono the alumno telefono
-	 * @throws Exception the exception
 	 */
-	public void editarAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception;
+	public void editarAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono);
 	
 	/**
 	 * Eliminar alumno porid.
 	 *
 	 * @param alumno_id the alumno id
-	 * @throws Exception the exception
 	 */
-	public void eliminarAlumnoPorid(long alumno_id) throws Exception;	
+	public void eliminarAlumnoPorid(long alumno_id);	
 }
 ```
 
@@ -1009,26 +996,23 @@ public interface IPortatilService {
 	 * Listar portatiles.
 	 *
 	 * @return the list
-	 * @throws Exception the exception
 	 */
-	public List<Portatil> listarPortatiles() throws Exception;
+	public List<Portatil> listarPortatiles();
 	
 	/**
 	 * Buscar portatil por id.
 	 *
 	 * @param portatil_id the portatil id
 	 * @return the portatil
-	 * @throws Exception the exception
 	 */
-	public Portatil buscarPortatilPorId(long portatil_id) throws Exception;
+	public Portatil buscarPortatilPorId(long portatil_id);
 	
 	/**
 	 * Insertar portatil.
 	 *
 	 * @param portatil the portatil
-	 * @throws Exception the exception
 	 */
-	public void insertarPortatil(Portatil portatil) throws Exception;
+	public void insertarPortatil(Portatil portatil);
 
 	/**
 	 * Editar portatil.
@@ -1036,17 +1020,15 @@ public interface IPortatilService {
 	 * @param portatil_id the portatil id
 	 * @param portatil_marca the portatil marca
 	 * @param portatil_modelo the portatil modelo
-	 * @throws Exception the exception
 	 */
-	public void editarPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception;
+	public void editarPortatil(long portatil_id, String portatil_marca, String portatil_modelo);
 	
 	/**
 	 * Eliminar portatil por id.
 	 *
 	 * @param portatil_id the portatil id
-	 * @throws Exception the exception
 	 */
-	public void eliminarPortatilPorId(long portatil_id) throws Exception;	
+	public void eliminarPortatilPorId(long portatil_id);	
 }
 ```
 
@@ -1063,7 +1045,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public List<Alumno> listarAlumnos() throws Exception {
+	public List<Alumno> listarAlumnos() {
 		try {
 			return (List<Alumno>) alumnoRepository.findAll();
 			
@@ -1075,7 +1057,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public Alumno buscarAlumnoPorId(long alumno_id) throws Exception {
+	public Alumno buscarAlumnoPorId(long alumno_id) {
 		try {
 			return alumnoRepository.findById(alumno_id).orElse(null);
 			
@@ -1084,10 +1066,10 @@ public class AlumnoServiceImpl implements IAlumnoService {
 			return null;
 		}
 	}
-	
+
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void insertarAlumno(Alumno alumno) throws Exception {
+	public void insertarAlumno(Alumno alumno) {
 		try {
 			alumnoRepository.save(alumno);
 			
@@ -1098,7 +1080,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void editarAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception {
+	public void editarAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) {
 		Alumno alumno = alumnoRepository.findById(alumno_id).orElse(null);
 		alumno.setAlumno_nombre(alumno_nombre);
 		alumno.setAlumno_apellidos(alumno_apellidos);
@@ -1114,7 +1096,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void eliminarAlumnoPorid(long alumno_id) throws Exception {
+	public void eliminarAlumnoPorid(long alumno_id) {
 		try {
 			alumnoRepository.deleteById(alumno_id);
 			
@@ -1122,6 +1104,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
 			System.out.println("\n[ERROR] - Error al eliminar el alumno seleccionado: " + e);
 		}
 	}
+
 }
 ```
 
@@ -1136,7 +1119,7 @@ public class PortatilServiceImpl implements IPortatilService {
 		
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public List<Portatil> listarPortatiles() throws Exception {
+	public List<Portatil> listarPortatiles() {
 		try {
 			return (List<Portatil>) portatilRepository.findAll();
 			
@@ -1148,7 +1131,7 @@ public class PortatilServiceImpl implements IPortatilService {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true, timeout = 10)
 	@Override
-	public Portatil buscarPortatilPorId(long portatil_id) throws Exception {
+	public Portatil buscarPortatilPorId(long portatil_id) {
 		try {
 			return portatilRepository.findById(portatil_id).orElse(null);
 			
@@ -1157,10 +1140,10 @@ public class PortatilServiceImpl implements IPortatilService {
 			return null;
 		}
 	}
-	
+
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void insertarPortatil(Portatil portatil) throws Exception {
+	public void insertarPortatil(Portatil portatil) {
 		try {
 			portatilRepository.save(portatil);
 			
@@ -1171,7 +1154,7 @@ public class PortatilServiceImpl implements IPortatilService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void editarPortatil(long portatil_id, String portatil_marca, String portatil_modelo) throws Exception {
+	public void editarPortatil(long portatil_id, String portatil_marca, String portatil_modelo) {
 		Portatil portatil = portatilRepository.findById(portatil_id).orElse(null);
 		portatil.setPortatil_marca(portatil_marca);
 		portatil.setPortatil_modelo(portatil_modelo);
@@ -1186,7 +1169,7 @@ public class PortatilServiceImpl implements IPortatilService {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = { Exception.class }, timeout = 10)
 	@Override
-	public void eliminarPortatilPorId(long portatil_id) throws Exception {
+	public void eliminarPortatilPorId(long portatil_id) {
 		try {
 			portatilRepository.deleteById(portatil_id);
 			
@@ -1210,17 +1193,15 @@ public interface IIndexController {
 	 * Navigate to alumnos.
 	 *
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView navigateToAlumnos() throws Exception;
+	public ModelAndView navigateToAlumnos();
 	
 	/**
 	 * Navigate to portatiles.
 	 *
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView navigateToPortatiles() throws Exception;
+	public ModelAndView navigateToPortatiles();
 }
 ```
 
@@ -1231,7 +1212,7 @@ public interface IIndexController {
 public class IndexControllerImpl implements IIndexController {
 	
 	protected final Log logger = LogFactory.getLog(getClass());
-	
+
 	@Autowired
 	IAlumnoService alumnoService = new AlumnoServiceImpl();
 	
@@ -1242,29 +1223,41 @@ public class IndexControllerImpl implements IIndexController {
 	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
 	
 	@Autowired
-	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();	
+	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
 	
 	@RequestMapping(value="/navigateToAlumnos")
 	@Override
-	public ModelAndView navigateToAlumnos() throws Exception {
+	public ModelAndView navigateToAlumnos() {
 		logger.info("\nNavegamos a la vista de Alumnos");
 		
 		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
-
+		List<AlumnoDTO> alumnosListDTO = new ArrayList<>();
+		try {
+			alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 
 	@RequestMapping(value="/navigateToPortatiles")
 	@Override
-	public ModelAndView navigateToPortatiles() throws Exception {
+	public ModelAndView navigateToPortatiles() {
 		logger.info("\nNavegamos a la vista de Portatiles");
 		
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
-
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 }
@@ -1301,9 +1294,8 @@ public interface IPortatilesController {
 	 * Navigate to create form portatil.
 	 *
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView navigateToCreateFormPortatil() throws Exception;
+	public ModelAndView navigateToCreateFormPortatil();
 	
 	/**
 	 * Find alumno by portatil id.
@@ -1311,28 +1303,25 @@ public interface IPortatilesController {
 	 * @param portatil_id the portatil id
 	 * @param model the model
 	 * @return the string
-	 * @throws Exception the exception
 	 */
-	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) throws Exception;
+	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model);
 	
 	/**
 	 * Edits the portatil.
 	 *
 	 * @param request the request
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView editPortatil(HttpServletRequest request) throws Exception;
-	//public ModelAndView navigateToEditFormPortatil(@RequestParam long portatil_id) throws Exception;
+	public ModelAndView editPortatil(HttpServletRequest request);
+	//public ModelAndView navigateToEditFormPortatil(@RequestParam long portatil_id);
 	
 	/**
 	 * Delete portatil.
 	 *
 	 * @param request the request
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView deletePortatil(HttpServletRequest request) throws Exception;	
+	public ModelAndView deletePortatil(HttpServletRequest request);	
 }
 ```
 
@@ -1353,37 +1342,54 @@ public class PortatilesControllerImpl implements IPortatilesController {
 	
 	@Autowired
 	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
-	
+
 	@RequestMapping(value = "/navigateToCreateFormPortatil")
 	@Override
-	public ModelAndView navigateToCreateFormPortatil() throws Exception {
+	public ModelAndView navigateToCreateFormPortatil() {
 		logger.info("\nNavegamos a la vista del formulario de registro de portatiles, pasando un objeto Portatil");
 		PortatilDTO portatilDTO = new PortatilDTO();
 		
 		return new ModelAndView("createFormPortatil", "portatilModel", portatilDTO);
 	}
-
+	
 	@RequestMapping(value = "/findAlumnoByPortatilId")
 	@Override
-	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) throws Exception {
+	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) {
 		logger.info("\nVamos a buscar un alumno a través del id de un portatil");
 		
 		Portatil portatil = portatilService.buscarPortatilPorId(portatil_id);
-		model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
+		try {
+			model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Alumno alumno = portatil.getAlumno();
-		model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
+		try {
+			model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		model.addAttribute("listaPortatiles", portatilesListDTO);
 		
 		return "portatiles";
 	}
-	
+
 	@RequestMapping(value = "/editPortatil")
 	@Override
-	public ModelAndView editPortatil(HttpServletRequest request) throws Exception {
+	public ModelAndView editPortatil(HttpServletRequest request) {
 		logger.info("\nEntrando en el metodo --> editPortatil()");
 		
 		long id = Long.parseLong(request.getParameter("id"));
@@ -1394,14 +1400,20 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
-
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
-
+	
 	@RequestMapping(value = "/deletePortatil")
 	@Override
-	public ModelAndView deletePortatil(HttpServletRequest request) throws Exception {
+	public ModelAndView deletePortatil(HttpServletRequest request) {
 		logger.info("\nEntrando en el metodo --> deletePortatil()");
 		
 		long id = Long.parseLong(request.getParameter("id"));
@@ -1409,8 +1421,14 @@ public class PortatilesControllerImpl implements IPortatilesController {
 		
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
-
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}
 }
@@ -1603,9 +1621,8 @@ public interface IAlumnosController {
 	 *
 	 * @param model the model
 	 * @return the string
-	 * @throws Exception the exception
 	 */
-	public String navigateToCreateFormAlumno(Model model) throws Exception;
+	public String navigateToCreateFormAlumno(Model model);
 	
 	/**
 	 * Find portatil by alumno id.
@@ -1613,28 +1630,25 @@ public interface IAlumnosController {
 	 * @param alumno_id the alumno id
 	 * @param model the model
 	 * @return the string
-	 * @throws Exception the exception
 	 */
-	public String findPortatilByAlumnoId(@RequestParam long alumno_id, Model model) throws Exception;
+	public String findPortatilByAlumnoId(@RequestParam long alumno_id, Model model);
 	
 	/**
 	 * Navigate to edit form alumno.
 	 *
 	 * @param alumno_id the alumno id
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView navigateToEditFormAlumno(@RequestParam long alumno_id) throws Exception;
-	// public ModelAndView editAlumno(HttpServletRequest request) throws Exception;
+	public ModelAndView navigateToEditFormAlumno(@RequestParam long alumno_id);
+	// public ModelAndView editAlumno(HttpServletRequest request);
 	
 	/**
 	 * Delete alumno.
 	 *
 	 * @param request the request
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView deleteAlumno(HttpServletRequest request) throws Exception;	
+	public ModelAndView deleteAlumno(HttpServletRequest request);	
 }
 ```
 
@@ -1657,11 +1671,11 @@ public class AlumnosControllerImpl implements IAlumnosController {
 	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
 	
 	@Autowired
-	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();
+	IPortatilToDTO portatilToDTO = new PortatilToDTOimpl();	
 	
 	@RequestMapping(value = "/navigateToCreateFormAlumno")
 	@Override
-	public String navigateToCreateFormAlumno(Model model) throws Exception {
+	public String navigateToCreateFormAlumno(Model model) {
 		logger.info("\nNavegamos a la vista del formulario de registro de alumnos, pasando un objeto Alumno");
 		
 		AlumnoDTO alumnoDTO = new AlumnoDTO();
@@ -1669,7 +1683,13 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		model.addAttribute("listaPortatiles" ,portatilesListDTO);
 
 		return "createFormAlumno";
@@ -1677,17 +1697,34 @@ public class AlumnosControllerImpl implements IAlumnosController {
 
 	@RequestMapping(value = "/findPortatilByAlumnoId")
 	@Override
-	public String findPortatilByAlumnoId(@RequestParam long alumno_id, Model model) throws Exception {
+	public String findPortatilByAlumnoId(@RequestParam long alumno_id, Model model) {
 		logger.info("\nVamos a buscar un portatil a través del id de un alumno");
 		
 		Alumno alumno = alumnoService.buscarAlumnoPorId(alumno_id);
-		model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
+		try {
+			model.addAttribute("alumnoModel", alumnoToDTO.toAlumnoDTO(alumno));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Portatil portatil = alumno.getPortatil();
-		model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
+		try {
+			model.addAttribute("portatilModel", portatilToDTO.toPortatilDTO(portatil));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		List<AlumnoDTO> alumnosListDTO = new ArrayList<>();
+		try {
+			alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		model.addAttribute("listaAlumnos", alumnosListDTO);
 		
 		return "alumnos";
@@ -1695,7 +1732,7 @@ public class AlumnosControllerImpl implements IAlumnosController {
 
 	@RequestMapping(value = "/navigateToEditFormAlumno")
 	@Override
-	public ModelAndView navigateToEditFormAlumno(@RequestParam long alumno_id) throws Exception {
+	public ModelAndView navigateToEditFormAlumno(@RequestParam long alumno_id) {
 		logger.info("\nNavegamos a la vista del formulario de edicion de alumnos, pasando un objeto Alumno");
 		Alumno alumno = alumnoService.buscarAlumnoPorId(alumno_id);
 		
@@ -1704,7 +1741,7 @@ public class AlumnosControllerImpl implements IAlumnosController {
 
 	@RequestMapping(value = "/deleteAlumno")
 	@Override
-	public ModelAndView deleteAlumno(HttpServletRequest request) throws Exception {
+	public ModelAndView deleteAlumno(HttpServletRequest request) {
 		logger.info("\nEntrando en el metodo --> deleteAlumno()");
 
 		long id = Long.parseLong(request.getParameter("id"));
@@ -1712,8 +1749,14 @@ public class AlumnosControllerImpl implements IAlumnosController {
 		
 		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
-
+		List<AlumnoDTO> alumnosListDTO = new ArrayList<>();
+		try {
+			alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}
 }
@@ -1899,9 +1942,8 @@ public interface ICreateFormPortatilController {
 	 *
 	 * @param portatilModel the portatil model
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel) throws Exception;	
+	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel);	
 }
 ```
 
@@ -1924,18 +1966,29 @@ public class CreateFormPortatilControllerImpl implements ICreateFormPortatilCont
 	
 	@RequestMapping(value="/formCreatePortatil", method = RequestMethod.POST)
 	@Override
-	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel) throws Exception {
+	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel) {
 		logger.info("\nEntrando en el metodo --> formCreatePortatil()");
 		
 		portatilModel.setPortatil_uuid(UUID.randomUUID());
 		portatilModel.setPortatil_date(Calendar.getInstance());
-		portatilService.insertarPortatil(portatilToDAO.toPortatilDAO(portatilModel));
+		try {
+			portatilService.insertarPortatil(portatilToDAO.toPortatilDAO(portatilModel));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		logger.info("\nVolvemos a la vista de los Portatiles");
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
-
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}	
 }
@@ -1982,9 +2035,8 @@ public interface ICreateFormAlumnoController {
 	 *
 	 * @param alumnoModel the alumno model
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel) throws Exception;
+	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel);
 }
 ```
 
@@ -1993,7 +2045,7 @@ public interface ICreateFormAlumnoController {
 ```java
 @Controller(value = "CreateFormAlumnoControllerImpl")
 public class CreateFormAlumnoControllerImpl implements ICreateFormAlumnoController {
-	
+
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	@Autowired
@@ -2007,22 +2059,33 @@ public class CreateFormAlumnoControllerImpl implements ICreateFormAlumnoControll
 	
 	@Autowired
 	IAlumnoToDTO alumnoToDTO = new AlumnoToDTOimpl();
-	
+
 	@RequestMapping(value="/formCreateAlumno", method = RequestMethod.POST)
 	@Override
-	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel) throws Exception {
+	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel) {
 		logger.info("\nEntrando en el metodo --> formCreateAlumno()");
 		Portatil portatil = portatilService.buscarPortatilPorId(alumnoModel.getPortatil_id());
 		
 		alumnoModel.setAlumno_uuid(UUID.randomUUID());
 		alumnoModel.setAlumno_date(Calendar.getInstance());
 		alumnoModel.setPortatil(portatil);
-		alumnoService.insertarAlumno(alumnoToDAO.toAlumnoDAO(alumnoModel));
+		try {
+			alumnoService.insertarAlumno(alumnoToDAO.toAlumnoDAO(alumnoModel));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		logger.info("\nVolvemos a la vista de los Alumnos");
-		List<Alumno> alumnosList = alumnoService.listarAlumnos();	
+		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		List<AlumnoDTO> alumnosListDTO = new ArrayList<>();
+		try {
+			alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}

@@ -14,9 +14,8 @@ public interface IPortatilesController {
 	 * Navigate to create form portatil.
 	 *
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView navigateToCreateFormPortatil() throws Exception;
+	public ModelAndView navigateToCreateFormPortatil();
 	
 	
 
@@ -26,9 +25,8 @@ public interface IPortatilesController {
 	 * @param portatil_id the portatil id
 	 * @param model the model
 	 * @return the string
-	 * @throws Exception the exception
 	 */
-	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model) throws Exception;
+	public String findAlumnoByPortatilId(@RequestParam long portatil_id, Model model);
 	
 	
 	
@@ -38,10 +36,9 @@ public interface IPortatilesController {
 	 *
 	 * @param request the request
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView editPortatil(HttpServletRequest request) throws Exception;
-	//public ModelAndView navigateToEditFormPortatil(@RequestParam long portatil_id) throws Exception;
+	public ModelAndView editPortatil(HttpServletRequest request);
+	//public ModelAndView navigateToEditFormPortatil(@RequestParam long portatil_id);
 	
 	
 	
@@ -50,8 +47,7 @@ public interface IPortatilesController {
 	 *
 	 * @param request the request
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView deletePortatil(HttpServletRequest request) throws Exception;
+	public ModelAndView deletePortatil(HttpServletRequest request);
 	
 }

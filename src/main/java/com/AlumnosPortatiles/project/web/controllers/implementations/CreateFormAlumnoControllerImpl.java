@@ -1,5 +1,6 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -49,19 +50,30 @@ public class CreateFormAlumnoControllerImpl implements ICreateFormAlumnoControll
 	
 	@RequestMapping(value="/formCreateAlumno", method = RequestMethod.POST)
 	@Override
-	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel) throws Exception {
+	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel) {
 		logger.info("\nEntrando en el metodo --> formCreateAlumno()");
 		Portatil portatil = portatilService.buscarPortatilPorId(alumnoModel.getPortatil_id());
 		
 		alumnoModel.setAlumno_uuid(UUID.randomUUID());
 		alumnoModel.setAlumno_date(Calendar.getInstance());
 		alumnoModel.setPortatil(portatil);
-		alumnoService.insertarAlumno(alumnoToDAO.toAlumnoDAO(alumnoModel));
+		try {
+			alumnoService.insertarAlumno(alumnoToDAO.toAlumnoDAO(alumnoModel));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		logger.info("\nVolvemos a la vista de los Alumnos");
 		List<Alumno> alumnosList = alumnoService.listarAlumnos();
 		logger.info("\nLa lista de alumnos contiene " + alumnosList.size() + " alumnos");
-		List<AlumnoDTO> alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		List<AlumnoDTO> alumnosListDTO = new ArrayList<>();
+		try {
+			alumnosListDTO = alumnoToDTO.toListAlumnoDTO(alumnosList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return new ModelAndView("alumnos", "listaAlumnos", alumnosListDTO);
 	}

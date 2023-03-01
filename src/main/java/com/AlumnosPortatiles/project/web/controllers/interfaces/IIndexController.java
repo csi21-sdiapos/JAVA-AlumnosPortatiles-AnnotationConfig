@@ -10,9 +10,8 @@ public interface IIndexController {
 	 * Navigate to alumnos.
 	 *
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView navigateToAlumnos() throws Exception;
+	public ModelAndView navigateToAlumnos();
 	
 	
 	
@@ -20,8 +19,7 @@ public interface IIndexController {
 	 * Navigate to portatiles.
 	 *
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView navigateToPortatiles() throws Exception;
+	public ModelAndView navigateToPortatiles();
 	
 }

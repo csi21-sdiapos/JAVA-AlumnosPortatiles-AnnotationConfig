@@ -14,8 +14,7 @@ public interface ICreateFormPortatilController {
 	 *
 	 * @param portatilModel the portatil model
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel) throws Exception;
+	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel);
 	
 }

@@ -12,9 +12,8 @@ public interface IAlumnoService {
 	 * Listar alumnos.
 	 *
 	 * @return the list
-	 * @throws Exception the exception
 	 */
-	public List<Alumno> listarAlumnos() throws Exception;
+	public List<Alumno> listarAlumnos();
 	
 	
 	
@@ -23,9 +22,8 @@ public interface IAlumnoService {
 	 *
 	 * @param alumno_id the alumno id
 	 * @return the alumno
-	 * @throws Exception the exception
 	 */
-	public Alumno buscarAlumnoPorId(long alumno_id) throws Exception;
+	public Alumno buscarAlumnoPorId(long alumno_id);
 	
 	
 	
@@ -33,9 +31,8 @@ public interface IAlumnoService {
 	 * Insertar alumno.
 	 *
 	 * @param alumno the alumno
-	 * @throws Exception the exception
 	 */
-	public void insertarAlumno(Alumno alumno) throws Exception;
+	public void insertarAlumno(Alumno alumno);
 	
 	
 	
@@ -46,9 +43,8 @@ public interface IAlumnoService {
 	 * @param alumno_nombre the alumno nombre
 	 * @param alumno_apellidos the alumno apellidos
 	 * @param alumno_telefono the alumno telefono
-	 * @throws Exception the exception
 	 */
-	public void editarAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono) throws Exception;
+	public void editarAlumno(long alumno_id, String alumno_nombre, String alumno_apellidos, String alumno_telefono);
 	
 	
 	
@@ -56,8 +52,7 @@ public interface IAlumnoService {
 	 * Eliminar alumno porid.
 	 *
 	 * @param alumno_id the alumno id
-	 * @throws Exception the exception
 	 */
-	public void eliminarAlumnoPorid(long alumno_id) throws Exception;
+	public void eliminarAlumnoPorid(long alumno_id);
 	
 }

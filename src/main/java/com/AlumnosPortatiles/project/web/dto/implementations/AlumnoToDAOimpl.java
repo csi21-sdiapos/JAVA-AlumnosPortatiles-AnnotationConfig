@@ -15,7 +15,7 @@ public class AlumnoToDAOimpl implements IAlumnoToDAO {
 
 	
 	@Override
-	public Alumno toAlumnoDAO(AlumnoDTO alumnoDTO) throws Exception {
+	public Alumno toAlumnoDAO(AlumnoDTO alumnoDTO) {
 		Alumno alumnoDAO = new Alumno();
 		
 		try {
@@ -37,7 +37,7 @@ public class AlumnoToDAOimpl implements IAlumnoToDAO {
 	
 	
 	@Override
-	public List<Alumno> toListAlumnoDAO(List<AlumnoDTO> listAlumnoDTO) throws Exception {
+	public List<Alumno> toListAlumnoDAO(List<AlumnoDTO> listAlumnoDTO) {
 		List<Alumno> listAlumnoDAO = new ArrayList<>();
 		
 		try {

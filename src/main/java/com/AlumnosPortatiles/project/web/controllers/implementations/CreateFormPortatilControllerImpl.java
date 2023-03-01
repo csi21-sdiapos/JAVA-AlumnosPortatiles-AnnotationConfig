@@ -1,5 +1,6 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -43,17 +44,28 @@ public class CreateFormPortatilControllerImpl implements ICreateFormPortatilCont
 	
 	@RequestMapping(value="/formCreatePortatil", method = RequestMethod.POST)
 	@Override
-	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel) throws Exception {
+	public ModelAndView formCreatePortatil(@ModelAttribute("portatilModel") PortatilDTO portatilModel) {
 		logger.info("\nEntrando en el metodo --> formCreatePortatil()");
 		
 		portatilModel.setPortatil_uuid(UUID.randomUUID());
 		portatilModel.setPortatil_date(Calendar.getInstance());
-		portatilService.insertarPortatil(portatilToDAO.toPortatilDAO(portatilModel));
+		try {
+			portatilService.insertarPortatil(portatilToDAO.toPortatilDAO(portatilModel));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		logger.info("\nVolvemos a la vista de los Portatiles");
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}

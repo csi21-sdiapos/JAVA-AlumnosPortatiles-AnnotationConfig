@@ -14,9 +14,8 @@ public interface IAlumnoToDTO {
 	 *
 	 * @param AlumnoDAO the alumno DAO
 	 * @return the alumno DTO
-	 * @throws Exception the exception
 	 */
-	public AlumnoDTO toAlumnoDTO(Alumno AlumnoDAO) throws Exception;
+	public AlumnoDTO toAlumnoDTO(Alumno AlumnoDAO);
 	
 	
 	
@@ -25,8 +24,7 @@ public interface IAlumnoToDTO {
 	 *
 	 * @param listAlumnoDAO the list alumno DAO
 	 * @return the list
-	 * @throws Exception the exception
 	 */
-	public List<AlumnoDTO> toListAlumnoDTO(List<Alumno> listAlumnoDAO) throws Exception;
+	public List<AlumnoDTO> toListAlumnoDTO(List<Alumno> listAlumnoDAO);
 	
 }

@@ -14,8 +14,7 @@ public interface ICreateFormAlumnoController {
 	 *
 	 * @param alumnoModel the alumno model
 	 * @return the model and view
-	 * @throws Exception the exception
 	 */
-	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel) throws Exception;
+	public ModelAndView formCreateAlumno(@ModelAttribute("alumnoModel") AlumnoDTO alumnoModel);
 
 }

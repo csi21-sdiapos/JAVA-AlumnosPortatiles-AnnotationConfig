@@ -1,5 +1,6 @@
 package com.AlumnosPortatiles.project.web.controllers.implementations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ public class EditPortatilControllerImpl implements IEditFormPortatilController {
 
 	@RequestMapping(value="/formEditPortatil", method = RequestMethod.POST)
 	@Override
-	public ModelAndView formEditPortatil(HttpServletRequest request) throws Exception {
+	public ModelAndView formEditPortatil(HttpServletRequest request) {
 		logger.info("\nEntrando en el metodo --> formCreatePortatil()");
 	
 		long portatil_id = Long.parseLong(request.getParameter("portatil_id"));
@@ -51,7 +52,13 @@ public class EditPortatilControllerImpl implements IEditFormPortatilController {
 		logger.info("\nVolvemos a la vista de los Portatiles");
 		List<Portatil> portatilesList = portatilService.listarPortatiles();
 		logger.info("\nLa lista de portatiles contiene " + portatilesList.size() + " portatiles");
-		List<PortatilDTO> portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		List<PortatilDTO> portatilesListDTO = new ArrayList<>();
+		try {
+			portatilesListDTO = portatilToDTO.toListPortatilDTO(portatilesList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return new ModelAndView("portatiles", "listaPortatiles", portatilesListDTO);
 	}

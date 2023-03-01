@@ -8,6 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 public interface IEditFormPortatilController {
 
 	
-	public ModelAndView formEditPortatil(HttpServletRequest request) throws Exception;
-	//public ModelAndView formEditPortatil(@ModelAttribute("portatilModel") Portatil portatilModel) throws Exception;
+	public ModelAndView formEditPortatil(HttpServletRequest request);
+	//public ModelAndView formEditPortatil(@ModelAttribute("portatilModel") Portatil portatilModel);
 }
